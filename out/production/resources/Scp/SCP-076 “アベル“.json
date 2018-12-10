@@ -1,0 +1,79 @@
+{
+  "type": "SCP",
+  "name": "SCP-076 “アベル“",
+  "cost": 3,
+  "secure": 8,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Keter",
+  "tag": [
+    "scp",
+    "人間型",
+    "彫り物",
+    "敵対的",
+    "殿堂入り",
+    "生命",
+    "異次元",
+    "自我"
+  ],
+  "effects": {
+    "effect": [
+      null,
+      null,
+      null,
+      {
+        "force": {
+          "effects": [
+            {
+              "number": 2,
+              "message": "このオブジェクトをサンドボックスの一番下に再収容する。",
+              "activeNum": 2147483647,
+              "canActive": true,
+              "terms": [],
+              "action": [
+                {
+                  "action": "ReContainment",
+                  "param": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "force": {
+          "effects": [
+            {
+              "number": 1,
+              "message": "財団のオブジェクトを1つ選び、終了する。",
+              "activeNum": 2147483647,
+              "canActive": true,
+              "terms": [
+                {
+                  "action": "hasSCP",
+                  "param": [
+                    "me",
+                    "Full",
+                    "notPartner"
+                  ]
+                }
+              ],
+              "action": [
+                {
+                  "action": "Select",
+                  "param": [
+                    "Decommission",
+                    "me",
+                    "Site",
+                    "Full",
+                    "notPartner"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

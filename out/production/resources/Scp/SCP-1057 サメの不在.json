@@ -1,0 +1,53 @@
+{
+  "type": "SCP",
+  "name": "SCP-1057 サメの不在",
+  "cost": 1,
+  "secure": 0,
+  "canAttack": false,
+  "canPartner": false,
+  "clazz": "Safe",
+  "tag": [
+    "サメ",
+    "are-we-cool-yet",
+    "scp",
+    "動物",
+    "水棲",
+    "肉食",
+    "視覚",
+    "非実体",
+    "魚"
+  ],
+  "effects": {
+    "effect": [
+      null,
+      null,
+      {
+        "number": 1,
+        "behavior": {
+          "effects": [
+            {
+              "message": "1ターンに1度まで、相手のサンドボックスを1つ対象とし、その保護力を３下げることができる。",
+              "activeNum": 2147483647,
+              "canActive": true,
+              "terms": [
+                {
+                  "action": "firstTimeTurn"
+                }
+              ],
+              "action": [
+                {
+                  "action": "DamageSandBox",
+                  "param": [
+                    "enemy",
+                    "Point",
+                    "3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

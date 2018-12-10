@@ -1,0 +1,5 @@
+CREATE TABLE SCP_TCG.ID
+(
+    id char(10),
+    pass varchar(255)
+);

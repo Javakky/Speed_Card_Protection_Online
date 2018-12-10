@@ -1,0 +1,82 @@
+import org.gradle.util.GFileUtils
+
+plugins {
+    id 'java'
+    id 'war'
+    id 'nu.studer.jooq' version '3.0.2'
+}
+
+apply from: 'gretty.plugin'
+
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'javax:javaee-api:8.0'
+    compileOnly 'javax:javaee-api:8.0'
+    jooqRuntime group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
+    compile group: 'org.jooq', name: 'jooq', version: '3.11.2'
+    compile group: 'org.jooq', name: 'jooq-parent', version: '3.11.2'/*, ext: 'pom'*/
+    compile group: 'org.jooq', name: 'jooq-meta-extensions', version: '3.11.2'
+    compile group: 'org.jooq', name: 'jooq-codegen-maven', version: '3.11.2'
+    compile group: 'org.jooq', name: 'jooq-codegen', version: '3.11.2'
+    compile group: 'org.jooq', name: 'jooq-meta', version: '3.11.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.11.1'
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.links("http://docs.oracle.com/javase/8/docs/api/")
+    options.locale = 'ja_JP'
+    options.memberLevel = JavadocMemberLevel.PRIVATE
+}
+
+gretty {
+    servletContainer = 'tomcat9'
+    jvmArgs = ['-Dfile.encoding=UTF-8']
+}
+
+war {
+    archiveName = 'SCP.war'
+}
+
+jooq {
+    version = '3.11.2'
+    edition = 'OSS'
+    tables(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.jdbc.Driver'
+            url = 'jdbc:mysql://localhost:3306/SCP_TCG?serverTimezone=JST'
+            user = 'root'
+            password = 'mjfeodmd0'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = ''
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                packageName = 'jooq'
+                directory = 'src/main/java'
+            }
+        }
+    }
+}

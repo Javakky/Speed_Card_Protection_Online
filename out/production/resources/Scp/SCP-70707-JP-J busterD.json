@@ -1,0 +1,17 @@
+{
+  "type": "SCP",
+  "name": "SCP-70707-JP-J busterD",
+  "cost": 1,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Safe",
+  "tag": [
+    "メタ",
+    "joke",
+    "scp-jp",
+    "新人執筆者コンテスト",
+    "武器",
+    "認識災害"
+  ]
+}
