@@ -1,0 +1,27 @@
+{
+  "name": "Dクラス職員",
+  "type": "Personnel",
+  "effects": {
+    "effect": [
+      null,
+      null,
+      {
+        "effects": [
+          {
+            "message": "Dクラス職員この人事は任意のタイミングで終了できる。",
+            "canActive": true,
+            "activeNum": 2147483647,
+            "action": [
+              {
+                "action": "Decommission",
+                "param": [
+                  "this"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

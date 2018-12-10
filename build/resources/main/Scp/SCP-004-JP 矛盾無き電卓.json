@@ -1,0 +1,16 @@
+{
+  "type": "SCP",
+  "name": "SCP-004-JP 矛盾無き電卓",
+  "cost": 1,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Safe",
+  "tag": [
+    "scp-jp",
+    "数学",
+    "未来予知",
+    "道具",
+    "電子デバイス"
+  ]
+}

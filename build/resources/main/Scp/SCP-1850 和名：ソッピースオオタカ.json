@@ -1,0 +1,17 @@
+{
+  "type": "SCP",
+  "name": "SCP-1850 和名：ソッピースオオタカ",
+  "cost": 1,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Safe",
+  "tag": [
+    "scp",
+    "乗り物",
+    "生命",
+    "空棲",
+    "軍事",
+    "鳥"
+  ]
+}
