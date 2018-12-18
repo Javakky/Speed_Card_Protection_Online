@@ -33,8 +33,8 @@ public final class EndPoint {
     private static boolean wait = false;
     private static String waiting;
     private static String waitingDeck;
-    private Logger logger;
-    {
+    static private Logger logger = null;
+    static {
         logger = LogManager.getLogger(EndPoint.class);
     }
 
@@ -42,7 +42,7 @@ public final class EndPoint {
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
         System.out.println(log);
-        logger.log(INFO, log);
+        logger.info(log);
     }
 
     @OnClose
@@ -50,7 +50,7 @@ public final class EndPoint {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
         System.out.println(log);
-        logger.log(INFO, log);
+        logger.info(log);
         cutConnection(getId(client));
     }
 
@@ -81,7 +81,7 @@ public final class EndPoint {
     @OnError
     public void onError(final Session client, final Throwable error) {
         String log = client.getId() + " was error. [" + error.getMessage() + "]";
-        logger.log(ERROR, log);
+        logger.error(log);
         error.printStackTrace();
     }
 
@@ -133,7 +133,7 @@ public final class EndPoint {
             Data data = (new Gson()).fromJson(t, Data.class);
             //System.out.println(data.event);
             System.out.println(data);
-            logger.log(INFO, data.event);
+            logger.info(data.event);
 
             if (data.event.equals("Login")) {
                 login(data.player, data.name[0], client);
@@ -142,7 +142,7 @@ public final class EndPoint {
             }
         }catch (Exception e){
             e.printStackTrace();
-            logger.log(ERROR, e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
