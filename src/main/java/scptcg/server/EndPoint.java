@@ -182,7 +182,7 @@ public final class EndPoint {
                 int player = -1;
                 if (data.event.equals("damage")) {
                     //System.out.println(data.isFirst + " " + data.place[0] + " " + data.name[0]);
-                    result = game.damage(data.isFirst, data.place[0], Integer.parseInt(data.name[0]));
+                    result = game.damage(data.isFirst, data.place[1], Integer.parseInt(data.name[0]));
                     player = data.isFirst;
                 } else {
                     result = game.crossTest(data.isFirst, data.place[0], data.place[1]);
