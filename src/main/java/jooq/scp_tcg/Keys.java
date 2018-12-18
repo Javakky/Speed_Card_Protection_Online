@@ -7,7 +7,9 @@ package jooq.scp_tcg;
 import javax.annotation.Generated;
 
 import jooq.scp_tcg.tables.Deck;
+import jooq.scp_tcg.tables.Id;
 import jooq.scp_tcg.tables.records.DeckRecord;
+import jooq.scp_tcg.tables.records.IdRecord;
 
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
@@ -37,6 +39,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<DeckRecord> KEY_DECK_PRIMARY = UniqueKeys0.KEY_DECK_PRIMARY;
+    public static final UniqueKey<IdRecord> KEY_ID_PRIMARY = UniqueKeys0.KEY_ID_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -49,5 +52,6 @@ public class Keys {
 
     private static class UniqueKeys0 {
         public static final UniqueKey<DeckRecord> KEY_DECK_PRIMARY = Internal.createUniqueKey(Deck.DECK, "KEY_deck_PRIMARY", Deck.DECK.ID, Deck.DECK.NAME);
+        public static final UniqueKey<IdRecord> KEY_ID_PRIMARY = Internal.createUniqueKey(Id.ID, "KEY_id_PRIMARY", Id.ID.ID_);
     }
 }

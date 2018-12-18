@@ -6,36 +6,35 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "自分の人事は以下の効果を得る。「このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する」",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "HavePersonnel"
-                }
-              ],
-              "action": [
-                {
-                  "action": "AddEffect",
-                  "param": [
-                    "Personnel",
-                    "Decommissioned",
-                    "force",
-                    "このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する",
-                    "2147483647",
-                    "true",
-                    "",
-                    "K-class,IK"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "自分の人事は以下の効果を得る。「このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する」",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "HavePersonnel"
+              }
+            ],
+            "action": [
+              {
+                "action": "AddEffect",
+                "param": [
+                  "Personnel",
+                  "Decommissioned",
+                  "force",
+                  "このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する",
+                  "force",
+                  "2147483647",
+                  "true",
+                  "",
+                  "K-class,IK"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

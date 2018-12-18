@@ -22,57 +22,53 @@
       null,
       null,
       {
-        "force": {
-          "effects": [
-            {
-              "number": 2,
-              "message": "このオブジェクトをサンドボックスの一番下に再収容する。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [],
-              "action": [
-                {
-                  "action": "ReContainment",
-                  "param": []
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 2,
+            "message": "このオブジェクトをサンドボックスの一番下に再収容する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [],
+            "action": [
+              {
+                "action": "ReContainment",
+                "param": []
+              }
+            ]
+          }
+        ]
       },
       {
-        "force": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "財団のオブジェクトを1つ選び、終了する。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "hasSCP",
-                  "param": [
-                    "me",
-                    "Full",
-                    "notPartner"
-                  ]
-                }
-              ],
-              "action": [
-                {
-                  "action": "Select",
-                  "param": [
-                    "Decommission",
-                    "me",
-                    "Site",
-                    "Full",
-                    "notPartner"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "財団のオブジェクトを1つ選び、終了する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "hasSCP",
+                "param": [
+                  "me",
+                  "Full",
+                  "notPartner"
+                ]
+              }
+            ],
+            "action": [
+              {
+                "action": "Select",
+                "param": [
+                  "Decommission",
+                  "me",
+                  "Site",
+                  "Full",
+                  "notPartner"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

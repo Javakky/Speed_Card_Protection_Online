@@ -6,23 +6,21 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "message": "Dクラス職員この人事は任意のタイミングで終了できる。",
-              "canActive": true,
-              "activeNum": 2147483647,
-              "action": [
-                {
-                  "action": "Decommission",
-                  "param": [
-                    "this"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "message": "Dクラス職員この人事は任意のタイミングで終了できる。",
+            "canActive": true,
+            "activeNum": 2147483647,
+            "action": [
+              {
+                "action": "Decommission",
+                "param": [
+                  "this"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

@@ -131,7 +131,8 @@ public final class EndPoint {
         try{
             String t = text.replaceAll("\n", "");
             Data data = (new Gson()).fromJson(t, Data.class);
-            System.out.println(data.event);
+            //System.out.println(data.event);
+            System.out.println(data);
             logger.log(INFO, data.event);
 
             if (data.event.equals("Login")) {
@@ -180,6 +181,7 @@ public final class EndPoint {
                 Map.Entry<Integer, Scp> result;
                 int player = -1;
                 if (data.event.equals("damage")) {
+                    //System.out.println(data.isFirst + " " + data.place[0] + " " + data.name[0]);
                     result = game.damage(data.isFirst, data.place[0], Integer.parseInt(data.name[0]));
                     player = data.isFirst;
                 } else {
@@ -276,7 +278,7 @@ public final class EndPoint {
                 break;
 
             case "HealSandBox":
-                System.out.print(data.toString());
+                //System.out.print(data.toString());
                 int point = game.healSandBox(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[2]));
                 list.addAll(heal(data.isFirst, data.place[0], point));
                 break;
@@ -314,7 +316,7 @@ public final class EndPoint {
             Result[] r = game.activeEffects(null, null);
             for (Result res:r
                  ) {
-                System.out.println("active:" + res.getAction());
+                //System.out.println("active:" + res.getAction());
             }
             list.addAll(
                     sendEffectResult(game, data, r));
@@ -327,9 +329,11 @@ public final class EndPoint {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
+                    System.out.println("send = [me: " + e.getValue() + "\n]");
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
+                    System.out.println("send = [enemy: " + e.getValue() + "\n]");
                     break;
             }
         }
@@ -460,15 +464,15 @@ public final class EndPoint {
         try {
             DSLContext con = connectionDB();
             String txt = null;
-            System.out.println(id);
-            System.out.println(deckName);
+            //System.out.println(id);
+            //System.out.println(deckName);
             for (org.jooq.Record r :
                     con.select().from(DECK)
                             .where(DECK.ID.eq(id))
                             .and(DECK.NAME.eq(deckName))
                             .fetch()) {
                 txt = r.getValue(DECK.DECK_);
-                System.out.println(txt);
+                //System.out.println(txt);
                 break;
             }
             Deck json = (new Gson()).fromJson(txt, Deck.class);
@@ -501,15 +505,17 @@ public final class EndPoint {
         @Override
         public String toString(){
             StringBuilder sb = new StringBuilder();
-            sb.append("player:")
+            sb.append("receive = [\tplayer:")
                     .append(player)
-                    .append("\nisFirst:")
+                    .append("\n\tevent:")
+                    .append(event)
+                    .append("\n\tisFirst:")
                     .append(isFirst)
-                    .append("\nname:")
+                    .append("\n\tname:")
                     .append(Arrays.toString(name))
-                    .append("\nplace:")
+                    .append("\n\tplace:")
                     .append(Arrays.toString(place))
-                    .append("\n");
+                    .append("\n]");
             return sb.toString();
         }
     }

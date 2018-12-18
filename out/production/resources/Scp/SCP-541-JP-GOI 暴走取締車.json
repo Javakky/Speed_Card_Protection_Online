@@ -19,40 +19,49 @@
       null,
       null,
       {
-        "force": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "このターンクロステストしたオブジェクトを財団から1つ選び、終了する。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "hasSCP",
-                  "param": [
-                    "both",
-                    "Full",
-                    "crossTested",
-                    "notPartner"
-                  ]
-                }
-              ],
-              "action": [
-                {
-                  "action": "Select",
-                  "param": [
-                    "Decommission",
-                    "both",
-                    "Site",
-                    "Full",
-                    "notPartner",
-                    "crossTested"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "このターンクロステストしたオブジェクトを財団から1つ選び、終了する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "hasSCP",
+                "param": [
+                  "both",
+                  "Full",
+                  "crossTested",
+                  "notPartner"
+                ]
+              }
+            ],
+            "action": [
+              {
+                "action": "Select",
+                "param": [
+                  "Decommission",
+                  "me",
+                  "Site",
+                  "Full",
+                  "notPartner",
+                  "crossTested"
+                ]
+              },
+              {
+                "action": "Select",
+                "param": [
+                  "Decommission",
+                  "enemy",
+                  "Site",
+                  "Full",
+                  "notPartner",
+                  "crossTested"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

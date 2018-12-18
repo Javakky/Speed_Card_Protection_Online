@@ -18,31 +18,31 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "1ターンに1度、自分のサンドボックスを1つ選んで発現できる。選んだサンドボックスの保護力を1回復する。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "firstTimeTurn"
-                }
-              ],
-              "action": [
-                {
-                  "action": "HealSandBox",
-                  "param": [
-                    "me",
-                    "Point",
-                    "1"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "1ターンに1度、自分のサンドボックスを1つ選んで発現できる。選んだサンドボックスの保護力を1回復する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "firstTimeTurn"
+              }
+            ],
+            "action": [
+              {
+                "action": "healSandBox",
+                "param": [
+                  "me",
+                  "1",
+                  "false",
+                  "Point",
+                  "1"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

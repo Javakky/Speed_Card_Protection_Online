@@ -4,18 +4,25 @@
 package jooq.scp_tcg.tables;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.Generated;
 
+import jooq.scp_tcg.Indexes;
+import jooq.scp_tcg.Keys;
 import jooq.scp_tcg.ScpTcg;
 import jooq.scp_tcg.tables.records.IdRecord;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
@@ -33,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Id extends TableImpl<IdRecord> {
 
-    private static final long serialVersionUID = 2120977835;
+    private static final long serialVersionUID = 1914853379;
 
     /**
      * The reference instance of <code>scp_tcg.id</code>
@@ -51,7 +58,7 @@ public class Id extends TableImpl<IdRecord> {
     /**
      * The column <code>scp_tcg.id.id</code>.
      */
-    public final TableField<IdRecord, String> ID_ = createField("id", org.jooq.impl.SQLDataType.CHAR(10), this, "");
+    public final TableField<IdRecord, String> ID_ = createField("id", org.jooq.impl.SQLDataType.CHAR(10).nullable(false), this, "");
 
     /**
      * The column <code>scp_tcg.id.pass</code>.
@@ -97,6 +104,30 @@ public class Id extends TableImpl<IdRecord> {
     @Override
     public Schema getSchema() {
         return ScpTcg.SCP_TCG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.ID_PRIMARY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UniqueKey<IdRecord> getPrimaryKey() {
+        return Keys.KEY_ID_PRIMARY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UniqueKey<IdRecord>> getKeys() {
+        return Arrays.<UniqueKey<IdRecord>>asList(Keys.KEY_ID_PRIMARY);
     }
 
     /**

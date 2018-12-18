@@ -22,31 +22,29 @@
       null,
       null,
       {
-        "number": 1,
-        "behavior": {
-          "effects": [
-            {
-              "message": "1ターンに1度まで、相手のサンドボックスを1つ対象とし、その保護力を３下げることができる。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "firstTimeTurn"
-                }
-              ],
-              "action": [
-                {
-                  "action": "DamageSandBox",
-                  "param": [
-                    "enemy",
-                    "Point",
-                    "3"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "1ターンに1度まで、相手のサンドボックスを1つ対象とし、その保護力を３下げることができる。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "firstTimeTurn"
+              }
+            ],
+            "action": [
+              {
+                "action": "DamageSandBox",
+                "param": [
+                  "enemy",
+                  "Point",
+                  "3"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

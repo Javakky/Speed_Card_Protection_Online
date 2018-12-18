@@ -20,29 +20,27 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "オブジェクトが収容違反する時に発動できる。このカードをdecommissionedする。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "notPartner"
-                }
-              ],
-              "action": [
-                {
-                  "action": "Decommission",
-                  "param": [
-                    "this"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "オブジェクトが収容違反する時に発動できる。このカードをdecommissionedする。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "notPartner"
+              }
+            ],
+            "action": [
+              {
+                "action": "Decommission",
+                "param": [
+                  "this"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

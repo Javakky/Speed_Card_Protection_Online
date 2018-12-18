@@ -6,44 +6,42 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "message": "1ターンに一度、自分のサイト上に存在する確保力が0のオブジェクトをdecommissionedに送ることができる。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "firstTimeTurn"
-                },
-                {
-                  "action": "hasSCP",
-                  "param": [
-                    "me",
-                    "Full",
-                    "secure",
-                    "0",
-                    "notPartner"
-                  ]
-                }
-              ],
-              "action": [
-                {
-                  "action": "Select",
-                  "param": [
-                    "Decommission",
-                    "me",
-                    "Site",
-                    "Full",
-                    "notPartner",
-                    "secure",
-                    "0"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "message": "1ターンに一度、自分のサイト上に存在する確保力が0のオブジェクトをdecommissionedに送ることができる。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "firstTimeTurn"
+              },
+              {
+                "action": "hasSCP",
+                "param": [
+                  "me",
+                  "Full",
+                  "secure",
+                  "0",
+                  "notPartner"
+                ]
+              }
+            ],
+            "action": [
+              {
+                "action": "Select",
+                "param": [
+                  "Decommission",
+                  "me",
+                  "Site",
+                  "Full",
+                  "notPartner",
+                  "secure",
+                  "0"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

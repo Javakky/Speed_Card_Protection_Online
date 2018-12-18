@@ -263,7 +263,6 @@ public class GameOperator {
                 .append("\n")
                 .append(coordinate)
                 .append("\n");
-        System.out.println(sb.toString());
         return toListBoth(sb.toString());
     }
 

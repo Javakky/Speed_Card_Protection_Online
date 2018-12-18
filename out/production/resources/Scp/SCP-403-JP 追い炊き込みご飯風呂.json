@@ -18,40 +18,40 @@
       null,
       null,
       {
-        "behavior": {
-          "effects": [
-            {
-              "number": 1,
-              "message": "1ターンに1度起動できる。自分の人事を1つ終了してもよい。そうしたなら、自分のサンドボックス1つの保護力を3回復する。",
-              "activeNum": 2147483647,
-              "canActive": true,
-              "terms": [
-                {
-                  "action": "firstTimeTurn"
-                },
-                {
-                  "action": "hasPersonnel"
-                }
-              ],
-              "action": [
-                {
-                  "action": "Decommission",
-                  "param": [
-                    "Personnel"
-                  ]
-                },
-                {
-                  "action": "healSandBox",
-                  "param": [
-                    "me",
-                    "Point",
-                    "3"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+        "effects": [
+          {
+            "number": 1,
+            "message": "1ターンに1度起動できる。自分の人事を1つ終了してもよい。そうしたなら、自分のサンドボックス1つの保護力を3回復する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "firstTimeTurn"
+              },
+              {
+                "action": "hasPersonnel"
+              }
+            ],
+            "action": [
+              {
+                "action": "Decommission",
+                "param": [
+                  "Personnel"
+                ]
+              },
+              {
+                "action": "healSandBox",
+                "param": [
+                  "me",
+                  "1",
+                  "false",
+                  "Point",
+                  "3"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }
