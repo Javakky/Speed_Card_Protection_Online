@@ -19,7 +19,7 @@ public interface Logger {
             }
             pos++;
         }
-        pos += 2;        //出力したいクラス名/メソッド名は自分の2個次の位置にいる
+        pos -= 2;       //出力したいクラス名/メソッド名は自分の2個次の位置にいる
         StackTraceElement m = stackTraceElements[pos];
         //ログ出力対象のクラス名:[メソッド名] + log message
         return m.getClassName() + ":" + m.getMethodName() + "() " + msg;
