@@ -22,10 +22,7 @@
 
     <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
     <Loggers>
-        <Logger name="scptcg.server.EndPoint" level="info" additivity="false">
-            <AppenderRef ref="rolling"/>
-        </Logger>
-        <Logger name="scptcg.server.DeckMakeServlet" level="info" additivity="false">
+        <Logger name="scptcg.server.Logger" level="info" additivity="false">
             <AppenderRef ref="rolling"/>
         </Logger>
     </Loggers>
