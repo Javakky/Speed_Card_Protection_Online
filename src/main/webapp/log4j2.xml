@@ -22,7 +22,7 @@
 
     <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
     <Loggers>
-        <Logger name="scptcg.server.Logger" level="info" additivity="false">
+        <Logger name="scptcg.log.Logger" level="info" additivity="false">
             <AppenderRef ref="rolling"/>
         </Logger>
     </Loggers>
