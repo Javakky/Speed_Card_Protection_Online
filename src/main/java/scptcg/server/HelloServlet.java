@@ -1,6 +1,8 @@
 package scptcg.server;
 
 import scptcg.log.Log4j;
+import scptcg.log.LogPrintStream;
+import scptcg.log.LogPrintWriter;
 import scptcg.log.LogStdo;
 import scptcg.log.Logger;
 
@@ -21,11 +23,11 @@ public class HelloServlet extends HttpServlet {
         res.setContentType("text/html; charset=Shift_JIS");
         out = res.getWriter();
 
-        out.println("<html><body>");
-        out.println("<h1>Hello World!</h1>");
-        out.println("<p>Servletのサンプル（HelloServlet.java）</p>");
-        out.println("</body></html>");
-        Logger logger = new LogStdo();
+        //out.println("<html><body>");
+        //out.println("<h1>Hello World!</h1>");
+        //out.println("<p>Servletのサンプル（HelloServlet.java）</p>");
+        //out.println("</body></html>");
+        Logger logger = new LogPrintWriter(out);
         logger.info("Hello, World!");
     }
 }

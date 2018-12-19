@@ -1,19 +1,19 @@
 package scptcg.log;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
-public class LogPrintStream implements Logger {
+public class LogPrintWriter implements Logger {
 
-    private PrintStream out;
-
-    public LogPrintStream(final PrintStream out) {
+    private PrintWriter out;
+    
+    public LogPrintWriter(final PrintWriter out) {
         this.out = out;
     }
 
-    public void setPrintStream(final PrintStream out) {
+    public void setPrintWriter(final PrintWriter out) {
         this.out = out;
     }
-
+    
     @Override
     public void debug(final String msg) {
         out.println("debug:\n" + getMessage(msg));

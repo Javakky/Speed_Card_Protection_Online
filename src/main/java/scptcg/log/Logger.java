@@ -6,7 +6,9 @@ public interface Logger {
 
     default String getMessage(final String msg) {
         //クラス名を取得
-        String thisClassName = getClass().getName();
+        String thisClassName = this.getClass().getName();
+        //クラス名を取得
+        String SuperClassName = Logger.class.getName();
         //カレントスレッドを取得
         Thread t = Thread.currentThread();
         //StackTraceElementの配列を取得
@@ -14,15 +16,16 @@ public interface Logger {
         int pos = 0;
         for (StackTraceElement stackTraceElement : stackTraceElements) {
             //クラス名比較
-            if (thisClassName.equals(stackTraceElement.getClassName())) {
+            String steClassName = stackTraceElement.getClassName();
+            if (thisClassName.equals(steClassName) || SuperClassName.equals(steClassName)) {
                 break;    //stackTraceElementsから自分と同じクラス名だったら終了
             }
             pos++;
         }
-        pos -= 2;       //出力したいクラス名/メソッド名は自分の2個次の位置にいる
+        pos += 2;
         StackTraceElement m = stackTraceElements[pos];
         //ログ出力対象のクラス名:[メソッド名] + log message
-        return m.getClassName() + ":" + m.getMethodName() + "() " + msg;
+        return m.getClassName() + ":" + m.getMethodName() + "() \n" + msg;
     }
 
     default String getErrorMessage(final Exception e) {
