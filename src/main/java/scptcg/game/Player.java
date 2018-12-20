@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import static scptcg.game.Place.*;
-import static scptcg.game.card.CardKind.SCP;
 import static scptcg.game.effect.EFFECT_TYPE_LIST.DECOMMISSIONED;
 
 public class Player implements ICardSetHolder {
@@ -236,7 +235,7 @@ public class Player implements ICardSetHolder {
         return getPlace(place).getNumber(waitingEffect);
     }
 
-    private CardHolder getPlace(Place place){
+    private CardHolder getPlace(Place place) {
         switch (place) {
             case TALES:
                 return tale;
@@ -360,7 +359,7 @@ public class Player implements ICardSetHolder {
     }
 
     public void addTag(CardKind kind, int index, String tag) {
-        switch (kind){
+        switch (kind) {
             case SCP:
                 site.addTag(index, tag);
                 break;

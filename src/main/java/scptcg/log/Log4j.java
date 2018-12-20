@@ -7,9 +7,16 @@ import java.io.File;
 /**
  * ロギング処理を行う
  */
-public class Log4j implements Logger{
+public class Log4j implements Logger {
 
     private static Log4j logger = null;
+
+    /**
+     * コンストラクタ
+     * Singleton実装の為、コンストラクタは隠蔽します
+     */
+    private Log4j() {
+    }
 
     public static synchronized Log4j getInstance() {
         //インスタンスが無ければ作成する
@@ -17,13 +24,6 @@ public class Log4j implements Logger{
             logger = new Log4j();
         }
         return logger;
-    }
-
-    /**
-     * コンストラクタ
-     * Singleton実装の為、コンストラクタは隠蔽します
-     */
-    private Log4j() {
     }
 
     /**
@@ -44,7 +44,7 @@ public class Log4j implements Logger{
         File dir = new File("./");
         System.out.println(dir.getName());
         System.out.println(dir.getParent());
-        for (File file: dir.listFiles()) {
+        for (File file : dir.listFiles()) {
             System.out.println(file.getName());
         }
         LogManager.getLogger(this.getClass()).info(getMessage(msg));
@@ -75,6 +75,6 @@ public class Log4j implements Logger{
      * @param e : 例外情報
      */
     public void error(final Exception e) {
-            LogManager.getLogger(e.getClass()).error(getErrorMessage(e));
+        LogManager.getLogger(e.getClass()).error(getErrorMessage(e));
     }
 }

@@ -1,9 +1,6 @@
 package scptcg.server;
 
 import scptcg.log.Log4j;
-import scptcg.log.LogPrintStream;
-import scptcg.log.LogPrintWriter;
-import scptcg.log.LogStdo;
 import scptcg.log.Logger;
 
 import javax.servlet.annotation.WebServlet;

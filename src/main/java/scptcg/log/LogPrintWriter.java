@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 public class LogPrintWriter implements Logger {
 
     private PrintWriter out;
-    
+
     public LogPrintWriter(final PrintWriter out) {
         this.out = out;
     }
@@ -13,7 +13,7 @@ public class LogPrintWriter implements Logger {
     public void setPrintWriter(final PrintWriter out) {
         this.out = out;
     }
-    
+
     @Override
     public void debug(final String msg) {
         out.println("debug:\n" + getMessage(msg));

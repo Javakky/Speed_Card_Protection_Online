@@ -271,10 +271,10 @@ public class GameOperator {
         sb.append("breaching\n")
                 .append(scp.getName());
         List m;
-        if(!isMe) {
+        if (!isMe) {
             m = toListMe("breachWait\n");
             m.addAll(toListEnemy(sb.toString()));
-        }else{
+        } else {
             m = toListEnemy("breachWait\n");
             m.addAll(toListMe(sb.toString()));
         }

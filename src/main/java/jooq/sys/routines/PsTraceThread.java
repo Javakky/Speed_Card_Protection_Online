@@ -4,143 +4,132 @@
 package jooq.sys.routines;
 
 
-import java.math.BigDecimal;
-
-import javax.annotation.Generated;
-
 import jooq.sys.Sys;
-
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
 import org.jooq.types.ULong;
 
+import javax.annotation.Generated;
+import java.math.BigDecimal;
+
 
 /**
- * 
- *  Description
- *  
- *  Dumps all data within Performance Schema for an instrumented thread,
- *  to create a DOT formatted graph file. 
- *  
- *  Each resultset returned from the procedure should be used for a complete 
+ * Description
+ * <p>
+ * Dumps all data within Performance Schema for an instrumented thread,
+ * to create a DOT formatted graph file.
+ * <p>
+ * Each resultset returned from the procedure should be used for a complete
  * graph
- *  
- *  Requires the SUPER privilege for "SET sql_log_bin = 0;".
- *  
- *  Parameters
- *  
- *  in_thread_id (BIGINT UNSIGNED):
- *  The thread that you would like a stack trace for
- *  in_outfile  (VARCHAR(255)):
- *  The filename the dot file will be written to
- *  in_max_runtime (DECIMAL(20,2)):
- *  The maximum time to keep collecting data.
- *  Use NULL to get the default which is 60 seconds.
- *  in_interval (DECIMAL(20,2)): 
- *  How long to sleep between data collections. 
- *  Use NULL to get the default which is 1 second.
- *  in_start_fresh (BOOLEAN):
- *  Whether to reset all Performance Schema data before tracing.
- *  in_auto_setup (BOOLEAN):
- *  Whether to disable all other threads and enable all consumers/instruments. 
- * 
- *  This will also reset the settings at the end of the run.
- *  in_debug (BOOLEAN):
- *  Whether you would like to include file:lineno in the graph
- *  
- *  Example
- *  
- *  mysql&gt; CALL sys.ps_trace_thread(25, CONCAT('/tmp/stack-', REPLACE(NOW(), 
+ * <p>
+ * Requires the SUPER privilege for "SET sql_log_bin = 0;".
+ * <p>
+ * Parameters
+ * <p>
+ * in_thread_id (BIGINT UNSIGNED):
+ * The thread that you would like a stack trace for
+ * in_outfile  (VARCHAR(255)):
+ * The filename the dot file will be written to
+ * in_max_runtime (DECIMAL(20,2)):
+ * The maximum time to keep collecting data.
+ * Use NULL to get the default which is 60 seconds.
+ * in_interval (DECIMAL(20,2)):
+ * How long to sleep between data collections.
+ * Use NULL to get the default which is 1 second.
+ * in_start_fresh (BOOLEAN):
+ * Whether to reset all Performance Schema data before tracing.
+ * in_auto_setup (BOOLEAN):
+ * Whether to disable all other threads and enable all consumers/instruments.
+ * <p>
+ * This will also reset the settings at the end of the run.
+ * in_debug (BOOLEAN):
+ * Whether you would like to include file:lineno in the graph
+ * <p>
+ * Example
+ * <p>
+ * mysql&gt; CALL sys.ps_trace_thread(25, CONCAT('/tmp/stack-', REPLACE(NOW(),
  * ' ', '-'), '.dot'), NULL, NULL, TRUE, TRUE, TRUE);
- *  +-------------------+
- *  | summary           |
- *  +-------------------+
- *  | Disabled 1 thread |
- *  +-------------------+
- *  1 row in set (0.00 sec)
- *  
- *  +---------------------------------------------+
- *  | Info                                        |
- *  +---------------------------------------------+
- *  | Data collection starting for THREAD_ID = 25 |
- *  +---------------------------------------------+
- *  1 row in set (0.03 sec)
- *  
- *  +-----------------------------------------------------------+
- *  | Info                                                      |
- *  +-----------------------------------------------------------+
- *  | Stack trace written to /tmp/stack-2014-02-16-21:18:41.dot |
- *  +-----------------------------------------------------------+
- *  1 row in set (60.07 sec)
- *  
- *  +-------------------------------------------------------------------+
- *  | Convert to PDF                                                    |
- *  +-------------------------------------------------------------------+
- *  | dot -Tpdf -o /tmp/stack_25.pdf /tmp/stack-2014-02-16-21:18:41.dot |
- *  +-------------------------------------------------------------------+
- *  1 row in set (60.07 sec)
- *  
- *  +-------------------------------------------------------------------+
- *  | Convert to PNG                                                    |
- *  +-------------------------------------------------------------------+
- *  | dot -Tpng -o /tmp/stack_25.png /tmp/stack-2014-02-16-21:18:41.dot |
- *  +-------------------------------------------------------------------+
- *  1 row in set (60.07 sec)
- *  
- *  +------------------+
- *  | summary          |
- *  +------------------+
- *  | Enabled 1 thread |
- *  +------------------+
- *  1 row in set (60.32 sec)
- *  
+ * +-------------------+
+ * | summary           |
+ * +-------------------+
+ * | Disabled 1 thread |
+ * +-------------------+
+ * 1 row in set (0.00 sec)
+ * <p>
+ * +---------------------------------------------+
+ * | Info                                        |
+ * +---------------------------------------------+
+ * | Data collection starting for THREAD_ID = 25 |
+ * +---------------------------------------------+
+ * 1 row in set (0.03 sec)
+ * <p>
+ * +-----------------------------------------------------------+
+ * | Info                                                      |
+ * +-----------------------------------------------------------+
+ * | Stack trace written to /tmp/stack-2014-02-16-21:18:41.dot |
+ * +-----------------------------------------------------------+
+ * 1 row in set (60.07 sec)
+ * <p>
+ * +-------------------------------------------------------------------+
+ * | Convert to PDF                                                    |
+ * +-------------------------------------------------------------------+
+ * | dot -Tpdf -o /tmp/stack_25.pdf /tmp/stack-2014-02-16-21:18:41.dot |
+ * +-------------------------------------------------------------------+
+ * 1 row in set (60.07 sec)
+ * <p>
+ * +-------------------------------------------------------------------+
+ * | Convert to PNG                                                    |
+ * +-------------------------------------------------------------------+
+ * | dot -Tpng -o /tmp/stack_25.png /tmp/stack-2014-02-16-21:18:41.dot |
+ * +-------------------------------------------------------------------+
+ * 1 row in set (60.07 sec)
+ * <p>
+ * +------------------+
+ * | summary          |
+ * +------------------+
+ * | Enabled 1 thread |
+ * +------------------+
+ * 1 row in set (60.32 sec)
  */
 @Generated(
-    value = {
-        "http://www.jooq.org",
-        "jOOQ version:3.11.2"
-    },
-    comments = "This class is generated by jOOQ"
+        value = {
+                "http://www.jooq.org",
+                "jOOQ version:3.11.2"
+        },
+        comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class PsTraceThread extends AbstractRoutine<java.lang.Void> {
-
-    private static final long serialVersionUID = 682629387;
 
     /**
      * The parameter <code>sys.ps_trace_thread.in_thread_id</code>.
      */
     public static final Parameter<ULong> IN_THREAD_ID = createParameter("in_thread_id", org.jooq.impl.SQLDataType.BIGINTUNSIGNED, false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_outfile</code>.
      */
     public static final Parameter<String> IN_OUTFILE = createParameter("in_outfile", org.jooq.impl.SQLDataType.VARCHAR(255), false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_max_runtime</code>.
      */
     public static final Parameter<BigDecimal> IN_MAX_RUNTIME = createParameter("in_max_runtime", org.jooq.impl.SQLDataType.DECIMAL(20, 2), false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_interval</code>.
      */
     public static final Parameter<BigDecimal> IN_INTERVAL = createParameter("in_interval", org.jooq.impl.SQLDataType.DECIMAL(20, 2), false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_start_fresh</code>.
      */
     public static final Parameter<Byte> IN_START_FRESH = createParameter("in_start_fresh", org.jooq.impl.SQLDataType.TINYINT, false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_auto_setup</code>.
      */
     public static final Parameter<Byte> IN_AUTO_SETUP = createParameter("in_auto_setup", org.jooq.impl.SQLDataType.TINYINT, false, false);
-
     /**
      * The parameter <code>sys.ps_trace_thread.in_debug</code>.
      */
     public static final Parameter<Byte> IN_DEBUG = createParameter("in_debug", org.jooq.impl.SQLDataType.TINYINT, false, false);
+    private static final long serialVersionUID = 682629387;
 
     /**
      * Create a new routine call instance

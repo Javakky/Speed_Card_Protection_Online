@@ -3,7 +3,8 @@ package scptcg.server;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 // これを付けるとWebSocketサーバーになる
 // URLはワイルドカード可
@@ -43,7 +44,7 @@ public final class WSEndPoint {
         String event = t[0];
         String id = t[1];
         //eventの内容毎に分岐
-        switch (event){
+        switch (event) {
             case "login":
                 //HashMapにSessionを保存しておく。
                 session.put(id, client);
@@ -53,7 +54,7 @@ public final class WSEndPoint {
                 break;
             case "commit":
                 // ブロードキャスト
-                for (Session s :session.values()){
+                for (Session s : session.values()) {
                     s.getBasicRemote().sendText(t[2]);
                 }
                 System.out.println(t[2]);

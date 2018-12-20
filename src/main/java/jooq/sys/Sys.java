@@ -4,140 +4,36 @@
 package jooq.sys;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import jooq.DefaultCatalog;
-import jooq.sys.tables.HostSummary;
-import jooq.sys.tables.HostSummaryByFileIo;
-import jooq.sys.tables.HostSummaryByFileIoType;
-import jooq.sys.tables.HostSummaryByStages;
-import jooq.sys.tables.HostSummaryByStatementLatency;
-import jooq.sys.tables.HostSummaryByStatementType;
-import jooq.sys.tables.InnodbBufferStatsBySchema;
-import jooq.sys.tables.InnodbBufferStatsByTable;
-import jooq.sys.tables.InnodbLockWaits;
-import jooq.sys.tables.IoByThreadByLatency;
-import jooq.sys.tables.IoGlobalByFileByBytes;
-import jooq.sys.tables.IoGlobalByFileByLatency;
-import jooq.sys.tables.IoGlobalByWaitByBytes;
-import jooq.sys.tables.IoGlobalByWaitByLatency;
-import jooq.sys.tables.LatestFileIo;
-import jooq.sys.tables.MemoryByHostByCurrentBytes;
-import jooq.sys.tables.MemoryByThreadByCurrentBytes;
-import jooq.sys.tables.MemoryByUserByCurrentBytes;
-import jooq.sys.tables.MemoryGlobalByCurrentBytes;
-import jooq.sys.tables.MemoryGlobalTotal;
-import jooq.sys.tables.Metrics;
-import jooq.sys.tables.Processlist;
-import jooq.sys.tables.PsCheckLostInstrumentation;
-import jooq.sys.tables.SchemaAutoIncrementColumns;
-import jooq.sys.tables.SchemaIndexStatistics;
-import jooq.sys.tables.SchemaObjectOverview;
-import jooq.sys.tables.SchemaRedundantIndexes;
-import jooq.sys.tables.SchemaTableLockWaits;
-import jooq.sys.tables.SchemaTableStatistics;
-import jooq.sys.tables.SchemaTableStatisticsWithBuffer;
-import jooq.sys.tables.SchemaTablesWithFullTableScans;
-import jooq.sys.tables.SchemaUnusedIndexes;
-import jooq.sys.tables.Session;
-import jooq.sys.tables.SessionSslStatus;
-import jooq.sys.tables.StatementAnalysis;
-import jooq.sys.tables.StatementsWithErrorsOrWarnings;
-import jooq.sys.tables.StatementsWithFullTableScans;
-import jooq.sys.tables.StatementsWithRuntimesIn_95thPercentile;
-import jooq.sys.tables.StatementsWithSorting;
-import jooq.sys.tables.StatementsWithTempTables;
-import jooq.sys.tables.SysConfig;
-import jooq.sys.tables.UserSummary;
-import jooq.sys.tables.UserSummaryByFileIo;
-import jooq.sys.tables.UserSummaryByFileIoType;
-import jooq.sys.tables.UserSummaryByStages;
-import jooq.sys.tables.UserSummaryByStatementLatency;
-import jooq.sys.tables.UserSummaryByStatementType;
-import jooq.sys.tables.Version;
-import jooq.sys.tables.WaitClassesGlobalByAvgLatency;
-import jooq.sys.tables.WaitClassesGlobalByLatency;
-import jooq.sys.tables.WaitsByHostByLatency;
-import jooq.sys.tables.WaitsByUserByLatency;
-import jooq.sys.tables.WaitsGlobalByLatency;
-import jooq.sys.tables.X$hostSummary;
-import jooq.sys.tables.X$hostSummaryByFileIo;
-import jooq.sys.tables.X$hostSummaryByFileIoType;
-import jooq.sys.tables.X$hostSummaryByStages;
-import jooq.sys.tables.X$hostSummaryByStatementLatency;
-import jooq.sys.tables.X$hostSummaryByStatementType;
-import jooq.sys.tables.X$innodbBufferStatsBySchema;
-import jooq.sys.tables.X$innodbBufferStatsByTable;
-import jooq.sys.tables.X$innodbLockWaits;
-import jooq.sys.tables.X$ioByThreadByLatency;
-import jooq.sys.tables.X$ioGlobalByFileByBytes;
-import jooq.sys.tables.X$ioGlobalByFileByLatency;
-import jooq.sys.tables.X$ioGlobalByWaitByBytes;
-import jooq.sys.tables.X$ioGlobalByWaitByLatency;
-import jooq.sys.tables.X$latestFileIo;
-import jooq.sys.tables.X$memoryByHostByCurrentBytes;
-import jooq.sys.tables.X$memoryByThreadByCurrentBytes;
-import jooq.sys.tables.X$memoryByUserByCurrentBytes;
-import jooq.sys.tables.X$memoryGlobalByCurrentBytes;
-import jooq.sys.tables.X$memoryGlobalTotal;
-import jooq.sys.tables.X$processlist;
-import jooq.sys.tables.X$psDigestAvgLatencyDistribution;
-import jooq.sys.tables.X$psDigest_95thPercentileByAvgUs;
-import jooq.sys.tables.X$psSchemaTableStatisticsIo;
-import jooq.sys.tables.X$schemaFlattenedKeys;
-import jooq.sys.tables.X$schemaIndexStatistics;
-import jooq.sys.tables.X$schemaTableLockWaits;
-import jooq.sys.tables.X$schemaTableStatistics;
-import jooq.sys.tables.X$schemaTableStatisticsWithBuffer;
-import jooq.sys.tables.X$schemaTablesWithFullTableScans;
-import jooq.sys.tables.X$session;
-import jooq.sys.tables.X$statementAnalysis;
-import jooq.sys.tables.X$statementsWithErrorsOrWarnings;
-import jooq.sys.tables.X$statementsWithFullTableScans;
-import jooq.sys.tables.X$statementsWithRuntimesIn_95thPercentile;
-import jooq.sys.tables.X$statementsWithSorting;
-import jooq.sys.tables.X$statementsWithTempTables;
-import jooq.sys.tables.X$userSummary;
-import jooq.sys.tables.X$userSummaryByFileIo;
-import jooq.sys.tables.X$userSummaryByFileIoType;
-import jooq.sys.tables.X$userSummaryByStages;
-import jooq.sys.tables.X$userSummaryByStatementLatency;
-import jooq.sys.tables.X$userSummaryByStatementType;
-import jooq.sys.tables.X$waitClassesGlobalByAvgLatency;
-import jooq.sys.tables.X$waitClassesGlobalByLatency;
-import jooq.sys.tables.X$waitsByHostByLatency;
-import jooq.sys.tables.X$waitsByUserByLatency;
-import jooq.sys.tables.X$waitsGlobalByLatency;
-
+import jooq.sys.tables.*;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
  * This class is generated by jOOQ.
  */
 @Generated(
-    value = {
-        "http://www.jooq.org",
-        "jOOQ version:3.11.2"
-    },
-    comments = "This class is generated by jOOQ"
+        value = {
+                "http://www.jooq.org",
+                "jOOQ version:3.11.2"
+        },
+        comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Sys extends SchemaImpl {
-
-    private static final long serialVersionUID = -1297611357;
 
     /**
      * The reference instance of <code>sys</code>
      */
     public static final Sys SYS = new Sys();
-
+    private static final long serialVersionUID = -1297611357;
     /**
      * VIEW
      */
@@ -668,106 +564,106 @@ public class Sys extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            HostSummary.HOST_SUMMARY,
-            HostSummaryByFileIo.HOST_SUMMARY_BY_FILE_IO,
-            HostSummaryByFileIoType.HOST_SUMMARY_BY_FILE_IO_TYPE,
-            HostSummaryByStages.HOST_SUMMARY_BY_STAGES,
-            HostSummaryByStatementLatency.HOST_SUMMARY_BY_STATEMENT_LATENCY,
-            HostSummaryByStatementType.HOST_SUMMARY_BY_STATEMENT_TYPE,
-            InnodbBufferStatsBySchema.INNODB_BUFFER_STATS_BY_SCHEMA,
-            InnodbBufferStatsByTable.INNODB_BUFFER_STATS_BY_TABLE,
-            InnodbLockWaits.INNODB_LOCK_WAITS,
-            IoByThreadByLatency.IO_BY_THREAD_BY_LATENCY,
-            IoGlobalByFileByBytes.IO_GLOBAL_BY_FILE_BY_BYTES,
-            IoGlobalByFileByLatency.IO_GLOBAL_BY_FILE_BY_LATENCY,
-            IoGlobalByWaitByBytes.IO_GLOBAL_BY_WAIT_BY_BYTES,
-            IoGlobalByWaitByLatency.IO_GLOBAL_BY_WAIT_BY_LATENCY,
-            LatestFileIo.LATEST_FILE_IO,
-            MemoryByHostByCurrentBytes.MEMORY_BY_HOST_BY_CURRENT_BYTES,
-            MemoryByThreadByCurrentBytes.MEMORY_BY_THREAD_BY_CURRENT_BYTES,
-            MemoryByUserByCurrentBytes.MEMORY_BY_USER_BY_CURRENT_BYTES,
-            MemoryGlobalByCurrentBytes.MEMORY_GLOBAL_BY_CURRENT_BYTES,
-            MemoryGlobalTotal.MEMORY_GLOBAL_TOTAL,
-            Metrics.METRICS,
-            Processlist.PROCESSLIST,
-            PsCheckLostInstrumentation.PS_CHECK_LOST_INSTRUMENTATION,
-            SchemaAutoIncrementColumns.SCHEMA_AUTO_INCREMENT_COLUMNS,
-            SchemaIndexStatistics.SCHEMA_INDEX_STATISTICS,
-            SchemaObjectOverview.SCHEMA_OBJECT_OVERVIEW,
-            SchemaRedundantIndexes.SCHEMA_REDUNDANT_INDEXES,
-            SchemaTablesWithFullTableScans.SCHEMA_TABLES_WITH_FULL_TABLE_SCANS,
-            SchemaTableLockWaits.SCHEMA_TABLE_LOCK_WAITS,
-            SchemaTableStatistics.SCHEMA_TABLE_STATISTICS,
-            SchemaTableStatisticsWithBuffer.SCHEMA_TABLE_STATISTICS_WITH_BUFFER,
-            SchemaUnusedIndexes.SCHEMA_UNUSED_INDEXES,
-            Session.SESSION,
-            SessionSslStatus.SESSION_SSL_STATUS,
-            StatementsWithErrorsOrWarnings.STATEMENTS_WITH_ERRORS_OR_WARNINGS,
-            StatementsWithFullTableScans.STATEMENTS_WITH_FULL_TABLE_SCANS,
-            StatementsWithRuntimesIn_95thPercentile.STATEMENTS_WITH_RUNTIMES_IN_95TH_PERCENTILE,
-            StatementsWithSorting.STATEMENTS_WITH_SORTING,
-            StatementsWithTempTables.STATEMENTS_WITH_TEMP_TABLES,
-            StatementAnalysis.STATEMENT_ANALYSIS,
-            SysConfig.SYS_CONFIG,
-            UserSummary.USER_SUMMARY,
-            UserSummaryByFileIo.USER_SUMMARY_BY_FILE_IO,
-            UserSummaryByFileIoType.USER_SUMMARY_BY_FILE_IO_TYPE,
-            UserSummaryByStages.USER_SUMMARY_BY_STAGES,
-            UserSummaryByStatementLatency.USER_SUMMARY_BY_STATEMENT_LATENCY,
-            UserSummaryByStatementType.USER_SUMMARY_BY_STATEMENT_TYPE,
-            Version.VERSION,
-            WaitsByHostByLatency.WAITS_BY_HOST_BY_LATENCY,
-            WaitsByUserByLatency.WAITS_BY_USER_BY_LATENCY,
-            WaitsGlobalByLatency.WAITS_GLOBAL_BY_LATENCY,
-            WaitClassesGlobalByAvgLatency.WAIT_CLASSES_GLOBAL_BY_AVG_LATENCY,
-            WaitClassesGlobalByLatency.WAIT_CLASSES_GLOBAL_BY_LATENCY,
-            X$hostSummary.X$HOST_SUMMARY,
-            X$hostSummaryByFileIo.X$HOST_SUMMARY_BY_FILE_IO,
-            X$hostSummaryByFileIoType.X$HOST_SUMMARY_BY_FILE_IO_TYPE,
-            X$hostSummaryByStages.X$HOST_SUMMARY_BY_STAGES,
-            X$hostSummaryByStatementLatency.X$HOST_SUMMARY_BY_STATEMENT_LATENCY,
-            X$hostSummaryByStatementType.X$HOST_SUMMARY_BY_STATEMENT_TYPE,
-            X$innodbBufferStatsBySchema.X$INNODB_BUFFER_STATS_BY_SCHEMA,
-            X$innodbBufferStatsByTable.X$INNODB_BUFFER_STATS_BY_TABLE,
-            X$innodbLockWaits.X$INNODB_LOCK_WAITS,
-            X$ioByThreadByLatency.X$IO_BY_THREAD_BY_LATENCY,
-            X$ioGlobalByFileByBytes.X$IO_GLOBAL_BY_FILE_BY_BYTES,
-            X$ioGlobalByFileByLatency.X$IO_GLOBAL_BY_FILE_BY_LATENCY,
-            X$ioGlobalByWaitByBytes.X$IO_GLOBAL_BY_WAIT_BY_BYTES,
-            X$ioGlobalByWaitByLatency.X$IO_GLOBAL_BY_WAIT_BY_LATENCY,
-            X$latestFileIo.X$LATEST_FILE_IO,
-            X$memoryByHostByCurrentBytes.X$MEMORY_BY_HOST_BY_CURRENT_BYTES,
-            X$memoryByThreadByCurrentBytes.X$MEMORY_BY_THREAD_BY_CURRENT_BYTES,
-            X$memoryByUserByCurrentBytes.X$MEMORY_BY_USER_BY_CURRENT_BYTES,
-            X$memoryGlobalByCurrentBytes.X$MEMORY_GLOBAL_BY_CURRENT_BYTES,
-            X$memoryGlobalTotal.X$MEMORY_GLOBAL_TOTAL,
-            X$processlist.X$PROCESSLIST,
-            X$psDigest_95thPercentileByAvgUs.X$PS_DIGEST_95TH_PERCENTILE_BY_AVG_US,
-            X$psDigestAvgLatencyDistribution.X$PS_DIGEST_AVG_LATENCY_DISTRIBUTION,
-            X$psSchemaTableStatisticsIo.X$PS_SCHEMA_TABLE_STATISTICS_IO,
-            X$schemaFlattenedKeys.X$SCHEMA_FLATTENED_KEYS,
-            X$schemaIndexStatistics.X$SCHEMA_INDEX_STATISTICS,
-            X$schemaTablesWithFullTableScans.X$SCHEMA_TABLES_WITH_FULL_TABLE_SCANS,
-            X$schemaTableLockWaits.X$SCHEMA_TABLE_LOCK_WAITS,
-            X$schemaTableStatistics.X$SCHEMA_TABLE_STATISTICS,
-            X$schemaTableStatisticsWithBuffer.X$SCHEMA_TABLE_STATISTICS_WITH_BUFFER,
-            X$session.X$SESSION,
-            X$statementsWithErrorsOrWarnings.X$STATEMENTS_WITH_ERRORS_OR_WARNINGS,
-            X$statementsWithFullTableScans.X$STATEMENTS_WITH_FULL_TABLE_SCANS,
-            X$statementsWithRuntimesIn_95thPercentile.X$STATEMENTS_WITH_RUNTIMES_IN_95TH_PERCENTILE,
-            X$statementsWithSorting.X$STATEMENTS_WITH_SORTING,
-            X$statementsWithTempTables.X$STATEMENTS_WITH_TEMP_TABLES,
-            X$statementAnalysis.X$STATEMENT_ANALYSIS,
-            X$userSummary.X$USER_SUMMARY,
-            X$userSummaryByFileIo.X$USER_SUMMARY_BY_FILE_IO,
-            X$userSummaryByFileIoType.X$USER_SUMMARY_BY_FILE_IO_TYPE,
-            X$userSummaryByStages.X$USER_SUMMARY_BY_STAGES,
-            X$userSummaryByStatementLatency.X$USER_SUMMARY_BY_STATEMENT_LATENCY,
-            X$userSummaryByStatementType.X$USER_SUMMARY_BY_STATEMENT_TYPE,
-            X$waitsByHostByLatency.X$WAITS_BY_HOST_BY_LATENCY,
-            X$waitsByUserByLatency.X$WAITS_BY_USER_BY_LATENCY,
-            X$waitsGlobalByLatency.X$WAITS_GLOBAL_BY_LATENCY,
-            X$waitClassesGlobalByAvgLatency.X$WAIT_CLASSES_GLOBAL_BY_AVG_LATENCY,
-            X$waitClassesGlobalByLatency.X$WAIT_CLASSES_GLOBAL_BY_LATENCY);
+                HostSummary.HOST_SUMMARY,
+                HostSummaryByFileIo.HOST_SUMMARY_BY_FILE_IO,
+                HostSummaryByFileIoType.HOST_SUMMARY_BY_FILE_IO_TYPE,
+                HostSummaryByStages.HOST_SUMMARY_BY_STAGES,
+                HostSummaryByStatementLatency.HOST_SUMMARY_BY_STATEMENT_LATENCY,
+                HostSummaryByStatementType.HOST_SUMMARY_BY_STATEMENT_TYPE,
+                InnodbBufferStatsBySchema.INNODB_BUFFER_STATS_BY_SCHEMA,
+                InnodbBufferStatsByTable.INNODB_BUFFER_STATS_BY_TABLE,
+                InnodbLockWaits.INNODB_LOCK_WAITS,
+                IoByThreadByLatency.IO_BY_THREAD_BY_LATENCY,
+                IoGlobalByFileByBytes.IO_GLOBAL_BY_FILE_BY_BYTES,
+                IoGlobalByFileByLatency.IO_GLOBAL_BY_FILE_BY_LATENCY,
+                IoGlobalByWaitByBytes.IO_GLOBAL_BY_WAIT_BY_BYTES,
+                IoGlobalByWaitByLatency.IO_GLOBAL_BY_WAIT_BY_LATENCY,
+                LatestFileIo.LATEST_FILE_IO,
+                MemoryByHostByCurrentBytes.MEMORY_BY_HOST_BY_CURRENT_BYTES,
+                MemoryByThreadByCurrentBytes.MEMORY_BY_THREAD_BY_CURRENT_BYTES,
+                MemoryByUserByCurrentBytes.MEMORY_BY_USER_BY_CURRENT_BYTES,
+                MemoryGlobalByCurrentBytes.MEMORY_GLOBAL_BY_CURRENT_BYTES,
+                MemoryGlobalTotal.MEMORY_GLOBAL_TOTAL,
+                Metrics.METRICS,
+                Processlist.PROCESSLIST,
+                PsCheckLostInstrumentation.PS_CHECK_LOST_INSTRUMENTATION,
+                SchemaAutoIncrementColumns.SCHEMA_AUTO_INCREMENT_COLUMNS,
+                SchemaIndexStatistics.SCHEMA_INDEX_STATISTICS,
+                SchemaObjectOverview.SCHEMA_OBJECT_OVERVIEW,
+                SchemaRedundantIndexes.SCHEMA_REDUNDANT_INDEXES,
+                SchemaTablesWithFullTableScans.SCHEMA_TABLES_WITH_FULL_TABLE_SCANS,
+                SchemaTableLockWaits.SCHEMA_TABLE_LOCK_WAITS,
+                SchemaTableStatistics.SCHEMA_TABLE_STATISTICS,
+                SchemaTableStatisticsWithBuffer.SCHEMA_TABLE_STATISTICS_WITH_BUFFER,
+                SchemaUnusedIndexes.SCHEMA_UNUSED_INDEXES,
+                Session.SESSION,
+                SessionSslStatus.SESSION_SSL_STATUS,
+                StatementsWithErrorsOrWarnings.STATEMENTS_WITH_ERRORS_OR_WARNINGS,
+                StatementsWithFullTableScans.STATEMENTS_WITH_FULL_TABLE_SCANS,
+                StatementsWithRuntimesIn_95thPercentile.STATEMENTS_WITH_RUNTIMES_IN_95TH_PERCENTILE,
+                StatementsWithSorting.STATEMENTS_WITH_SORTING,
+                StatementsWithTempTables.STATEMENTS_WITH_TEMP_TABLES,
+                StatementAnalysis.STATEMENT_ANALYSIS,
+                SysConfig.SYS_CONFIG,
+                UserSummary.USER_SUMMARY,
+                UserSummaryByFileIo.USER_SUMMARY_BY_FILE_IO,
+                UserSummaryByFileIoType.USER_SUMMARY_BY_FILE_IO_TYPE,
+                UserSummaryByStages.USER_SUMMARY_BY_STAGES,
+                UserSummaryByStatementLatency.USER_SUMMARY_BY_STATEMENT_LATENCY,
+                UserSummaryByStatementType.USER_SUMMARY_BY_STATEMENT_TYPE,
+                Version.VERSION,
+                WaitsByHostByLatency.WAITS_BY_HOST_BY_LATENCY,
+                WaitsByUserByLatency.WAITS_BY_USER_BY_LATENCY,
+                WaitsGlobalByLatency.WAITS_GLOBAL_BY_LATENCY,
+                WaitClassesGlobalByAvgLatency.WAIT_CLASSES_GLOBAL_BY_AVG_LATENCY,
+                WaitClassesGlobalByLatency.WAIT_CLASSES_GLOBAL_BY_LATENCY,
+                X$hostSummary.X$HOST_SUMMARY,
+                X$hostSummaryByFileIo.X$HOST_SUMMARY_BY_FILE_IO,
+                X$hostSummaryByFileIoType.X$HOST_SUMMARY_BY_FILE_IO_TYPE,
+                X$hostSummaryByStages.X$HOST_SUMMARY_BY_STAGES,
+                X$hostSummaryByStatementLatency.X$HOST_SUMMARY_BY_STATEMENT_LATENCY,
+                X$hostSummaryByStatementType.X$HOST_SUMMARY_BY_STATEMENT_TYPE,
+                X$innodbBufferStatsBySchema.X$INNODB_BUFFER_STATS_BY_SCHEMA,
+                X$innodbBufferStatsByTable.X$INNODB_BUFFER_STATS_BY_TABLE,
+                X$innodbLockWaits.X$INNODB_LOCK_WAITS,
+                X$ioByThreadByLatency.X$IO_BY_THREAD_BY_LATENCY,
+                X$ioGlobalByFileByBytes.X$IO_GLOBAL_BY_FILE_BY_BYTES,
+                X$ioGlobalByFileByLatency.X$IO_GLOBAL_BY_FILE_BY_LATENCY,
+                X$ioGlobalByWaitByBytes.X$IO_GLOBAL_BY_WAIT_BY_BYTES,
+                X$ioGlobalByWaitByLatency.X$IO_GLOBAL_BY_WAIT_BY_LATENCY,
+                X$latestFileIo.X$LATEST_FILE_IO,
+                X$memoryByHostByCurrentBytes.X$MEMORY_BY_HOST_BY_CURRENT_BYTES,
+                X$memoryByThreadByCurrentBytes.X$MEMORY_BY_THREAD_BY_CURRENT_BYTES,
+                X$memoryByUserByCurrentBytes.X$MEMORY_BY_USER_BY_CURRENT_BYTES,
+                X$memoryGlobalByCurrentBytes.X$MEMORY_GLOBAL_BY_CURRENT_BYTES,
+                X$memoryGlobalTotal.X$MEMORY_GLOBAL_TOTAL,
+                X$processlist.X$PROCESSLIST,
+                X$psDigest_95thPercentileByAvgUs.X$PS_DIGEST_95TH_PERCENTILE_BY_AVG_US,
+                X$psDigestAvgLatencyDistribution.X$PS_DIGEST_AVG_LATENCY_DISTRIBUTION,
+                X$psSchemaTableStatisticsIo.X$PS_SCHEMA_TABLE_STATISTICS_IO,
+                X$schemaFlattenedKeys.X$SCHEMA_FLATTENED_KEYS,
+                X$schemaIndexStatistics.X$SCHEMA_INDEX_STATISTICS,
+                X$schemaTablesWithFullTableScans.X$SCHEMA_TABLES_WITH_FULL_TABLE_SCANS,
+                X$schemaTableLockWaits.X$SCHEMA_TABLE_LOCK_WAITS,
+                X$schemaTableStatistics.X$SCHEMA_TABLE_STATISTICS,
+                X$schemaTableStatisticsWithBuffer.X$SCHEMA_TABLE_STATISTICS_WITH_BUFFER,
+                X$session.X$SESSION,
+                X$statementsWithErrorsOrWarnings.X$STATEMENTS_WITH_ERRORS_OR_WARNINGS,
+                X$statementsWithFullTableScans.X$STATEMENTS_WITH_FULL_TABLE_SCANS,
+                X$statementsWithRuntimesIn_95thPercentile.X$STATEMENTS_WITH_RUNTIMES_IN_95TH_PERCENTILE,
+                X$statementsWithSorting.X$STATEMENTS_WITH_SORTING,
+                X$statementsWithTempTables.X$STATEMENTS_WITH_TEMP_TABLES,
+                X$statementAnalysis.X$STATEMENT_ANALYSIS,
+                X$userSummary.X$USER_SUMMARY,
+                X$userSummaryByFileIo.X$USER_SUMMARY_BY_FILE_IO,
+                X$userSummaryByFileIoType.X$USER_SUMMARY_BY_FILE_IO_TYPE,
+                X$userSummaryByStages.X$USER_SUMMARY_BY_STAGES,
+                X$userSummaryByStatementLatency.X$USER_SUMMARY_BY_STATEMENT_LATENCY,
+                X$userSummaryByStatementType.X$USER_SUMMARY_BY_STATEMENT_TYPE,
+                X$waitsByHostByLatency.X$WAITS_BY_HOST_BY_LATENCY,
+                X$waitsByUserByLatency.X$WAITS_BY_USER_BY_LATENCY,
+                X$waitsGlobalByLatency.X$WAITS_GLOBAL_BY_LATENCY,
+                X$waitClassesGlobalByAvgLatency.X$WAIT_CLASSES_GLOBAL_BY_AVG_LATENCY,
+                X$waitClassesGlobalByLatency.X$WAIT_CLASSES_GLOBAL_BY_LATENCY);
     }
 }

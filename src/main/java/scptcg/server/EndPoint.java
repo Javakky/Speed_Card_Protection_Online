@@ -19,10 +19,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static jooq.scp_tcg.tables.Deck.*;
-import static org.apache.logging.log4j.Level.*;
-import static scptcg.server.GameOperator.*;
 import static scptcg.game.Place.*;
 import static scptcg.server.DeckMakeServlet.*;
+import static scptcg.server.GameOperator.*;
 
 @ServerEndpoint("/ws")
 public final class EndPoint {
@@ -34,6 +33,7 @@ public final class EndPoint {
     private static String waiting;
     private static String waitingDeck;
     static private Logger logger = null;
+
     static {
         logger = LogManager.getLogger(EndPoint.class);
     }
@@ -128,7 +128,7 @@ public final class EndPoint {
 
     @OnMessage
     public void onMessage(final String text, final Session client) throws IOException {
-        try{
+        try {
             String t = text.replaceAll("\n", "");
             Data data = (new Gson()).fromJson(t, Data.class);
             //System.out.println(data.event);
@@ -140,7 +140,7 @@ public final class EndPoint {
             } else {
                 main(data.event, data);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
         }
@@ -314,8 +314,8 @@ public final class EndPoint {
 
         if (flg && !game.isOnActiveEffect() && game.hasWaitEffects()) {
             Result[] r = game.activeEffects(null, null);
-            for (Result res:r
-                 ) {
+            for (Result res : r
+            ) {
                 //System.out.println("active:" + res.getAction());
             }
             list.addAll(
@@ -503,7 +503,7 @@ public final class EndPoint {
         String effect;
 
         @Override
-        public String toString(){
+        public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("receive = [\tplayer:")
                     .append(player)

@@ -133,7 +133,7 @@ public class Game implements ICardSetHolder {
     public Map.Entry<Integer, Scp> crossTest(int player, int test, int ed) {
         if (player == turnPlayer) {
             System.out.println(test);
-            return damage(player == 0 ? 1: 0, ed, this.player[player].crossTest(test));
+            return damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
         } else {
             return null;
         }
@@ -318,7 +318,7 @@ public class Game implements ICardSetHolder {
             onActive = true;
             onActiveEffect = true;
             Map.Entry<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
-            boolean isFinish = (res == null? true: res.getValue());
+            boolean isFinish = (res == null ? true : res.getValue());
             ajustWaitEffects(isFinish);
             return res.getKey();
         }

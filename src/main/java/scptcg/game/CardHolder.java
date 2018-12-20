@@ -105,9 +105,9 @@ public abstract class CardHolder {
     }
 
     public Player getEnemy() {
-        if(parent instanceof Player){
+        if (parent instanceof Player) {
             return ((Player) parent).getEnemy();
-        }else {
+        } else {
             throw new RuntimeException("parent isn't player");
         }
     }

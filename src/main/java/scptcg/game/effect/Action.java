@@ -1,6 +1,5 @@
 package scptcg.game.effect;
 
-import javassist.scopedpool.ScopedClassPoolFactoryImpl;
 import org.apache.commons.lang3.ArrayUtils;
 import scptcg.game.Game;
 import scptcg.game.Place;
@@ -8,13 +7,12 @@ import scptcg.game.Player;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.ArrayUtils.*;
 import static scptcg.game.K_ClassScenario.*;
-import static scptcg.game.card.CardKind.SCP;
+import static scptcg.game.card.CardKind.*;
 
 public class Action extends AbstractAction {
 
@@ -102,11 +100,11 @@ public class Action extends AbstractAction {
                 break;
             }
 
-            case "addTag":{
+            case "addTag": {
                 switch (this.param[0]) {
                     case "SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
-                        for(int i: player.select(removeAll(this.param, 0, 1, 2))){
+                        for (int i : player.select(removeAll(this.param, 0, 1, 2))) {
                             player.addTag(SCP, i, this.param[2]);
                         }
                         break;
@@ -150,7 +148,7 @@ public class Action extends AbstractAction {
 
             case "Breach": {
                 int i = -1;
-                switch (this.param[1]){
+                switch (this.param[1]) {
                     case "me":
                         i = parent.getPlayerNumber();
                         break;

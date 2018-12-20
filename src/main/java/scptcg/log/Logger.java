@@ -1,7 +1,5 @@
 package scptcg.log;
 
-import org.apache.logging.log4j.LogManager;
-
 public interface Logger {
 
     default String getMessage(final String msg) {

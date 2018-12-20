@@ -117,7 +117,7 @@ public class Effect implements Serializable {
             Result res = action[point].active(param == null || i >= param.length ? null : param[i], this, before);
             li.add(res);
             before = res;
-            if (res.object == null && point != action.length -1) {
+            if (res.object == null && point != action.length - 1) {
                 point++;
                 return new AbstractMap.SimpleEntry<>(li.toArray(new Result[li.size()]), false);
             }
