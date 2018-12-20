@@ -56,6 +56,36 @@ war {
     archiveName = 'SCP.war'
 }
 
+war.doFirst {
+    java.io.File[] flist = (new java.io.File("./src/main/webapp/WEB-INF/classes")).listFiles();
+    for(i in flist) {
+        switch (i.getName()) {
+            case "log4j2.xml":
+                i.renameTo(new java.io.File("./src/main/webapp/WEB-INF/classes/log4j2_test.xml"));
+                break;
+
+            case "log4j2_exe.xml":
+                i.renameTo(new java.io.File("./src/main/webapp/WEB-INF/classes/log4j2.xml"));
+                break;
+        }
+    }
+}
+
+war.doLast {
+    java.io.File[] flist = (new java.io.File("./src/main/webapp/WEB-INF/classes")).listFiles();
+    for(i in flist) {
+        switch (i.getName()) {
+            case "log4j2_test.xml":
+                i.renameTo(new java.io.File("./src/main/webapp/WEB-INF/classes/log4j2.xml"));
+                break;
+
+            case "log4j2.xml":
+                i.renameTo(new java.io.File("./src/main/webapp/WEB-INF/classes/log4j2_exe.xml"));
+                break;
+        }
+    }
+}
+
 jooq {
     version = '3.11.2'
     edition = 'OSS'

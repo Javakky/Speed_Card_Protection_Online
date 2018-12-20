@@ -4,22 +4,108 @@
 package jooq.performance_schema;
 
 
-import jooq.performance_schema.tables.*;
-
 import javax.annotation.Generated;
+
+import jooq.performance_schema.tables.Accounts;
+import jooq.performance_schema.tables.CondInstances;
+import jooq.performance_schema.tables.EventsStagesCurrent;
+import jooq.performance_schema.tables.EventsStagesHistory;
+import jooq.performance_schema.tables.EventsStagesHistoryLong;
+import jooq.performance_schema.tables.EventsStagesSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsStatementsCurrent;
+import jooq.performance_schema.tables.EventsStatementsHistory;
+import jooq.performance_schema.tables.EventsStatementsHistoryLong;
+import jooq.performance_schema.tables.EventsStatementsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByDigest;
+import jooq.performance_schema.tables.EventsStatementsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByProgram;
+import jooq.performance_schema.tables.EventsStatementsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsTransactionsCurrent;
+import jooq.performance_schema.tables.EventsTransactionsHistory;
+import jooq.performance_schema.tables.EventsTransactionsHistoryLong;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsWaitsCurrent;
+import jooq.performance_schema.tables.EventsWaitsHistory;
+import jooq.performance_schema.tables.EventsWaitsHistoryLong;
+import jooq.performance_schema.tables.EventsWaitsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByInstance;
+import jooq.performance_schema.tables.EventsWaitsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.FileInstances;
+import jooq.performance_schema.tables.FileSummaryByEventName;
+import jooq.performance_schema.tables.FileSummaryByInstance;
+import jooq.performance_schema.tables.GlobalStatus;
+import jooq.performance_schema.tables.GlobalVariables;
+import jooq.performance_schema.tables.HostCache;
+import jooq.performance_schema.tables.Hosts;
+import jooq.performance_schema.tables.MemorySummaryByAccountByEventName;
+import jooq.performance_schema.tables.MemorySummaryByHostByEventName;
+import jooq.performance_schema.tables.MemorySummaryByThreadByEventName;
+import jooq.performance_schema.tables.MemorySummaryByUserByEventName;
+import jooq.performance_schema.tables.MemorySummaryGlobalByEventName;
+import jooq.performance_schema.tables.MetadataLocks;
+import jooq.performance_schema.tables.MutexInstances;
+import jooq.performance_schema.tables.ObjectsSummaryGlobalByType;
+import jooq.performance_schema.tables.PerformanceTimers;
+import jooq.performance_schema.tables.PreparedStatementsInstances;
+import jooq.performance_schema.tables.ReplicationApplierConfiguration;
+import jooq.performance_schema.tables.ReplicationApplierStatus;
+import jooq.performance_schema.tables.ReplicationApplierStatusByCoordinator;
+import jooq.performance_schema.tables.ReplicationApplierStatusByWorker;
+import jooq.performance_schema.tables.ReplicationConnectionConfiguration;
+import jooq.performance_schema.tables.ReplicationConnectionStatus;
+import jooq.performance_schema.tables.ReplicationGroupMemberStats;
+import jooq.performance_schema.tables.ReplicationGroupMembers;
+import jooq.performance_schema.tables.RwlockInstances;
+import jooq.performance_schema.tables.SessionAccountConnectAttrs;
+import jooq.performance_schema.tables.SessionConnectAttrs;
+import jooq.performance_schema.tables.SessionStatus;
+import jooq.performance_schema.tables.SessionVariables;
+import jooq.performance_schema.tables.SetupActors;
+import jooq.performance_schema.tables.SetupConsumers;
+import jooq.performance_schema.tables.SetupInstruments;
+import jooq.performance_schema.tables.SetupObjects;
+import jooq.performance_schema.tables.SetupTimers;
+import jooq.performance_schema.tables.SocketInstances;
+import jooq.performance_schema.tables.SocketSummaryByEventName;
+import jooq.performance_schema.tables.SocketSummaryByInstance;
+import jooq.performance_schema.tables.StatusByAccount;
+import jooq.performance_schema.tables.StatusByHost;
+import jooq.performance_schema.tables.StatusByThread;
+import jooq.performance_schema.tables.StatusByUser;
+import jooq.performance_schema.tables.TableHandles;
+import jooq.performance_schema.tables.TableIoWaitsSummaryByIndexUsage;
+import jooq.performance_schema.tables.TableIoWaitsSummaryByTable;
+import jooq.performance_schema.tables.TableLockWaitsSummaryByTable;
+import jooq.performance_schema.tables.Threads;
+import jooq.performance_schema.tables.UserVariablesByThread;
+import jooq.performance_schema.tables.Users;
+import jooq.performance_schema.tables.VariablesByThread;
 
 
 /**
  * Convenience access to all tables in performance_schema
  */
 @Generated(
-        value = {
-                "http://www.jooq.org",
-                "jOOQ version:3.11.2"
-        },
-        comments = "This class is generated by jOOQ"
+    value = {
+        "http://www.jooq.org",
+        "jOOQ version:3.11.2"
+    },
+    comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**

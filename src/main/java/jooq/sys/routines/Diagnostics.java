@@ -4,128 +4,134 @@
 package jooq.sys.routines;
 
 
+import javax.annotation.Generated;
+
 import jooq.sys.Sys;
+
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
 import org.jooq.types.UInteger;
 
-import javax.annotation.Generated;
-
 
 /**
- * Description
- * <p>
- * Create a report of the current status of the server for diagnostics purposes.
+ * 
+ *  Description
+ *  
+ *  Create a report of the current status of the server for diagnostics purposes. 
  * Data collected includes (some items depends on versions and settings):
- * <p>
- * * The GLOBAL VARIABLES
- * * Several sys schema views including metrics or equivalent (depending
+ *  
+ *  * The GLOBAL VARIABLES
+ *  * Several sys schema views including metrics or equivalent (depending 
  * on version and settings)
- * * Queries in the 95th percentile
- * * Several ndbinfo views for MySQL Cluster
- * * Replication (both master and slave) information.
- * <p>
- * Some of the sys schema views are calculated as initial (optional), overall,
+ *  * Queries in the 95th percentile
+ *  * Several ndbinfo views for MySQL Cluster
+ *  * Replication (both master and slave) information.
+ *  
+ *  Some of the sys schema views are calculated as initial (optional), overall, 
  * delta:
- * <p>
- * * The initial view is the content of the view at the start of this procedure.
- * This output will be the same as the the start values used for the delta
+ *  
+ *  * The initial view is the content of the view at the start of this procedure.
+ *  This output will be the same as the the start values used for the delta 
  * view.
- * The initial view is included if @sys.diagnostics.include_raw = 'ON'.
- * * The overall view is the content of the view at the end of this procedure.
- * This output is the same as the end values used for the delta view.
- * The overall view is always included.
- * * The delta view is the difference from the beginning to the end. Note
+ *  The initial view is included if @sys.diagnostics.include_raw = 'ON'.
+ *  * The overall view is the content of the view at the end of this procedure.
+ *  This output is the same as the end values used for the delta view.
+ *  The overall view is always included.
+ *  * The delta view is the difference from the beginning to the end. Note 
  * that for min and max values
- * they are simply the min or max value from the end view respectively, so
+ *  they are simply the min or max value from the end view respectively, so 
  * does not necessarily reflect
- * the minimum/maximum value in the monitored period.
- * Note: except for the metrics views the delta is only calculation between
+ *  the minimum/maximum value in the monitored period.
+ *  Note: except for the metrics views the delta is only calculation between 
  * the first and last outputs.
- * <p>
- * Requires the SUPER privilege for "SET sql_log_bin = 0;".
- * <p>
- * Versions supported:
- * * MySQL 5.6: 5.6.10 and later
- * * MySQL 5.7: 5.7.9 and later
- * <p>
- * Parameters
- * <p>
- * in_max_runtime (INT UNSIGNED):
- * The maximum time to keep collecting data.
- * Use NULL to get the default which is 60 seconds, otherwise enter a value
+ *  
+ *  Requires the SUPER privilege for "SET sql_log_bin = 0;".
+ *  
+ *  Versions supported:
+ *  * MySQL 5.6: 5.6.10 and later
+ *  * MySQL 5.7: 5.7.9 and later
+ *  
+ *  Parameters
+ *  
+ *  in_max_runtime (INT UNSIGNED):
+ *  The maximum time to keep collecting data.
+ *  Use NULL to get the default which is 60 seconds, otherwise enter a value 
  * greater than 0.
- * in_interval (INT UNSIGNED):
- * How long to sleep between data collections.
- * Use NULL to get the default which is 30 seconds, otherwise enter a value
+ *  in_interval (INT UNSIGNED):
+ *  How long to sleep between data collections.
+ *  Use NULL to get the default which is 30 seconds, otherwise enter a value 
  * greater than 0.
- * in_auto_config (ENUM('current', 'medium', 'full'))
- * Automatically enable Performance Schema instruments and consumers.
- * NOTE: The more that are enabled, the more impact on the performance.
- * Supported values are:
- * * current - use the current settings.
- * * medium - enable some settings.
- * * full - enables all settings. This will have a big impact on the
- * performance - be careful using this option.
- * If another setting the 'current' is chosen, the current settings
- * are restored at the end of the procedure.
- * <p>
- * <p>
- * Configuration Options
- * <p>
- * sys.diagnostics.allow_i_s_tables
- * Specifies whether it is allowed to do table scan queries on information_schema.TABLES.
+ *  in_auto_config (ENUM('current', 'medium', 'full'))
+ *  Automatically enable Performance Schema instruments and consumers.
+ *  NOTE: The more that are enabled, the more impact on the performance.
+ *  Supported values are:
+ *  * current - use the current settings.
+ *  * medium - enable some settings.
+ *  * full - enables all settings. This will have a big impact on the
+ *  performance - be careful using this option.
+ *  If another setting the 'current' is chosen, the current settings
+ *  are restored at the end of the procedure.
+ *  
+ *  
+ *  Configuration Options
+ *  
+ *  sys.diagnostics.allow_i_s_tables
+ *  Specifies whether it is allowed to do table scan queries on information_schema.TABLES. 
  * This can be expensive if there
- * are many tables. Set to 'ON' to allow, 'OFF' to not allow.
- * Default is 'OFF'.
- * <p>
- * sys.diagnostics.include_raw
- * Set to 'ON' to include the raw data (e.g. the original output of "SELECT
+ *  are many tables. Set to 'ON' to allow, 'OFF' to not allow.
+ *  Default is 'OFF'.
+ *  
+ *  sys.diagnostics.include_raw
+ *  Set to 'ON' to include the raw data (e.g. the original output of "SELECT 
  * * FROM sys.metrics").
- * Use this to get the initial values of the various views.
- * Default is 'OFF'.
- * <p>
- * sys.statement_truncate_len
- * How much of queries in the process list output to include.
- * Default is 64.
- * <p>
- * sys.debug
- * Whether to provide debugging output.
- * Default is 'OFF'. Set to 'ON' to include.
- * <p>
- * <p>
- * Example
- * <p>
- * To create a report and append it to the file diag.out:
- * <p>
- * mysql&gt; TEE diag.out;
- * mysql&gt; CALL sys.diagnostics(120, 30, 'current');
- * ...
- * mysql&gt; NOTEE;
+ *  Use this to get the initial values of the various views.
+ *  Default is 'OFF'.
+ *  
+ *  sys.statement_truncate_len
+ *  How much of queries in the process list output to include.
+ *  Default is 64.
+ *  
+ *  sys.debug
+ *  Whether to provide debugging output.
+ *  Default is 'OFF'. Set to 'ON' to include.
+ *  
+ *  
+ *  Example
+ *  
+ *  To create a report and append it to the file diag.out:
+ *  
+ *  mysql&gt; TEE diag.out;
+ *  mysql&gt; CALL sys.diagnostics(120, 30, 'current');
+ *  ...
+ *  mysql&gt; NOTEE;
+ *  
  */
 @Generated(
-        value = {
-                "http://www.jooq.org",
-                "jOOQ version:3.11.2"
-        },
-        comments = "This class is generated by jOOQ"
+    value = {
+        "http://www.jooq.org",
+        "jOOQ version:3.11.2"
+    },
+    comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Diagnostics extends AbstractRoutine<java.lang.Void> {
+
+    private static final long serialVersionUID = 996201398;
 
     /**
      * The parameter <code>sys.diagnostics.in_max_runtime</code>.
      */
     public static final Parameter<UInteger> IN_MAX_RUNTIME = createParameter("in_max_runtime", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.diagnostics.in_interval</code>.
      */
     public static final Parameter<UInteger> IN_INTERVAL = createParameter("in_interval", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.diagnostics.in_auto_config</code>.
      */
     public static final Parameter<String> IN_AUTO_CONFIG = createParameter("in_auto_config", org.jooq.impl.SQLDataType.VARCHAR(7), false, false);
-    private static final long serialVersionUID = 996201398;
 
     /**
      * Create a new routine call instance

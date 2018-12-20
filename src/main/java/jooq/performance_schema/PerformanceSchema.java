@@ -4,36 +4,126 @@
 package jooq.performance_schema;
 
 
-import jooq.DefaultCatalog;
-import jooq.performance_schema.tables.*;
-import org.jooq.Catalog;
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
-
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import jooq.DefaultCatalog;
+import jooq.performance_schema.tables.Accounts;
+import jooq.performance_schema.tables.CondInstances;
+import jooq.performance_schema.tables.EventsStagesCurrent;
+import jooq.performance_schema.tables.EventsStagesHistory;
+import jooq.performance_schema.tables.EventsStagesHistoryLong;
+import jooq.performance_schema.tables.EventsStagesSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsStagesSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsStatementsCurrent;
+import jooq.performance_schema.tables.EventsStatementsHistory;
+import jooq.performance_schema.tables.EventsStatementsHistoryLong;
+import jooq.performance_schema.tables.EventsStatementsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByDigest;
+import jooq.performance_schema.tables.EventsStatementsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByProgram;
+import jooq.performance_schema.tables.EventsStatementsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsStatementsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsTransactionsCurrent;
+import jooq.performance_schema.tables.EventsTransactionsHistory;
+import jooq.performance_schema.tables.EventsTransactionsHistoryLong;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsTransactionsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.EventsWaitsCurrent;
+import jooq.performance_schema.tables.EventsWaitsHistory;
+import jooq.performance_schema.tables.EventsWaitsHistoryLong;
+import jooq.performance_schema.tables.EventsWaitsSummaryByAccountByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByHostByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByInstance;
+import jooq.performance_schema.tables.EventsWaitsSummaryByThreadByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryByUserByEventName;
+import jooq.performance_schema.tables.EventsWaitsSummaryGlobalByEventName;
+import jooq.performance_schema.tables.FileInstances;
+import jooq.performance_schema.tables.FileSummaryByEventName;
+import jooq.performance_schema.tables.FileSummaryByInstance;
+import jooq.performance_schema.tables.GlobalStatus;
+import jooq.performance_schema.tables.GlobalVariables;
+import jooq.performance_schema.tables.HostCache;
+import jooq.performance_schema.tables.Hosts;
+import jooq.performance_schema.tables.MemorySummaryByAccountByEventName;
+import jooq.performance_schema.tables.MemorySummaryByHostByEventName;
+import jooq.performance_schema.tables.MemorySummaryByThreadByEventName;
+import jooq.performance_schema.tables.MemorySummaryByUserByEventName;
+import jooq.performance_schema.tables.MemorySummaryGlobalByEventName;
+import jooq.performance_schema.tables.MetadataLocks;
+import jooq.performance_schema.tables.MutexInstances;
+import jooq.performance_schema.tables.ObjectsSummaryGlobalByType;
+import jooq.performance_schema.tables.PerformanceTimers;
+import jooq.performance_schema.tables.PreparedStatementsInstances;
+import jooq.performance_schema.tables.ReplicationApplierConfiguration;
+import jooq.performance_schema.tables.ReplicationApplierStatus;
+import jooq.performance_schema.tables.ReplicationApplierStatusByCoordinator;
+import jooq.performance_schema.tables.ReplicationApplierStatusByWorker;
+import jooq.performance_schema.tables.ReplicationConnectionConfiguration;
+import jooq.performance_schema.tables.ReplicationConnectionStatus;
+import jooq.performance_schema.tables.ReplicationGroupMemberStats;
+import jooq.performance_schema.tables.ReplicationGroupMembers;
+import jooq.performance_schema.tables.RwlockInstances;
+import jooq.performance_schema.tables.SessionAccountConnectAttrs;
+import jooq.performance_schema.tables.SessionConnectAttrs;
+import jooq.performance_schema.tables.SessionStatus;
+import jooq.performance_schema.tables.SessionVariables;
+import jooq.performance_schema.tables.SetupActors;
+import jooq.performance_schema.tables.SetupConsumers;
+import jooq.performance_schema.tables.SetupInstruments;
+import jooq.performance_schema.tables.SetupObjects;
+import jooq.performance_schema.tables.SetupTimers;
+import jooq.performance_schema.tables.SocketInstances;
+import jooq.performance_schema.tables.SocketSummaryByEventName;
+import jooq.performance_schema.tables.SocketSummaryByInstance;
+import jooq.performance_schema.tables.StatusByAccount;
+import jooq.performance_schema.tables.StatusByHost;
+import jooq.performance_schema.tables.StatusByThread;
+import jooq.performance_schema.tables.StatusByUser;
+import jooq.performance_schema.tables.TableHandles;
+import jooq.performance_schema.tables.TableIoWaitsSummaryByIndexUsage;
+import jooq.performance_schema.tables.TableIoWaitsSummaryByTable;
+import jooq.performance_schema.tables.TableLockWaitsSummaryByTable;
+import jooq.performance_schema.tables.Threads;
+import jooq.performance_schema.tables.UserVariablesByThread;
+import jooq.performance_schema.tables.Users;
+import jooq.performance_schema.tables.VariablesByThread;
+
+import org.jooq.Catalog;
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
 
 
 /**
  * This class is generated by jOOQ.
  */
 @Generated(
-        value = {
-                "http://www.jooq.org",
-                "jOOQ version:3.11.2"
-        },
-        comments = "This class is generated by jOOQ"
+    value = {
+        "http://www.jooq.org",
+        "jOOQ version:3.11.2"
+    },
+    comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PerformanceSchema extends SchemaImpl {
+
+    private static final long serialVersionUID = 453786913;
 
     /**
      * The reference instance of <code>performance_schema</code>
      */
     public static final PerformanceSchema PERFORMANCE_SCHEMA = new PerformanceSchema();
-    private static final long serialVersionUID = 453786913;
+
     /**
      * The table <code>performance_schema.accounts</code>.
      */
@@ -494,92 +584,92 @@ public class PerformanceSchema extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-                Accounts.ACCOUNTS,
-                CondInstances.COND_INSTANCES,
-                EventsStagesCurrent.EVENTS_STAGES_CURRENT,
-                EventsStagesHistory.EVENTS_STAGES_HISTORY,
-                EventsStagesHistoryLong.EVENTS_STAGES_HISTORY_LONG,
-                EventsStagesSummaryByAccountByEventName.EVENTS_STAGES_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
-                EventsStagesSummaryByHostByEventName.EVENTS_STAGES_SUMMARY_BY_HOST_BY_EVENT_NAME,
-                EventsStagesSummaryByThreadByEventName.EVENTS_STAGES_SUMMARY_BY_THREAD_BY_EVENT_NAME,
-                EventsStagesSummaryByUserByEventName.EVENTS_STAGES_SUMMARY_BY_USER_BY_EVENT_NAME,
-                EventsStagesSummaryGlobalByEventName.EVENTS_STAGES_SUMMARY_GLOBAL_BY_EVENT_NAME,
-                EventsStatementsCurrent.EVENTS_STATEMENTS_CURRENT,
-                EventsStatementsHistory.EVENTS_STATEMENTS_HISTORY,
-                EventsStatementsHistoryLong.EVENTS_STATEMENTS_HISTORY_LONG,
-                EventsStatementsSummaryByAccountByEventName.EVENTS_STATEMENTS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
-                EventsStatementsSummaryByDigest.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST,
-                EventsStatementsSummaryByHostByEventName.EVENTS_STATEMENTS_SUMMARY_BY_HOST_BY_EVENT_NAME,
-                EventsStatementsSummaryByProgram.EVENTS_STATEMENTS_SUMMARY_BY_PROGRAM,
-                EventsStatementsSummaryByThreadByEventName.EVENTS_STATEMENTS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
-                EventsStatementsSummaryByUserByEventName.EVENTS_STATEMENTS_SUMMARY_BY_USER_BY_EVENT_NAME,
-                EventsStatementsSummaryGlobalByEventName.EVENTS_STATEMENTS_SUMMARY_GLOBAL_BY_EVENT_NAME,
-                EventsTransactionsCurrent.EVENTS_TRANSACTIONS_CURRENT,
-                EventsTransactionsHistory.EVENTS_TRANSACTIONS_HISTORY,
-                EventsTransactionsHistoryLong.EVENTS_TRANSACTIONS_HISTORY_LONG,
-                EventsTransactionsSummaryByAccountByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
-                EventsTransactionsSummaryByHostByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_HOST_BY_EVENT_NAME,
-                EventsTransactionsSummaryByThreadByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
-                EventsTransactionsSummaryByUserByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_USER_BY_EVENT_NAME,
-                EventsTransactionsSummaryGlobalByEventName.EVENTS_TRANSACTIONS_SUMMARY_GLOBAL_BY_EVENT_NAME,
-                EventsWaitsCurrent.EVENTS_WAITS_CURRENT,
-                EventsWaitsHistory.EVENTS_WAITS_HISTORY,
-                EventsWaitsHistoryLong.EVENTS_WAITS_HISTORY_LONG,
-                EventsWaitsSummaryByAccountByEventName.EVENTS_WAITS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
-                EventsWaitsSummaryByHostByEventName.EVENTS_WAITS_SUMMARY_BY_HOST_BY_EVENT_NAME,
-                EventsWaitsSummaryByInstance.EVENTS_WAITS_SUMMARY_BY_INSTANCE,
-                EventsWaitsSummaryByThreadByEventName.EVENTS_WAITS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
-                EventsWaitsSummaryByUserByEventName.EVENTS_WAITS_SUMMARY_BY_USER_BY_EVENT_NAME,
-                EventsWaitsSummaryGlobalByEventName.EVENTS_WAITS_SUMMARY_GLOBAL_BY_EVENT_NAME,
-                FileInstances.FILE_INSTANCES,
-                FileSummaryByEventName.FILE_SUMMARY_BY_EVENT_NAME,
-                FileSummaryByInstance.FILE_SUMMARY_BY_INSTANCE,
-                GlobalStatus.GLOBAL_STATUS,
-                GlobalVariables.GLOBAL_VARIABLES,
-                Hosts.HOSTS,
-                HostCache.HOST_CACHE,
-                MemorySummaryByAccountByEventName.MEMORY_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
-                MemorySummaryByHostByEventName.MEMORY_SUMMARY_BY_HOST_BY_EVENT_NAME,
-                MemorySummaryByThreadByEventName.MEMORY_SUMMARY_BY_THREAD_BY_EVENT_NAME,
-                MemorySummaryByUserByEventName.MEMORY_SUMMARY_BY_USER_BY_EVENT_NAME,
-                MemorySummaryGlobalByEventName.MEMORY_SUMMARY_GLOBAL_BY_EVENT_NAME,
-                MetadataLocks.METADATA_LOCKS,
-                MutexInstances.MUTEX_INSTANCES,
-                ObjectsSummaryGlobalByType.OBJECTS_SUMMARY_GLOBAL_BY_TYPE,
-                PerformanceTimers.PERFORMANCE_TIMERS,
-                PreparedStatementsInstances.PREPARED_STATEMENTS_INSTANCES,
-                ReplicationApplierConfiguration.REPLICATION_APPLIER_CONFIGURATION,
-                ReplicationApplierStatus.REPLICATION_APPLIER_STATUS,
-                ReplicationApplierStatusByCoordinator.REPLICATION_APPLIER_STATUS_BY_COORDINATOR,
-                ReplicationApplierStatusByWorker.REPLICATION_APPLIER_STATUS_BY_WORKER,
-                ReplicationConnectionConfiguration.REPLICATION_CONNECTION_CONFIGURATION,
-                ReplicationConnectionStatus.REPLICATION_CONNECTION_STATUS,
-                ReplicationGroupMembers.REPLICATION_GROUP_MEMBERS,
-                ReplicationGroupMemberStats.REPLICATION_GROUP_MEMBER_STATS,
-                RwlockInstances.RWLOCK_INSTANCES,
-                SessionAccountConnectAttrs.SESSION_ACCOUNT_CONNECT_ATTRS,
-                SessionConnectAttrs.SESSION_CONNECT_ATTRS,
-                SessionStatus.SESSION_STATUS,
-                SessionVariables.SESSION_VARIABLES,
-                SetupActors.SETUP_ACTORS,
-                SetupConsumers.SETUP_CONSUMERS,
-                SetupInstruments.SETUP_INSTRUMENTS,
-                SetupObjects.SETUP_OBJECTS,
-                SetupTimers.SETUP_TIMERS,
-                SocketInstances.SOCKET_INSTANCES,
-                SocketSummaryByEventName.SOCKET_SUMMARY_BY_EVENT_NAME,
-                SocketSummaryByInstance.SOCKET_SUMMARY_BY_INSTANCE,
-                StatusByAccount.STATUS_BY_ACCOUNT,
-                StatusByHost.STATUS_BY_HOST,
-                StatusByThread.STATUS_BY_THREAD,
-                StatusByUser.STATUS_BY_USER,
-                TableHandles.TABLE_HANDLES,
-                TableIoWaitsSummaryByIndexUsage.TABLE_IO_WAITS_SUMMARY_BY_INDEX_USAGE,
-                TableIoWaitsSummaryByTable.TABLE_IO_WAITS_SUMMARY_BY_TABLE,
-                TableLockWaitsSummaryByTable.TABLE_LOCK_WAITS_SUMMARY_BY_TABLE,
-                Threads.THREADS,
-                Users.USERS,
-                UserVariablesByThread.USER_VARIABLES_BY_THREAD,
-                VariablesByThread.VARIABLES_BY_THREAD);
+            Accounts.ACCOUNTS,
+            CondInstances.COND_INSTANCES,
+            EventsStagesCurrent.EVENTS_STAGES_CURRENT,
+            EventsStagesHistory.EVENTS_STAGES_HISTORY,
+            EventsStagesHistoryLong.EVENTS_STAGES_HISTORY_LONG,
+            EventsStagesSummaryByAccountByEventName.EVENTS_STAGES_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
+            EventsStagesSummaryByHostByEventName.EVENTS_STAGES_SUMMARY_BY_HOST_BY_EVENT_NAME,
+            EventsStagesSummaryByThreadByEventName.EVENTS_STAGES_SUMMARY_BY_THREAD_BY_EVENT_NAME,
+            EventsStagesSummaryByUserByEventName.EVENTS_STAGES_SUMMARY_BY_USER_BY_EVENT_NAME,
+            EventsStagesSummaryGlobalByEventName.EVENTS_STAGES_SUMMARY_GLOBAL_BY_EVENT_NAME,
+            EventsStatementsCurrent.EVENTS_STATEMENTS_CURRENT,
+            EventsStatementsHistory.EVENTS_STATEMENTS_HISTORY,
+            EventsStatementsHistoryLong.EVENTS_STATEMENTS_HISTORY_LONG,
+            EventsStatementsSummaryByAccountByEventName.EVENTS_STATEMENTS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
+            EventsStatementsSummaryByDigest.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST,
+            EventsStatementsSummaryByHostByEventName.EVENTS_STATEMENTS_SUMMARY_BY_HOST_BY_EVENT_NAME,
+            EventsStatementsSummaryByProgram.EVENTS_STATEMENTS_SUMMARY_BY_PROGRAM,
+            EventsStatementsSummaryByThreadByEventName.EVENTS_STATEMENTS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
+            EventsStatementsSummaryByUserByEventName.EVENTS_STATEMENTS_SUMMARY_BY_USER_BY_EVENT_NAME,
+            EventsStatementsSummaryGlobalByEventName.EVENTS_STATEMENTS_SUMMARY_GLOBAL_BY_EVENT_NAME,
+            EventsTransactionsCurrent.EVENTS_TRANSACTIONS_CURRENT,
+            EventsTransactionsHistory.EVENTS_TRANSACTIONS_HISTORY,
+            EventsTransactionsHistoryLong.EVENTS_TRANSACTIONS_HISTORY_LONG,
+            EventsTransactionsSummaryByAccountByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
+            EventsTransactionsSummaryByHostByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_HOST_BY_EVENT_NAME,
+            EventsTransactionsSummaryByThreadByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
+            EventsTransactionsSummaryByUserByEventName.EVENTS_TRANSACTIONS_SUMMARY_BY_USER_BY_EVENT_NAME,
+            EventsTransactionsSummaryGlobalByEventName.EVENTS_TRANSACTIONS_SUMMARY_GLOBAL_BY_EVENT_NAME,
+            EventsWaitsCurrent.EVENTS_WAITS_CURRENT,
+            EventsWaitsHistory.EVENTS_WAITS_HISTORY,
+            EventsWaitsHistoryLong.EVENTS_WAITS_HISTORY_LONG,
+            EventsWaitsSummaryByAccountByEventName.EVENTS_WAITS_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
+            EventsWaitsSummaryByHostByEventName.EVENTS_WAITS_SUMMARY_BY_HOST_BY_EVENT_NAME,
+            EventsWaitsSummaryByInstance.EVENTS_WAITS_SUMMARY_BY_INSTANCE,
+            EventsWaitsSummaryByThreadByEventName.EVENTS_WAITS_SUMMARY_BY_THREAD_BY_EVENT_NAME,
+            EventsWaitsSummaryByUserByEventName.EVENTS_WAITS_SUMMARY_BY_USER_BY_EVENT_NAME,
+            EventsWaitsSummaryGlobalByEventName.EVENTS_WAITS_SUMMARY_GLOBAL_BY_EVENT_NAME,
+            FileInstances.FILE_INSTANCES,
+            FileSummaryByEventName.FILE_SUMMARY_BY_EVENT_NAME,
+            FileSummaryByInstance.FILE_SUMMARY_BY_INSTANCE,
+            GlobalStatus.GLOBAL_STATUS,
+            GlobalVariables.GLOBAL_VARIABLES,
+            Hosts.HOSTS,
+            HostCache.HOST_CACHE,
+            MemorySummaryByAccountByEventName.MEMORY_SUMMARY_BY_ACCOUNT_BY_EVENT_NAME,
+            MemorySummaryByHostByEventName.MEMORY_SUMMARY_BY_HOST_BY_EVENT_NAME,
+            MemorySummaryByThreadByEventName.MEMORY_SUMMARY_BY_THREAD_BY_EVENT_NAME,
+            MemorySummaryByUserByEventName.MEMORY_SUMMARY_BY_USER_BY_EVENT_NAME,
+            MemorySummaryGlobalByEventName.MEMORY_SUMMARY_GLOBAL_BY_EVENT_NAME,
+            MetadataLocks.METADATA_LOCKS,
+            MutexInstances.MUTEX_INSTANCES,
+            ObjectsSummaryGlobalByType.OBJECTS_SUMMARY_GLOBAL_BY_TYPE,
+            PerformanceTimers.PERFORMANCE_TIMERS,
+            PreparedStatementsInstances.PREPARED_STATEMENTS_INSTANCES,
+            ReplicationApplierConfiguration.REPLICATION_APPLIER_CONFIGURATION,
+            ReplicationApplierStatus.REPLICATION_APPLIER_STATUS,
+            ReplicationApplierStatusByCoordinator.REPLICATION_APPLIER_STATUS_BY_COORDINATOR,
+            ReplicationApplierStatusByWorker.REPLICATION_APPLIER_STATUS_BY_WORKER,
+            ReplicationConnectionConfiguration.REPLICATION_CONNECTION_CONFIGURATION,
+            ReplicationConnectionStatus.REPLICATION_CONNECTION_STATUS,
+            ReplicationGroupMembers.REPLICATION_GROUP_MEMBERS,
+            ReplicationGroupMemberStats.REPLICATION_GROUP_MEMBER_STATS,
+            RwlockInstances.RWLOCK_INSTANCES,
+            SessionAccountConnectAttrs.SESSION_ACCOUNT_CONNECT_ATTRS,
+            SessionConnectAttrs.SESSION_CONNECT_ATTRS,
+            SessionStatus.SESSION_STATUS,
+            SessionVariables.SESSION_VARIABLES,
+            SetupActors.SETUP_ACTORS,
+            SetupConsumers.SETUP_CONSUMERS,
+            SetupInstruments.SETUP_INSTRUMENTS,
+            SetupObjects.SETUP_OBJECTS,
+            SetupTimers.SETUP_TIMERS,
+            SocketInstances.SOCKET_INSTANCES,
+            SocketSummaryByEventName.SOCKET_SUMMARY_BY_EVENT_NAME,
+            SocketSummaryByInstance.SOCKET_SUMMARY_BY_INSTANCE,
+            StatusByAccount.STATUS_BY_ACCOUNT,
+            StatusByHost.STATUS_BY_HOST,
+            StatusByThread.STATUS_BY_THREAD,
+            StatusByUser.STATUS_BY_USER,
+            TableHandles.TABLE_HANDLES,
+            TableIoWaitsSummaryByIndexUsage.TABLE_IO_WAITS_SUMMARY_BY_INDEX_USAGE,
+            TableIoWaitsSummaryByTable.TABLE_IO_WAITS_SUMMARY_BY_TABLE,
+            TableLockWaitsSummaryByTable.TABLE_LOCK_WAITS_SUMMARY_BY_TABLE,
+            Threads.THREADS,
+            Users.USERS,
+            UserVariablesByThread.USER_VARIABLES_BY_THREAD,
+            VariablesByThread.VARIABLES_BY_THREAD);
     }
 }

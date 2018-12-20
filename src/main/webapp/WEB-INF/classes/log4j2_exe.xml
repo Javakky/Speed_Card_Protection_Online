@@ -9,7 +9,7 @@
 
     <!-- ログの出力先と出力フォーマットを設定する -->
     <Appenders>
-        <RollingFile name="rolling" fileName="./log/webapp.log" filePattern="./log/webapp-%d{yyyy-MM-dd}-%i.zip">
+        <RollingFile name="rolling" fileName="../log/webapp.log" filePattern="../log/webapp-%d{yyyy-MM-dd}-%i.zip">
             <PatternLayout pattern="${loglayout}"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>

@@ -1,2 +1,0 @@
-[2018-12-19 16:50:21.945], INFO , http-nio-8080-exec-1, scptcg.log.Log4j, scptcg.server.HelloServlet:doGet() 
-Hello, World!

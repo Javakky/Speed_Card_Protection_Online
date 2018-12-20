@@ -4,22 +4,122 @@
 package jooq.sys;
 
 
-import jooq.sys.tables.*;
-
 import javax.annotation.Generated;
+
+import jooq.sys.tables.HostSummary;
+import jooq.sys.tables.HostSummaryByFileIo;
+import jooq.sys.tables.HostSummaryByFileIoType;
+import jooq.sys.tables.HostSummaryByStages;
+import jooq.sys.tables.HostSummaryByStatementLatency;
+import jooq.sys.tables.HostSummaryByStatementType;
+import jooq.sys.tables.InnodbBufferStatsBySchema;
+import jooq.sys.tables.InnodbBufferStatsByTable;
+import jooq.sys.tables.InnodbLockWaits;
+import jooq.sys.tables.IoByThreadByLatency;
+import jooq.sys.tables.IoGlobalByFileByBytes;
+import jooq.sys.tables.IoGlobalByFileByLatency;
+import jooq.sys.tables.IoGlobalByWaitByBytes;
+import jooq.sys.tables.IoGlobalByWaitByLatency;
+import jooq.sys.tables.LatestFileIo;
+import jooq.sys.tables.MemoryByHostByCurrentBytes;
+import jooq.sys.tables.MemoryByThreadByCurrentBytes;
+import jooq.sys.tables.MemoryByUserByCurrentBytes;
+import jooq.sys.tables.MemoryGlobalByCurrentBytes;
+import jooq.sys.tables.MemoryGlobalTotal;
+import jooq.sys.tables.Metrics;
+import jooq.sys.tables.Processlist;
+import jooq.sys.tables.PsCheckLostInstrumentation;
+import jooq.sys.tables.SchemaAutoIncrementColumns;
+import jooq.sys.tables.SchemaIndexStatistics;
+import jooq.sys.tables.SchemaObjectOverview;
+import jooq.sys.tables.SchemaRedundantIndexes;
+import jooq.sys.tables.SchemaTableLockWaits;
+import jooq.sys.tables.SchemaTableStatistics;
+import jooq.sys.tables.SchemaTableStatisticsWithBuffer;
+import jooq.sys.tables.SchemaTablesWithFullTableScans;
+import jooq.sys.tables.SchemaUnusedIndexes;
+import jooq.sys.tables.Session;
+import jooq.sys.tables.SessionSslStatus;
+import jooq.sys.tables.StatementAnalysis;
+import jooq.sys.tables.StatementsWithErrorsOrWarnings;
+import jooq.sys.tables.StatementsWithFullTableScans;
+import jooq.sys.tables.StatementsWithRuntimesIn_95thPercentile;
+import jooq.sys.tables.StatementsWithSorting;
+import jooq.sys.tables.StatementsWithTempTables;
+import jooq.sys.tables.SysConfig;
+import jooq.sys.tables.UserSummary;
+import jooq.sys.tables.UserSummaryByFileIo;
+import jooq.sys.tables.UserSummaryByFileIoType;
+import jooq.sys.tables.UserSummaryByStages;
+import jooq.sys.tables.UserSummaryByStatementLatency;
+import jooq.sys.tables.UserSummaryByStatementType;
+import jooq.sys.tables.Version;
+import jooq.sys.tables.WaitClassesGlobalByAvgLatency;
+import jooq.sys.tables.WaitClassesGlobalByLatency;
+import jooq.sys.tables.WaitsByHostByLatency;
+import jooq.sys.tables.WaitsByUserByLatency;
+import jooq.sys.tables.WaitsGlobalByLatency;
+import jooq.sys.tables.X$hostSummary;
+import jooq.sys.tables.X$hostSummaryByFileIo;
+import jooq.sys.tables.X$hostSummaryByFileIoType;
+import jooq.sys.tables.X$hostSummaryByStages;
+import jooq.sys.tables.X$hostSummaryByStatementLatency;
+import jooq.sys.tables.X$hostSummaryByStatementType;
+import jooq.sys.tables.X$innodbBufferStatsBySchema;
+import jooq.sys.tables.X$innodbBufferStatsByTable;
+import jooq.sys.tables.X$innodbLockWaits;
+import jooq.sys.tables.X$ioByThreadByLatency;
+import jooq.sys.tables.X$ioGlobalByFileByBytes;
+import jooq.sys.tables.X$ioGlobalByFileByLatency;
+import jooq.sys.tables.X$ioGlobalByWaitByBytes;
+import jooq.sys.tables.X$ioGlobalByWaitByLatency;
+import jooq.sys.tables.X$latestFileIo;
+import jooq.sys.tables.X$memoryByHostByCurrentBytes;
+import jooq.sys.tables.X$memoryByThreadByCurrentBytes;
+import jooq.sys.tables.X$memoryByUserByCurrentBytes;
+import jooq.sys.tables.X$memoryGlobalByCurrentBytes;
+import jooq.sys.tables.X$memoryGlobalTotal;
+import jooq.sys.tables.X$processlist;
+import jooq.sys.tables.X$psDigestAvgLatencyDistribution;
+import jooq.sys.tables.X$psDigest_95thPercentileByAvgUs;
+import jooq.sys.tables.X$psSchemaTableStatisticsIo;
+import jooq.sys.tables.X$schemaFlattenedKeys;
+import jooq.sys.tables.X$schemaIndexStatistics;
+import jooq.sys.tables.X$schemaTableLockWaits;
+import jooq.sys.tables.X$schemaTableStatistics;
+import jooq.sys.tables.X$schemaTableStatisticsWithBuffer;
+import jooq.sys.tables.X$schemaTablesWithFullTableScans;
+import jooq.sys.tables.X$session;
+import jooq.sys.tables.X$statementAnalysis;
+import jooq.sys.tables.X$statementsWithErrorsOrWarnings;
+import jooq.sys.tables.X$statementsWithFullTableScans;
+import jooq.sys.tables.X$statementsWithRuntimesIn_95thPercentile;
+import jooq.sys.tables.X$statementsWithSorting;
+import jooq.sys.tables.X$statementsWithTempTables;
+import jooq.sys.tables.X$userSummary;
+import jooq.sys.tables.X$userSummaryByFileIo;
+import jooq.sys.tables.X$userSummaryByFileIoType;
+import jooq.sys.tables.X$userSummaryByStages;
+import jooq.sys.tables.X$userSummaryByStatementLatency;
+import jooq.sys.tables.X$userSummaryByStatementType;
+import jooq.sys.tables.X$waitClassesGlobalByAvgLatency;
+import jooq.sys.tables.X$waitClassesGlobalByLatency;
+import jooq.sys.tables.X$waitsByHostByLatency;
+import jooq.sys.tables.X$waitsByUserByLatency;
+import jooq.sys.tables.X$waitsGlobalByLatency;
 
 
 /**
  * Convenience access to all tables in sys
  */
 @Generated(
-        value = {
-                "http://www.jooq.org",
-                "jOOQ version:3.11.2"
-        },
-        comments = "This class is generated by jOOQ"
+    value = {
+        "http://www.jooq.org",
+        "jOOQ version:3.11.2"
+    },
+    comments = "This class is generated by jOOQ"
 )
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
