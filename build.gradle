@@ -51,6 +51,7 @@ gretty {
     jvmArgs = ['-Dfile.encoding=UTF-8']
 }
 
+
 war {
     archiveName = 'SCP.war'
 }

@@ -23,11 +23,12 @@ public class HelloServlet extends HttpServlet {
         res.setContentType("text/html; charset=Shift_JIS");
         out = res.getWriter();
 
-        //out.println("<html><body>");
-        //out.println("<h1>Hello World!</h1>");
-        //out.println("<p>Servletのサンプル（HelloServlet.java）</p>");
-        //out.println("</body></html>");
-        Logger logger = new LogPrintWriter(out);
+        out.println("<html><body>");
+        out.println("<h1>Hello World!</h1>");
+        out.println("<p>Servletのサンプル（HelloServlet.java）</p>");
+        out.println("</body></html>");
+        System.out.println("hello");
+        Logger logger = Log4j.getInstance();
         logger.info("Hello, World!");
     }
 }
