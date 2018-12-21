@@ -1,8 +1,8 @@
 package scptcg.log;
 
-import org.apache.logging.log4j.LogManager;
+        import org.apache.logging.log4j.LogManager;
 
-import java.io.File;
+        import java.io.File;
 
 /**
  * ロギング処理を行う
@@ -41,12 +41,6 @@ public class Log4j implements Logger {
      * @param msg : 出力メッセージ
      */
     public void info(final String msg) {
-        File dir = new File("./");
-        System.out.println(dir.getName());
-        System.out.println(dir.getParent());
-        for (File file : dir.listFiles()) {
-            System.out.println(file.getName());
-        }
         LogManager.getLogger(this.getClass()).info(getMessage(msg));
     }
 
@@ -77,4 +71,13 @@ public class Log4j implements Logger {
     public void error(final Exception e) {
         LogManager.getLogger(e.getClass()).error(getErrorMessage(e));
     }
+
+    public void trace(final String msg) {
+        LogManager.getLogger(this.getClass()).trace(getMessage(msg));
+    }
+
+    public void fatal(final String msg) {
+        LogManager.getLogger(this.getClass()).fatal(getMessage(msg));
+    }
+
 }
