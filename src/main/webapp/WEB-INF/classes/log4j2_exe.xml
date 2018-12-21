@@ -9,21 +9,25 @@
 
     <!-- ログの出力先と出力フォーマットを設定する -->
     <Appenders>
-        <RollingFile name="rolling" fileName="./webapps/SCP/WEB-INF/log/webapp.log" filePattern="./webapps/SCP/WEB-INF/log/webapp-%d{yyyy-MM-dd}-%i.zip">
+        <RollingFile name="file" fileName="./webapps/SCP/WEB-INF/log/webapp.log" filePattern="./webapps/SCP/WEB-INF/log/webapp-%d{yyyy-MM-dd}-%i.zip">
             <PatternLayout pattern="${loglayout}"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="20 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
                 <TimeBasedTriggeringPolicy/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${ptn}" />
+        </Console>
     </Appenders>
 
     <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
     <Loggers>
         <Logger name="scptcg.log.Log4j" level="info" additivity="true">
-            <AppenderRef ref="rolling"/>
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
         </Logger>
     </Loggers>
 </Configuration>

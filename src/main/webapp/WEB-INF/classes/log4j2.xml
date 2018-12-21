@@ -13,12 +13,15 @@
             <PatternLayout pattern="${loglayout}"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="20 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
                 <TimeBasedTriggeringPolicy/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
     </Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+        <PatternLayout pattern="${ptn}" />
+    </Console>
 
     <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
     <Loggers>

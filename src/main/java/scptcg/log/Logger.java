@@ -23,10 +23,10 @@ public interface Logger {
         pos += 2;
         StackTraceElement m = stackTraceElements[pos];
         //ログ出力対象のクラス名:[メソッド名] + log message
-        return m.getClassName() + ":" + m.getMethodName() + "() \n" + msg;
+        return m.getClassName() + ":" + m.getMethodName() + "() \n[\n" + msg + "\n]";
     }
 
-    default String getErrorMessage(final Exception e) {
+    default String getErrorMessage(final Throwable e) {
         StringBuilder sb = new StringBuilder();
         StackTraceElement[] st = e.getStackTrace();
         if (st != null && st.length > 0) {
@@ -78,5 +78,5 @@ public interface Logger {
      *
      * @param e : 例外情報
      */
-    public void error(final Exception e);
+    public void error(final Throwable e);
 }

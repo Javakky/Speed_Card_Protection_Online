@@ -12,7 +12,7 @@ public class CardFactory {
     public static Card create(CardHolder parent, String name, CardKind kind)
             throws NullPointerException {
         Card tmp = null;
-        Class clazz = null;
+        Class clazz;
         try {
             switch (kind) {
                 case ANOMALOUS:

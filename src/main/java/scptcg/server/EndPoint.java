@@ -1,8 +1,6 @@
 package scptcg.server;
 
 import com.google.gson.Gson;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jooq.DSLContext;
 import scptcg.game.CreateGame;
 import scptcg.game.Game;
@@ -11,6 +9,8 @@ import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
+import scptcg.log.Log4j;
+import scptcg.log.Logger;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -35,7 +35,7 @@ public final class EndPoint {
     static private Logger logger = null;
 
     static {
-        logger = LogManager.getLogger(EndPoint.class);
+        logger = Log4j.getInstance();
     }
 
     @OnOpen
@@ -81,7 +81,7 @@ public final class EndPoint {
     @OnError
     public void onError(final Session client, final Throwable error) {
         String log = client.getId() + " was error. [" + error.getMessage() + "]";
-        logger.error(log);
+        logger.error(error);
         error.printStackTrace();
     }
 
@@ -133,7 +133,7 @@ public final class EndPoint {
             Data data = (new Gson()).fromJson(t, Data.class);
             //System.out.println(data.event);
             System.out.println(data);
-            logger.info(data.event);
+            logger.info(data.toString());
 
             if (data.event.equals("Login")) {
                 login(data.player, data.name[0], client);
@@ -142,7 +142,7 @@ public final class EndPoint {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 
@@ -329,11 +329,12 @@ public final class EndPoint {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
-                    System.out.println("send = [me: " + e.getValue() + "\n]");
+                    logger.info("me\n: " + e.getValue());
+                    System.out.println();
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
-                    System.out.println("send = [enemy: " + e.getValue() + "\n]");
+                    logger.info("enemy:\n " + e.getValue());
                     break;
             }
         }

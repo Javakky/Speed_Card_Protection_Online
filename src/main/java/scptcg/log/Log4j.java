@@ -68,7 +68,7 @@ public class Log4j implements Logger {
      *
      * @param e : 例外情報
      */
-    public void error(final Exception e) {
+    public void error(final Throwable e) {
         LogManager.getLogger(e.getClass()).error(getErrorMessage(e));
     }
 

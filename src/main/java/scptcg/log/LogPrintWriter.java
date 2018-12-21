@@ -35,7 +35,7 @@ public class LogPrintWriter implements Logger {
     }
 
     @Override
-    public void error(final Exception e) {
+    public void error(final Throwable e) {
         out.println("error:\n" + getErrorMessage(e));
     }
 }

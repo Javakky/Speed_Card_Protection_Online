@@ -24,7 +24,6 @@ public class HelloServlet extends HttpServlet {
         out.println("<h1>Hello World!</h1>");
         out.println("<p>Servletのサンプル（HelloServlet.java）</p>");
         out.println("</body></html>");
-        System.out.println("hello");
         Logger logger = Log4j.getInstance();
         logger.info("Hello, World!");
     }
