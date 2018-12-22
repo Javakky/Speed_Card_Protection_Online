@@ -1,5 +1,7 @@
 package scptcg.server;
 
+import jooq.sys.Sys;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.util.Map;
 
 // これを付けるとWebSocketサーバーになる
 // URLはワイルドカード可
-@ServerEndpoint("/*")
+@ServerEndpoint("/wsendpoint")
 public final class WSEndPoint {
 
     // Session(通信)を保存しておくためのMap
@@ -40,9 +42,10 @@ public final class WSEndPoint {
     @OnMessage
     public void onMessage(final String text, final Session client) throws IOException {
         // メッセージの内容は、改行区切りで操作・id・データが記述されているものとする。
-        String[] t = text.split("\n");
+        String[] t = text.split(" ");
         String event = t[0];
         String id = t[1];
+        System.out.println(text);
         //eventの内容毎に分岐
         switch (event) {
             case "login":
