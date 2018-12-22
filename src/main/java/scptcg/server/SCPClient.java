@@ -46,21 +46,27 @@ public class SCPClient {
                 .getWebSocketContainer();
         // サーバー・エンドポイントの URI
         URI uri = URI
-                .create("ws://localhost:8080/SCP/wsendpoint");
+                .create("ws://localhost:8080/SCP/ws");
         // サーバー・エンドポイントとのセッションを確立する
         Session session = container.connectToServer(SCPClient.class, uri);
 
-        while (!session.isOpen()) {
-            System.out.println("open");
-        }
+        while (!session.isOpen()) Thread.sleep(500);
+        System.out.println("open");
 
         try (Scanner s = new Scanner(System.in)) {
+            StringBuilder sb = new StringBuilder();
             String str;
-            System.out.println("start loop");
-            while (true) {
+            loop: while (true) {
                 str = s.nextLine();
-                if(str.equals("exit")) break;
-                session.getBasicRemote().sendText(str);
+                switch (str) {
+                    case "exit":
+                        break loop;
+                    case "\\e":
+                        session.getBasicRemote().sendText(sb.toString());
+                        break;
+                    default:
+                        sb.append(str).append("\n");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

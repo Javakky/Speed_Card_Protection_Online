@@ -8,6 +8,7 @@ import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.exception.DataAccessException;
 import scptcg.game.card.CardFactory;
+import scptcg.json.Login;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -258,19 +259,4 @@ public class DeckMakeServlet extends HttpServlet {
         return;
     }
 
-    static class Login {
-        public String database;
-        public String id;
-        public String password;
-    }
-
-    static class Deck {
-        public String[] Personnel;
-        public String[] Tale;
-        public String[] Anomalous;
-        public String[] Exclusion;
-        public String[] Safe;
-        public String[] Keter;
-        public String[] Euclid;
-    }
 }

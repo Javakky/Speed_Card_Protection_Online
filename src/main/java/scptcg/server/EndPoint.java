@@ -9,6 +9,8 @@ import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
+import scptcg.json.Data;
+import scptcg.json.Deck;
 import scptcg.log.Log4j;
 import scptcg.log.Logger;
 
@@ -484,40 +486,4 @@ public final class EndPoint {
         return new String[7][0];
     }
 
-    static class Deck {
-        public String[] Personnel;
-        public String[] Tale;
-        public String[] Anomalous;
-        public String[] Exclusion;
-        public String[] Safe;
-        public String[] Keter;
-        public String[] Euclid;
-    }
-
-    public class Data {
-        public String[] name;
-        public String player;
-        int[] place;
-        String event;
-        int isFirst;
-        int ObjectClass;
-        String effect;
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("receive = [\tplayer:")
-                    .append(player)
-                    .append("\n\tevent:")
-                    .append(event)
-                    .append("\n\tisFirst:")
-                    .append(isFirst)
-                    .append("\n\tname:")
-                    .append(Arrays.toString(name))
-                    .append("\n\tplace:")
-                    .append(Arrays.toString(place))
-                    .append("\n]");
-            return sb.toString();
-        }
-    }
 }
