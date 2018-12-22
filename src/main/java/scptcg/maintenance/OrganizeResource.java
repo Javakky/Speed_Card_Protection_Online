@@ -2,13 +2,18 @@ package scptcg.maintenance;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import scptcg.game.card.CardKind;
+import scptcg.game.card.ObjectClassKind;
 import scptcg.game.card.Scp;
 import scptcg.json.Deck;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+
+import static scptcg.game.card.ObjectClassKind.*;
 
 public class OrganizeResource {
 
@@ -51,7 +56,24 @@ public class OrganizeResource {
                                     }
                                     try {
                                         Scp tmp = (new Gson()).fromJson(sb.toString(), Scp.class);
-                                        switch (tmp.getClazz()) {
+                                        if(tmp.getContainmentClass() == null) {
+                                            Field field = null;
+                                            try {
+                                                field = Scp.class.getDeclaredField("containmentClass");
+                                            } catch (NoSuchFieldException | SecurityException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            field.setAccessible(true);
+
+                                            try {
+                                                field.set(tmp, UNCLASSED.getClazz());
+                                            } catch (IllegalArgumentException | IllegalAccessException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                        switch (tmp.getContainmentClass()) {
                                             case SAFE:
                                                 safe.add(tmp.getName());
                                                 break;
@@ -62,7 +84,7 @@ public class OrganizeResource {
                                                 keter.add(tmp.getName());
                                                 break;
                                             default:
-                                                switch (tmp.getContainmentClass()) {
+                                                switch (tmp.getClazz()) {
                                                     case SAFE:
                                                         safe.add(tmp.getName());
                                                         break;

@@ -6,6 +6,7 @@ public enum ObjectClassKind {
     KETER("Keter"),
     NEUTRALIZED("Neutralized"),
     THAUMIEL("Thaumiel"),
+    UNCLASSED("Unclassed"),
     EXPLAINED("Explained");
 
     private String clazz;
@@ -28,6 +29,8 @@ public enum ObjectClassKind {
                 return THAUMIEL;
             case "Explained":
                 return EXPLAINED;
+            case "Unclassed":
+                return UNCLASSED;
             default:
                 throw new NullPointerException();
         }
