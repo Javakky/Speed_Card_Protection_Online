@@ -13,7 +13,7 @@ public class EffectType implements Serializable {
     }
 
     List<Effect> getEffect() {
-        System.out.println(effects == null ? null : effects.size());
+        //System.out.println(effects == null ? null : effects.size());
         return effects;
     }
 

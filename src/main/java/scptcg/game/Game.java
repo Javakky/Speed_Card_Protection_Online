@@ -132,7 +132,7 @@ public class Game implements ICardSetHolder {
 
     public Map.Entry<Integer, Scp> crossTest(int player, int test, int ed) {
         if (player == turnPlayer) {
-            System.out.println(test);
+            //System.out.println(test);
             return damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
         } else {
             return null;
