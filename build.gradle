@@ -96,7 +96,7 @@ jooq {
             driver = 'com.mysql.jdbc.Driver'
             url = 'jdbc:mysql://localhost:3306/SCP_TCG?serverTimezone=JST'
             user = 'root'
-            password = 'mjfeodmd0'
+            password = ''
         }
         generator {
             name = 'org.jooq.codegen.DefaultGenerator'
