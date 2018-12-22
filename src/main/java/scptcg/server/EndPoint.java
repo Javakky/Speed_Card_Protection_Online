@@ -463,7 +463,7 @@ public final class EndPoint {
     }
 
 
-    public String[][] getDeck(String id, String deckName) {
+    public Deck getDeck(String id, String deckName) {
         try {
             DSLContext con = connectionDB();
             String txt = null;
@@ -478,12 +478,11 @@ public final class EndPoint {
                 //System.out.println(txt);
                 break;
             }
-            Deck json = (new Gson()).fromJson(txt, Deck.class);
-            return new String[][]{json.Safe, json.Euclid, json.Keter, json.Tale, json.Personnel, json.Anomalous, json.Exclusion};
+            return (new Gson()).fromJson(txt, Deck.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String[7][0];
+        return new Deck();
     }
 
 }
