@@ -1,6 +1,7 @@
 package scptcg.server;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.DSLContext;
 import scptcg.game.CreateGame;
 import scptcg.game.Game;
@@ -149,7 +150,7 @@ public final class EndPoint {
     }
 
     private void main(final String event, final Data data) throws IOException {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+        List<Pair<String, String>> list = new LinkedList<>();
         Game game = this.game.get(id.get(data.player));
         switch (event) {
             case "isFirst":
@@ -180,7 +181,7 @@ public final class EndPoint {
 
             case "crossTest":
             case "damage":
-                Map.Entry<Integer, Scp> result;
+                Pair<Integer, Scp> result;
                 int player = -1;
                 if (data.event.equals("damage")) {
                     //System.out.println(data.isFirst + " " + data.place[0] + " " + data.name[0]);
@@ -327,7 +328,7 @@ public final class EndPoint {
         String enemy = game.getEnemyName(data.player);
         String me = data.player;
 
-        for (Map.Entry<String, String> e : list) {
+        for (Pair<String, String> e : list) {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
@@ -342,8 +343,8 @@ public final class EndPoint {
         }
     }
 
-    private List<Map.Entry<String, String>> sendEffectResult(Game game, Data data, Result[] st) throws IOException {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+    private List<Pair<String, String>> sendEffectResult(Game game, Data data, Result[] st) throws IOException {
+        List<Pair<String, String>> list = new LinkedList<>();
         for (Result r : st) {
             if (r == null) {
                 //list.addAll(failEffect());

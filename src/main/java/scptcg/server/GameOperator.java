@@ -1,5 +1,6 @@
 package scptcg.server;
 
+import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.Game;
 import scptcg.game.K_ClassScenario;
 import scptcg.game.Place;
@@ -15,7 +16,7 @@ import static scptcg.game.Place.*;
 
 public class GameOperator {
 
-    public static List<Map.Entry<String, String>> selectBreach(String action, int player) {
+    public static List<Pair<String, String>> selectBreach(String action, int player) {
         StringBuilder sb = new StringBuilder();
         sb.append(action)
                 .append("\n")
@@ -24,7 +25,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> selectingEffect(Card[] cards) {
+    public static List<Pair<String, String>> selectingEffect(Card[] cards) {
         StringBuilder sb_1 = new StringBuilder();
         StringBuilder sb_2 = new StringBuilder();
         sb_1.append("selectEffect\n");
@@ -41,7 +42,7 @@ public class GameOperator {
     }
 
 
-    public static List<Map.Entry<String, String>> changeProtectionEffect(final int player, final String action, final int point, final int count, final String overlap) {
+    public static List<Pair<String, String>> changeProtectionEffect(final int player, final String action, final int point, final int count, final String overlap) {
         StringBuilder sb = new StringBuilder();
         sb.append(action)
                 .append("\n")
@@ -55,7 +56,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> select(final int player, final String action, final String place, int[][] coordinate) {
+    public static List<Pair<String, String>> select(final int player, final String action, final String place, int[][] coordinate) {
         StringBuilder sb = new StringBuilder();
         sb.append("Select")
                 .append(action)
@@ -77,7 +78,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getMyDeck(final int player, final int clazz, final Game game) {
+    public static List<Pair<String, String>> getMyDeck(final int player, final int clazz, final Game game) {
         String[] txt = game.getMyDeckList(player, clazz);
         StringBuilder sb = new StringBuilder();
         sb.append("getMyDeck\n");
@@ -90,7 +91,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getDecommission(final int player, final Game game) {
+    public static List<Pair<String, String>> getDecommission(final int player, final Game game) {
         String[] txt = game.getDecommissioned(player);
         StringBuilder sb = new StringBuilder();
         sb.append("getDecommissioned\n");
@@ -102,7 +103,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getCanPartners(final int player, final Game game) {
+    public static List<Pair<String, String>> getCanPartners(final int player, final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("getCanPartners\n");
         String[] str = game.getPartnerList(player);
@@ -112,7 +113,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> selectPartner(final int coordinate, final Scp scp) {
+    public static List<Pair<String, String>> selectPartner(final int coordinate, final Scp scp) {
         StringBuilder sb = new StringBuilder();
         sb.append("selectPartner\n")
                 .append(scp.getName())
@@ -125,7 +126,7 @@ public class GameOperator {
         return m;
     }
 
-    public static List<Map.Entry<String, String>> getEmptysite(final int player, final Game game) {
+    public static List<Pair<String, String>> getEmptysite(final int player, final Game game) {
         int[] li = game.getEmptySite(player);
         StringBuilder sb = new StringBuilder();
         sb.append("getEmptySite\n")
@@ -136,14 +137,14 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> canAttack(final int player, final int coordinate, final Game game) {
+    public static List<Pair<String, String>> canAttack(final int player, final int coordinate, final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("canAttack\n")
                 .append(game.canAttack(player, coordinate));
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> breach(final int player, int coordinate, final Scp scp) {
+    public static List<Pair<String, String>> breach(final int player, int coordinate, final Scp scp) {
         StringBuilder sb = new StringBuilder();
         sb.append("breach\n")
                 .append(scp.getName())
@@ -156,14 +157,14 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> turnEnd(final Game game) {
+    public static List<Pair<String, String>> turnEnd(final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("turnEnd\n")
                 .append(game.getTurn());
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getPersonnel(final int player, final Game game) {
+    public static List<Pair<String, String>> getPersonnel(final int player, final Game game) {
         String[] str = game.getPersonnel();
         StringBuilder sb = new StringBuilder();
         sb.append("getPersonnel\n")
@@ -174,7 +175,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getTale(final int player, final Game game) {
+    public static List<Pair<String, String>> getTale(final int player, final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("getTale\n");
         String[] str = game.getTale(player);
@@ -185,7 +186,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getCost(final int player, final Game game) {
+    public static List<Pair<String, String>> getCost(final int player, final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("getCost\n")
                 .append(game.getCost(player))
@@ -195,7 +196,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getSiteNumber(final int player, final Game game) {
+    public static List<Pair<String, String>> getSiteNumber(final int player, final Game game) {
         StringBuilder sb = new StringBuilder();
         sb.append("getSiteNumber\n")
                 .append(game.getSiteNumber(player))
@@ -203,7 +204,7 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getSandBoxNumber(final int player, final Game game) {
+    public static List<Pair<String, String>> getSandBoxNumber(final int player, final Game game) {
         int[] arr = game.getSandBoxNumber(player);
         StringBuilder sb = new StringBuilder();
         sb.append("getSandBoxNumber\n")
@@ -218,14 +219,14 @@ public class GameOperator {
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> getEffect(final Game game, final int length) {
+    public static List<Pair<String, String>> getEffect(final Game game, final int length) {
         StringBuilder sb = new StringBuilder();
         sb.append("getEffect\n");
         sb.append(length);
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> activeTale(final int player, final String name, final int coordinate) {
+    public static List<Pair<String, String>> activeTale(final int player, final String name, final int coordinate) {
         StringBuilder sb = new StringBuilder();
         sb.append("activeTale\n")
                 .append(player)
@@ -236,11 +237,11 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> failEffect() {
+    public static List<Pair<String, String>> failEffect() {
         return toListMe("failEffect\n");
     }
 
-    public static List<Map.Entry<String, String>> heal(final int player, final int coordinate, final int point) {
+    public static List<Pair<String, String>> heal(final int player, final int coordinate, final int point) {
         StringBuilder sb = new StringBuilder();
         sb.append("HealSandBox\n")
                 .append(player)
@@ -252,7 +253,7 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> damage(final int player, final int coordinate, final int point, final int atkCoordinate) {
+    public static List<Pair<String, String>> damage(final int player, final int coordinate, final int point, final int atkCoordinate) {
         StringBuilder sb = new StringBuilder();
         sb.append("damage\n")
                 .append(player)
@@ -266,7 +267,7 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> startBreach(final Scp scp, final boolean isMe) {
+    public static List<Pair<String, String>> startBreach(final Scp scp, final boolean isMe) {
         StringBuilder sb = new StringBuilder();
         sb.append("breaching\n")
                 .append(scp.getName());
@@ -281,14 +282,14 @@ public class GameOperator {
         return m;
     }
 
-    public static List<Map.Entry<String, String>> isFirst(final Game game, final String name) {
+    public static List<Pair<String, String>> isFirst(final Game game, final String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("isFirst\n")
                 .append(String.valueOf(game.isFirst(name)));
         return toListMe(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> reContainMent(final int player, final Card subject, final Place before,
+    public static List<Pair<String, String>> reContainMent(final int player, final Card subject, final Place before,
                                                                 final Place after, final int coordinate) {
         StringBuilder sb = new StringBuilder();
         sb.append("ReContainment\n")
@@ -313,7 +314,7 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> decommission(final int player, final String place, final int coordinate,
+    public static List<Pair<String, String>> decommission(final int player, final String place, final int coordinate,
                                                                final Card card) {
         StringBuilder sb = new StringBuilder();
         sb.append("Decommission\n")
@@ -327,7 +328,7 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    public static List<Map.Entry<String, String>> checkK_Class(final Game ga) {
+    public static List<Pair<String, String>> checkK_Class(final Game ga) {
         K_ClassScenario k = ga.isK_ClassScenario();
         if (k != null) {
             StringBuilder sb = new StringBuilder();
@@ -341,7 +342,7 @@ public class GameOperator {
         return new LinkedList<>();
     }
 
-    public static List<Map.Entry<String, String>> getCardParam(final int player, final int index, final Scp scp) {
+    public static List<Pair<String, String>> getCardParam(final int player, final int index, final Scp scp) {
         StringBuilder sb = new StringBuilder();
         sb.append("getCardParam\n");
         sb.append(player);
@@ -355,58 +356,58 @@ public class GameOperator {
         return toListBoth(sb.toString());
     }
 
-    static List<Map.Entry<String, String>> toListMe(final List<String> list_1) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+    static List<Pair<String, String>> toListMe(final List<String> list_1) {
+        List<Pair<String, String>> list = new LinkedList<>();
         for (String str : list_1) {
-            list.add(new AbstractMap.SimpleEntry("me", str));
+            list.add(Pair.of("me", str));
         }
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListEnemy(final List<String> list_1) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+    static List<Pair<String, String>> toListEnemy(final List<String> list_1) {
+        List<Pair<String, String>> list = new LinkedList<>();
         for (String str : list_1) {
-            list.add(new AbstractMap.SimpleEntry("enemy", str));
+            list.add(Pair.of("enemy", str));
         }
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListBoth(final List<String> list_1) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+    static List<Pair<String, String>> toListBoth(final List<String> list_1) {
+        List<Pair<String, String>> list = new LinkedList<>();
         for (String str : list_1) {
-            list.add(new AbstractMap.SimpleEntry("me", str));
-            list.add(new AbstractMap.SimpleEntry("enemy", str));
+            list.add(Pair.of("me", str));
+            list.add(Pair.of("enemy", str));
         }
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListBoth(final List<String> list_1, final List<String> list_2) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
+    static List<Pair<String, String>> toListBoth(final List<String> list_1, final List<String> list_2) {
+        List<Pair<String, String>> list = new LinkedList<>();
         for (String str : list_1) {
-            list.add(new AbstractMap.SimpleEntry("me", str));
+            list.add(Pair.of("me", str));
         }
         for (String str : list_2) {
-            list.add(new AbstractMap.SimpleEntry("enemy", str));
+            list.add(Pair.of("enemy", str));
         }
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListMe(final String str) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
-        list.add(new AbstractMap.SimpleEntry("me", str));
+    static List<Pair<String, String>> toListMe(final String str) {
+        List<Pair<String, String>> list = new LinkedList<>();
+        list.add(Pair.of("me", str));
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListEnemy(final String str) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
-        list.add(new AbstractMap.SimpleEntry("enemy", str));
+    static List<Pair<String, String>> toListEnemy(final String str) {
+        List<Pair<String, String>> list = new LinkedList<>();
+        list.add(Pair.of("enemy", str));
         return list;
     }
 
-    static List<Map.Entry<String, String>> toListBoth(final String str) {
-        List<Map.Entry<String, String>> list = new LinkedList<>();
-        list.add(new AbstractMap.SimpleEntry("me", str));
-        list.add(new AbstractMap.SimpleEntry("enemy", str));
+    static List<Pair<String, String>> toListBoth(final String str) {
+        List<Pair<String, String>> list = new LinkedList<>();
+        list.add(Pair.of("me", str));
+        list.add(Pair.of("enemy", str));
         return list;
     }
 }

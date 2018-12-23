@@ -1,5 +1,7 @@
 package scptcg.game.effect;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.*;
 
 import static scptcg.game.effect.EFFECT_TYPE_LIST.*;
@@ -47,7 +49,7 @@ public class Effects {
         return effect[term].getEffect(num);
     }
 
-    public Map.Entry<Result[], Boolean> activeEffect(int timing, int num, String[] param) {
+    public Pair<Result[], Boolean> activeEffect(int timing, int num, String[] param) {
         if (hasn_tEffect(timing)) {
             return null;
         }

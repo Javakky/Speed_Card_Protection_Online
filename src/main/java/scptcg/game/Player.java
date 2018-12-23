@@ -1,6 +1,7 @@
 package scptcg.game;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.card.*;
 import scptcg.game.effect.Effect;
 
@@ -187,6 +188,11 @@ public class Player implements ICardSetHolder {
         }
     }
 
+    public Pair<Scp, List<Effect>> breach(ObjectClassKind clazz, String name, int place) {
+        Scp tmp = sandbox[classToNumber(clazz)].searchSandBox(name);
+        return Pair.of(tmp, site.breach(place, tmp));
+    }
+
     public int crossTest(int place) {
         return site.crossTest(place);
     }
@@ -203,7 +209,7 @@ public class Player implements ICardSetHolder {
         return c.getEffectList(DECOMMISSIONED);
     }
 
-    public Map.Entry<Card, List<Effect>> decommission(Place place, int index, int player) {
+    public Pair<Card, List<Effect>> decommission(Place place, int index, int player) {
         Card tmp = null;
         switch (place) {
             case SITE:
@@ -215,7 +221,7 @@ public class Player implements ICardSetHolder {
         }
         decommissioned.addCard(tmp);
         assert tmp != null;
-        return new AbstractMap.SimpleEntry<>(tmp, tmp.getEffectList(DECOMMISSIONED));
+        return Pair.of(tmp, tmp.getEffectList(DECOMMISSIONED));
     }
 
     public int[] select(String... param) {
@@ -365,4 +371,18 @@ public class Player implements ICardSetHolder {
                 break;
         }
     }
+
+    private int classToNumber(ObjectClassKind clazz) {
+        switch (clazz) {
+            case SAFE:
+                return 0;
+            case EUCLID:
+                return 1;
+            case KETER:
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
 }

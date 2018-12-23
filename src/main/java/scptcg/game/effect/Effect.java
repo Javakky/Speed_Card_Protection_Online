@@ -1,5 +1,6 @@
 package scptcg.game.effect;
 
+import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.Place;
 import scptcg.game.Player;
 import scptcg.game.card.Card;
@@ -92,7 +93,7 @@ public class Effect implements Serializable {
         return parent.getMyPlayer();
     }
 
-    public Map.Entry<Result[], Boolean> active(String[] param, Result result) {
+    public Pair<Result[], Boolean> active(String[] param, Result result) {
         List<Result> li = new ArrayList<Result>();
         li.add(null);
         if (result != null) before = result;
@@ -101,7 +102,7 @@ public class Effect implements Serializable {
         }
 
         if (!canActive()) {
-            return new AbstractMap.SimpleEntry<>(null, true);
+            return Pair.of(null, true);
         }
 
         Player p = parent.getMyPlayer();
@@ -119,7 +120,7 @@ public class Effect implements Serializable {
             before = res;
             if (res.object == null && point != action.length - 1) {
                 point++;
-                return new AbstractMap.SimpleEntry<>(li.toArray(new Result[li.size()]), false);
+                return Pair.of(li.toArray(new Result[li.size()]), false);
             }
             i++;
         }
@@ -144,7 +145,7 @@ public class Effect implements Serializable {
         already++;
         point = 0;
         isActive = false;
-        return new AbstractMap.SimpleEntry<>(li.toArray(new Result[li.size()]), true);
+        return Pair.of(li.toArray(new Result[li.size()]), true);
     }
 
     public boolean canActive() {

@@ -13,7 +13,11 @@ import java.util.Scanner;
 public class BattleTest {
 
     public static void main(String[] args){
+        Scanner s = new Scanner(System.in);
         Game game = CreateGame.create("java", loadDeck("DeckA"), "tip", loadDeck("DeckA"));
+        game.selectPartner(0, s.nextLine(), s.nextInt());
+        game.selectPartner(1,  s.nextLine(), s.nextInt());
+        System.out.println("finish");
     }
 
     private static Deck loadDeck(String fileName){

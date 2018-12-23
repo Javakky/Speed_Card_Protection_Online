@@ -1,5 +1,7 @@
 package scptcg.game.effect;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ public class EffectType implements Serializable {
         return effects.get(num);
     }
 
-    Map.Entry<Result[], Boolean> active(int num, String[] param) {
+    Pair<Result[], Boolean> active(int num, String[] param) {
         return effects.get(num).active(param, null);
     }
 

@@ -1,5 +1,6 @@
 package scptcg.game.card;
 
+import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.CardHolder;
 import scptcg.game.Place;
 import scptcg.game.Player;
@@ -89,7 +90,7 @@ public abstract class Card implements Cloneable {
         }
     }
 
-    public Map.Entry<Result[], Boolean> activeEffect(int timing, int num, String[] param) {
+    public Pair<Result[], Boolean> activeEffect(int timing, int num, String[] param) {
         if (effects != null) {
             return effects.activeEffect(timing, num, param);
         }

@@ -1,6 +1,8 @@
 package scptcg.game;
 
+import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.card.Card;
+import scptcg.game.card.ObjectClassKind;
 import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
@@ -130,7 +132,7 @@ public class Game implements ICardSetHolder {
         return getPlayerNumber(p) == 1 ? 0 : 1;
     }
 
-    public Map.Entry<Integer, Scp> crossTest(int player, int test, int ed) {
+    public Pair<Integer, Scp> crossTest(int player, int test, int ed) {
         if (player == turnPlayer) {
             //System.out.println(test);
             return damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
@@ -152,6 +154,16 @@ public class Game implements ICardSetHolder {
         Scp tmp = waitingBreach;
         waitingBreach = null;
         return tmp;
+    }
+
+
+    public Scp breach(int player, ObjectClassKind clazz, String name, int place) {
+        Pair<Scp, List<Effect>> e = this.player[player].breach(clazz, name, place);
+        boolean ef = e.getValue().size() > 0;
+        if (ef) {
+            addAllEffects(e.getValue());
+        }
+        return e.getKey();
     }
 
     public String[] getPersonnel() {
@@ -212,7 +224,7 @@ public class Game implements ICardSetHolder {
     }
 
     public Card decommission(int player, String place, int index) {
-        Map.Entry<Card, List<Effect>> e = this.player[player].decommission(Place.create(place), index, player);
+        Pair<Card, List<Effect>> e = this.player[player].decommission(Place.create(place), index, player);
 
         boolean eff = e.getValue().size() > 0;
 
@@ -269,13 +281,13 @@ public class Game implements ICardSetHolder {
         return player[isFirst].findCard(s);
     }
 
-    public Map.Entry<Integer, Scp> damage(int player, int ed, int damage) {
+    public Pair<Integer, Scp> damage(int player, int ed, int damage) {
         if (damage < 0) {
-            return new AbstractMap.SimpleEntry<>(0, null);
+            return Pair.of(0, null);
         }
         Scp tmp = this.player[player].damage(ed, damage);
         this.waitingBreach = tmp;
-        return new AbstractMap.SimpleEntry<>(damage, tmp);
+        return Pair.of(damage, tmp);
     }
 
     public Card getCard(int isFirst, String s, int i) {
@@ -317,7 +329,7 @@ public class Game implements ICardSetHolder {
         if (hasWaitEffects()) {
             onActive = true;
             onActiveEffect = true;
-            Map.Entry<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
+            Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
             boolean isFinish = (res == null ? true : res.getValue());
             ajustWaitEffects(isFinish);
             return res.getKey();
