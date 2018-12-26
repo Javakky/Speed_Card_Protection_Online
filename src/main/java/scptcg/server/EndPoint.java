@@ -45,15 +45,15 @@ public final class EndPoint {
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
         System.out.println(log);
-        logger.info(log);
+        //logger.info(log);
     }
 
     @OnClose
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        System.out.println(log);
-        logger.info(log);
+        //System.out.println(log);
+        //logger.info(log);
         cutConnection(getId(client));
     }
 
@@ -136,7 +136,7 @@ public final class EndPoint {
             Data data = (new Gson()).fromJson(t, Data.class);
             //System.out.println(data.event);
             System.out.println(data);
-            logger.info(data.toString());
+            //logger.info(data.toString());
 
             if (data.event.equals("Login")) {
                 login(data.player, data.name[0], client);
@@ -332,12 +332,12 @@ public final class EndPoint {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
-                    logger.info("me\n: " + e.getValue());
+                    //logger.info("me\n: " + e.getValue());
                     System.out.println();
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
-                    logger.info("enemy:\n " + e.getValue());
+                    //logger.info("enemy:\n " + e.getValue());
                     break;
             }
         }

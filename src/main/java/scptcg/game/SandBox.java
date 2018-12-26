@@ -1,9 +1,6 @@
 package scptcg.game;
 
-import scptcg.game.card.Card;
-import scptcg.game.card.CardFactory;
-import scptcg.game.card.CardKind;
-import scptcg.game.card.Scp;
+import scptcg.game.card.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +8,7 @@ import java.util.List;
 
 import static scptcg.game.K_ClassScenario.*;
 import static scptcg.game.Place.*;
+import static scptcg.game.card.ObjectClassKind.*;
 
 public class SandBox extends CardHolder {
 
@@ -222,6 +220,19 @@ public class SandBox extends CardHolder {
     @Override
     public Card getCard(int i) {
         return super.getCard(i, sandBox);
+    }
+
+    public static ObjectClassKind numberToClass(int number) {
+        switch (number) {
+            case 0:
+                return SAFE;
+            case 1:
+                return EUCLID;
+            case 2:
+                return KETER;
+            default:
+                return null;
+        }
     }
 
 }

@@ -64,7 +64,7 @@ public class Action extends AbstractAction {
                         player = getPlayerNumber(parent, this.param[1]);
                         break;
                     case "both":
-                        System.out.println("both");
+                        //System.out.println("both");
                         Player e = p.getEnemy();
                         int[] ps = p.select(removeAll(this.param, 0, 1));
                         int[] es = e.select(removeAll(this.param, 0, 1));

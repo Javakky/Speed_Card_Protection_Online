@@ -6,10 +6,14 @@ import scptcg.game.card.ObjectClassKind;
 import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
+import scptcg.log.Log4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static scptcg.game.Place.*;
+import static scptcg.game.SandBox.*;
 import static scptcg.game.effect.EFFECT_TYPE_LIST.*;
 
 public class Game implements ICardSetHolder {
@@ -31,6 +35,7 @@ public class Game implements ICardSetHolder {
     private Player[] player = new Player[2];
 
     Game(String[][][] deckList, String name1, String name2) {
+        Log4j.getInstance().info("player1:" + name1 + "\nplayer2:" + name2);
         int r = new Random(System.currentTimeMillis()).nextInt(2);
         if (r == 0) {
             player[0] = new Player(this, deckList[0], name1);
@@ -87,7 +92,12 @@ public class Game implements ICardSetHolder {
         return this.turnPlayer;
     }
 
+    public int getFirstPlayer() {
+        return firstPlayer;
+    }
+
     public void nextTurn() {
+        Log4j.getInstance().info("next turn " + player[turnPlayer].getName());
         this.turn++;
         this.turnPlayer = turnPlayer == 0 ? 1 : 0;
         for (Player p : this.player) {
@@ -112,6 +122,7 @@ public class Game implements ICardSetHolder {
     }
 
     public Scp selectPartner(int player, String name, int place) {
+        Log4j.getInstance().info("selected Partner\nplayer:" + this.player[player] + "\ncard:" + name, "\nplace:" + place);
         return this.player[player].selectPartner(name, place);
     }
 
@@ -122,6 +133,7 @@ public class Game implements ICardSetHolder {
     public void ignitionK(K_ClassScenario k, Player p) {
         this.kClass = k;
         this.kClassPlayer = this.getPlayerNumber(p);
+        Log4j.getInstance().info("ignitionK\nplayer:" + kClassPlayer + "\nScenario" + kClass.getScenario());
     }
 
     public int getPlayerNumber(String p) {
@@ -134,8 +146,13 @@ public class Game implements ICardSetHolder {
 
     public Pair<Integer, Scp> crossTest(int player, int test, int ed) {
         if (player == turnPlayer) {
-            //System.out.println(test);
-            return damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
+            Pair<Integer, Scp> p = damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
+            Log4j.getInstance().info("cross test\nplayer:" + this.player[player].getName() + "\ncard:" + this.player[player].find(SITE, test).getName() + "\nsand box:" + numberToClass(ed).getClazz());
+            Log4j.getInstance().info("damage\nplayer:" + this.player[player].getName() + "\nplace:" + numberToClass(ed).getClazz() + "\ndamage:" + ((Scp)this.player[player].find(SITE, test)).getSecure());
+            if (p.getValue() != null) {
+                Log4j.getInstance().info("breach!\nplayer:" + this.player[getEnemy(player)].getName() + "\ncard:" + p.getValue().getName());
+            }
+            return p;
         } else {
             return null;
         }
@@ -153,6 +170,7 @@ public class Game implements ICardSetHolder {
         }
         Scp tmp = waitingBreach;
         waitingBreach = null;
+        Log4j.getInstance().info("breach\nplayer:" + this.player[player].getName() + "\ncard:" + tmp.getName() + "\nplace:" + place);
         return tmp;
     }
 
@@ -162,6 +180,12 @@ public class Game implements ICardSetHolder {
         boolean ef = e.getValue().size() > 0;
         if (ef) {
             addAllEffects(e.getValue());
+        }
+        Log4j.getInstance().info("breach\nplayer:" + this.player[player].getName() + "\ncard:" + name + "\nplace:" + place);
+        if (e.getValue() != null) {
+            for (Effect tmp : e.getValue()) {
+                Log4j.getInstance().info("effect\nplayer:" + this.player[player].getName() + "\ncard:" + name + "\neffect:" + tmp.getMessage());
+            }
         }
         return e.getKey();
     }
@@ -232,10 +256,17 @@ public class Game implements ICardSetHolder {
             addAllEffects(e.getValue());
         }
 
+        Log4j.getInstance().info("decommission\nplayer:" + this.player[player].getName() + "\ncard:" + e.getKey().getName() + "\nplace:" + index);
+        if (e.getValue() != null) {
+            for (Effect tmp : e.getValue()) {
+                Log4j.getInstance().info("effect\nplayer:" + this.player[player].getName() + "\ncard:" + e.getKey() + "\neffect:" + tmp.getMessage());
+            }
+        }
         return e.getKey();
     }
 
     public int healSandBox(int player, int clazz, int num) {
+        Log4j.getInstance().info("heal\nplayer:" + this.player[getEnemy(player)].getName() + "\nplace:" + numberToClass(clazz).getClazz() + "\npoint:" + num);
         return this.player[player].HealSandBox(clazz, num);
     }
 
@@ -258,12 +289,14 @@ public class Game implements ICardSetHolder {
     public boolean selectedEffect(int index) {
         Effect tmp = selectEffect.getEffect(SOMETIMES, index);
         addEffects(tmp);
+        Log4j.getInstance().info("selectedEffect\nplayer:" + selectEffect.getMyPlayer().getName() + "\ncard:" + selectEffect.getName() + "\neffect:" + tmp.getMessage() + "\ncan:" + tmp.canActive());
         selectEffect = null;
         return tmp.canActive();
     }
 
     public void selectEffect(int player, Place place, int index) {
         selectEffect = this.player[player].find(place, index);
+        Log4j.getInstance().info("selectEffect\nplayer:" + this.player[player].getName() + "\ncard:" + selectEffect.getName() + "\nplace:" + place.toString() + " " + index);
     }
 
     public Place getSelectEffectPlace() {
@@ -285,8 +318,12 @@ public class Game implements ICardSetHolder {
         if (damage < 0) {
             return Pair.of(0, null);
         }
+        Log4j.getInstance().info("damage\nplayer:" + this.player[player].getName() + "\nplace:" + numberToClass(ed).getClazz() + "\ndamage:" + damage);
         Scp tmp = this.player[player].damage(ed, damage);
         this.waitingBreach = tmp;
+        if (tmp != null) {
+            Log4j.getInstance().info("breach!\nplayer:" + this.player[getEnemy(player)].getName() + "\ncard:" + tmp.getName());
+        }
         return Pair.of(damage, tmp);
     }
 
