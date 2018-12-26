@@ -369,6 +369,7 @@ public class Game implements ICardSetHolder {
             Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
             boolean isFinish = (res == null ? true : res.getValue());
             ajustWaitEffects(isFinish);
+
             return res.getKey();
         }
         return null;

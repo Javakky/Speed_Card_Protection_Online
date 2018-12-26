@@ -13,23 +13,52 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ゲーム内に登場するあらゆるカードを表す抽象クラス
+ * ゲーム内に登場するあらゆるカードを表す抽象クラス。
  */
 public abstract class Card implements Cloneable {
+    /**
+     * このカードを保持しているオブジェクトへの参照。
+     */
     protected CardHolder parent;
+    /**
+     * カードの種類。<br />
+     * 内訳は{@link scptcg.game.card.CardKind}を参照。<br />
+     * 内部情報としてはStringで保持しているが、getType・setTypeで変換を行う。
+     */
     protected String type;
+    /**
+     * カード名。
+     */
     protected String name;
+    /**
+     * 破壊する(Decommissionする)ことが可能であるかどうか。
+     */
     protected boolean canDecommission = true;
+    /**
+     * 保持する効果を体系的にまとめたオブジェクト。
+     */
     protected Effects effects;
+    /**
+     * 利便性のため、全効果オブジェクトへの参照をリストとして保持するためのフィールド。
+     */
     protected List<Effect> tmpEffect;
 
-
+    /**
+     * @param parent このカードが最初に置かれる場所(オブジェクト)への参照
+     * @param type カードの種類
+     * @param name カードの名前
+     */
     protected Card(CardHolder parent, CardKind type, String name) {
         setParent(parent);
         setType(type);
         setName(name);
     }
 
+    /**
+     * カードが移動したときに呼ぶべきメソッド。
+     * 自身を保持するオブジェクトの参照を変更する。
+     * @param parent
+     */
     public void setParent(CardHolder parent) {
         this.parent = parent;
     }
