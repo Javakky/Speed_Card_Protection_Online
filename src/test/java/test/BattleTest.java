@@ -10,6 +10,7 @@ import scptcg.game.Place;
 import scptcg.game.SandBox;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardFactory;
+import scptcg.game.effect.Result;
 import scptcg.json.Deck;
 
 import java.io.IOException;
@@ -53,7 +54,8 @@ public class BattleTest {
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 2, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
         game.selectEffect(effectPlayer, SITE, effectSandBox);
         game.selectedEffect(effectPlayer);
-        game.activeEffects(null, null)[0].toString();
+        Result res = game.activeEffects(null, null)[1];
+        game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
 
