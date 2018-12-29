@@ -63,6 +63,11 @@ public abstract class Card implements Cloneable {
         this.parent = parent;
     }
 
+    /**
+     * カードの種類を得るメソッド
+     * 内部情報を{@link scptcg.game.card.CardKind}に変換する。
+     * @return カードの種類
+     */
     public CardKind getType() {
         return CardKind.create(type);
     }
