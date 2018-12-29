@@ -447,7 +447,7 @@ public final class EndPoint {
                                     r.resInt[1],
                                     r.getAction(),
                                     r.resInt[0],
-                                    r.resInt[0],
+                                    r.resInt[2],
                                     r.resStr[0]));
                     break;
 

@@ -19,7 +19,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 import static scptcg.game.Place.*;
 
-public class BattleTest {
+public class EffectTest {
 
     private Game game = null;
     private static final String deck1 = "DeckA";
@@ -33,23 +33,34 @@ public class BattleTest {
     }
 
     @Test
-    public void 若さの泉_効果発動_体力最大(){
+    public void 若さの泉_体力最大(){
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.selectPartner(effectPlayer, "SCP-006 若さの泉", 0);
-        game.selectPartner(effectPlayer == 0 ? 1: 0,  "SCP-006 若さの泉", 0);
         game.selectEffect(effectPlayer, SITE, effectSandBox);
         game.selectedEffect(effectPlayer);
-        game.activeEffects(null, null);
+        Result res = game.activeEffects(null, null)[1];
+        game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
 
     @Test
-    public void 若さの泉_効果発動(){
+    public void サメの不在(){
+        final int effectPlayer = 0;
+        final int effectSandBox = 0;
+        game.selectPartner(effectPlayer, "SCP-1057 サメの不在", 0);
+        game.selectEffect(effectPlayer, SITE, effectSandBox);
+        game.selectedEffect(effectPlayer);
+        Result res = game.activeEffects(null, null)[1];
+        game.damage(res.resInt[1] == 0 ? 1: 0, effectSandBox, res.resInt[0]);
+        assertEquals(SandBox.SAFE_PROTECTION_FORCE - 3, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+    }
+
+    @Test
+    public void 若さの泉(){
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.selectPartner(effectPlayer, "SCP-006 若さの泉", 0);
-        game.selectPartner(effectPlayer == 0 ? 1: 0,  "SCP-006 若さの泉", 0);
         game.damage(effectPlayer, effectSandBox, 2);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 2, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
         game.selectEffect(effectPlayer, SITE, effectSandBox);

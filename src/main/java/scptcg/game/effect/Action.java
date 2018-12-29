@@ -97,6 +97,7 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[2]}, new int[]{num, player, Integer.parseInt(this.param[1])});
+                //System.out.println(result.action);
                 break;
             }
 
