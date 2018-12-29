@@ -267,7 +267,7 @@ public class Game implements ICardSetHolder {
 
     public int healSandBox(int player, int clazz, int num) {
         Log4j.getInstance().info("heal\nplayer:" + this.player[getEnemy(player)].getName() + "\nplace:" + numberToClass(clazz).getClazz() + "\npoint:" + num);
-        return this.player[player].HealSandBox(clazz, num);
+        return this.player[player].healSandBox(clazz, num);
     }
 
     public String[] getTale(int player) {

@@ -162,7 +162,7 @@ public class Player implements ICardSetHolder {
         return sandbox[place].damage(damage);
     }
 
-    public int HealSandBox(int clazz, int num) {
+    public int healSandBox(int clazz, int num) {
         return sandbox[clazz].Heal(num);
     }
 
