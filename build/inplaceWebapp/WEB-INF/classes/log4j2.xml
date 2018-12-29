@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="off">
+
+    <!-- AppenterやLoggerで使用するプロパティを定義する -->
+
+    <Properties>
+        <Property name="loglayout">[%d{yyyy-MM-dd HH:mm:ss.SSS}], %-5p, %t, %c, %m%n</Property>
+    </Properties>
+
+    <!-- ログの出力先と出力フォーマットを設定する -->
+    <Appenders>
+        <RollingFile name="file" fileName="./log/webapp.log" filePattern="./log/webapp-%d{yyyy-MM-dd}-%i.zip">
+            <PatternLayout pattern="${loglayout}"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Appenders>
+        <RollingFile name="file_test" fileName="./log/webapp_test.log" filePattern="./log/webapp-%d{yyyy-MM-dd}-%i_test.zip">
+            <PatternLayout pattern="${loglayout}"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+        <PatternLayout pattern="${ptn}" />
+    </Console>
+
+    <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
+    <Loggers>
+        <Logger name="scptcg.log.Log4j" level="info" additivity="true">
+            <AppenderRef ref="file"/>
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="scptcg.server.SCPClient" level="info" additivity="true">
+            <AppenderRef ref="file_test"/>
+            <AppenderRef ref="console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
