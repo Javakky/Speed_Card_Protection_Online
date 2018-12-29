@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'war'
     id 'nu.studer.jooq' version '3.0.2'
+    id 'com.github.hierynomus.license' version '0.15.0'
 }
 
 apply from: 'gretty.plugin'
@@ -35,11 +36,28 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.11.1'
     compile group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.14'
-
 }
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
+
+downloadLicenses {
+    ext.apacheTwo = license('Apache License, Version 2.0', 'http://opensource.org/licenses/Apache-2.0')
+    ext.bsd = license('BSD License', 'http://www.opensource.org/licenses/bsd-license.php')
+
+    includeProjectDependencies = true
+    licenses = [
+            'org.apache.james:apache-mime4j:0.6' : apacheTwo,
+            'org.some-bsd:project:1.0' : bsd
+    ]
+
+    aliases = [
+            (apacheTwo) : ['The Apache Software License, Version 2.0', 'Apache 2', 'Apache License Version 2.0', 'Apache License, Version 2.0', 'Apache License 2.0', license('Apache License', 'http://www.apache.org/licenses/LICENSE-2.0')],
+            (bsd) : ['BSD', license('New BSD License', 'http://www.opensource.org/licenses/bsd-license.php')]
+    ]
+
+    dependencyConfiguration = 'compile'
+}
 
 javadoc {
     options.encoding = 'UTF-8'

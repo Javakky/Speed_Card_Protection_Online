@@ -52,7 +52,7 @@ public class EffectTest {
         game.selectEffect(effectPlayer, SITE, effectSandBox);
         game.selectedEffect(effectPlayer);
         Result res = game.activeEffects(null, null)[1];
-        game.damage(res.resInt[1] == 0 ? 1: 0, effectSandBox, res.resInt[0]);
+        game.damage(res.resInt[1], effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 3, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
 

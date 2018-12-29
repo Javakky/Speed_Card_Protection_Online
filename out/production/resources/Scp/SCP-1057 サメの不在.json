@@ -38,6 +38,8 @@
                 "action": "DamageSandBox",
                 "param": [
                   "enemy",
+                  "1",
+                  "false",
                   "Point",
                   "3"
                 ]
