@@ -385,4 +385,7 @@ public class Player implements ICardSetHolder {
         }
     }
 
+    public int getProtectionForceSandBox(int clazz) {
+        return sandbox[clazz].getProtectionForce();
+    }
 }

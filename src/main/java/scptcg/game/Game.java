@@ -405,4 +405,8 @@ public class Game implements ICardSetHolder {
         }
         waitingEffects.set(0, list);
     }
+
+    public int getProtectionForceSandBox(int effectPlayer, int clazz) {
+        return player[effectPlayer].getProtectionForceSandBox(clazz);
+    }
 }

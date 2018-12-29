@@ -12,12 +12,12 @@ import static scptcg.game.card.ObjectClassKind.*;
 
 public class SandBox extends CardHolder {
 
-    private static final int SAFE_PROTECTION_FORCE = 4;
-    private static final int EUCLID_PROTECTION_FORCE = 8;
-    private static final int KETER_PROTECTION_FORCE = 12;
-    private static final int SAFE_CARD_NUMBER = 7;
-    private static final int EUCLID_CARD_NUMBER = 4;
-    private static final int KETER_CARD_NUMBER = 2;
+    public static final int SAFE_PROTECTION_FORCE = 4;
+    public static final int EUCLID_PROTECTION_FORCE = 8;
+    public static final int KETER_PROTECTION_FORCE = 12;
+    public static final int SAFE_CARD_NUMBER = 7;
+    public static final int EUCLID_CARD_NUMBER = 4;
+    public static final int KETER_CARD_NUMBER = 2;
     List<Scp> sandBox;
     int size;
     private int maxProtectionForce;
