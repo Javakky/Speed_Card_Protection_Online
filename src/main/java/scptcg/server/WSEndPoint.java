@@ -1,7 +1,5 @@
 package scptcg.server;
 
-import jooq.sys.Sys;
-
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;

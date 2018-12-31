@@ -148,7 +148,7 @@ public class Game implements ICardSetHolder {
         if (player == turnPlayer) {
             Pair<Integer, Scp> p = damage(player == 0 ? 1 : 0, ed, this.player[player].crossTest(test));
             Log4j.getInstance().info("cross test\nplayer:" + this.player[player].getName() + "\ncard:" + this.player[player].find(SITE, test).getName() + "\nsand box:" + numberToClass(ed).getClazz());
-            Log4j.getInstance().info("damage\nplayer:" + this.player[player].getName() + "\nplace:" + numberToClass(ed).getClazz() + "\ndamage:" + ((Scp)this.player[player].find(SITE, test)).getSecure());
+            Log4j.getInstance().info("damage\nplayer:" + this.player[player].getName() + "\nplace:" + numberToClass(ed).getClazz() + "\ndamage:" + ((Scp) this.player[player].find(SITE, test)).getSecure());
             if (p.getValue() != null) {
                 Log4j.getInstance().info("breach!\nplayer:" + this.player[getEnemy(player)].getName() + "\ncard:" + p.getValue().getName());
             }
@@ -247,8 +247,8 @@ public class Game implements ICardSetHolder {
         return turn;
     }
 
-    public Card decommission(int player, String place, int index) {
-        Pair<Card, List<Effect>> e = this.player[player].decommission(Place.create(place), index, player);
+    public Card decommission(int player, Place place, int index) {
+        Pair<Card, List<Effect>> e = this.player[player].decommission(place, index, player);
 
         boolean eff = e.getValue().size() > 0;
 

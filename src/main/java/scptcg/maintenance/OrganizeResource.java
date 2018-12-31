@@ -2,8 +2,6 @@ package scptcg.maintenance;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import scptcg.game.card.CardKind;
-import scptcg.game.card.ObjectClassKind;
 import scptcg.game.card.Scp;
 import scptcg.json.Deck;
 
@@ -56,7 +54,7 @@ public class OrganizeResource {
                                     }
                                     try {
                                         Scp tmp = (new Gson()).fromJson(sb.toString(), Scp.class);
-                                        if(tmp.getContainmentClass() == null) {
+                                        if (tmp.getContainmentClass() == null) {
                                             Field field = null;
                                             try {
                                                 field = Scp.class.getDeclaredField("containmentClass");

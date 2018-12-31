@@ -5,9 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import scptcg.game.card.*;
 import scptcg.game.effect.Effect;
 
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.Map;
 
 import static scptcg.game.Place.*;
 import static scptcg.game.effect.EFFECT_TYPE_LIST.DECOMMISSIONED;

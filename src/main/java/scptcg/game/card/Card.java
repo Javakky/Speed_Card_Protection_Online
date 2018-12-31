@@ -10,7 +10,6 @@ import scptcg.game.effect.Result;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ゲーム内に登場するあらゆるカードを表す抽象クラス。
@@ -45,8 +44,8 @@ public abstract class Card implements Cloneable {
 
     /**
      * @param parent このカードが最初に置かれる場所(オブジェクト)への参照
-     * @param type カードの種類
-     * @param name カードの名前
+     * @param type   カードの種類
+     * @param name   カードの名前
      */
     protected Card(CardHolder parent, CardKind type, String name) {
         setParent(parent);
@@ -57,6 +56,7 @@ public abstract class Card implements Cloneable {
     /**
      * カードが移動したときに呼ぶべきメソッド。
      * 自身を保持するオブジェクトの参照を変更する。
+     *
      * @param parent
      */
     public void setParent(CardHolder parent) {
@@ -66,6 +66,7 @@ public abstract class Card implements Cloneable {
     /**
      * カードの種類を得るメソッド
      * 内部情報を{@link scptcg.game.card.CardKind}に変換する。
+     *
      * @return カードの種類
      */
     public CardKind getType() {

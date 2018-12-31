@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EffectType implements Serializable {
     private List<Effect> effects;

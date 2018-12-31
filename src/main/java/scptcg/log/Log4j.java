@@ -1,8 +1,6 @@
 package scptcg.log;
 
-        import org.apache.logging.log4j.LogManager;
-
-        import java.io.File;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * ロギング処理を行う

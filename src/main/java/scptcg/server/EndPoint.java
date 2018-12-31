@@ -276,7 +276,7 @@ public final class EndPoint {
                 break;
 
             case "decommission":
-                Card card = game.decommission(data.isFirst, data.name[0], data.place[0]);
+                Card card = game.decommission(data.isFirst, create(data.name[0]), data.place[0]);
                 list.addAll(decommission(data.isFirst, data.name[0], data.place[0], card));
                 break;
 

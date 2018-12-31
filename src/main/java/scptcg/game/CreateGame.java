@@ -49,7 +49,7 @@ public class CreateGame {
     public static Game create(String name1, Deck deck1, String name2, Deck deck2) {
         return new Game(new String[][][]{deckToString(deck1), deckToString(deck2)}, name1, name2);
     }
-    
+
     public static String[][] deckToString(final Deck deck) {
         return new String[][]{
                 deck.Safe,

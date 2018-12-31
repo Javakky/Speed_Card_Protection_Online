@@ -57,6 +57,19 @@ public class SandBox extends CardHolder {
         return tmp;
     }
 
+    public static ObjectClassKind numberToClass(int number) {
+        switch (number) {
+            case 0:
+                return SAFE;
+            case 1:
+                return EUCLID;
+            case 2:
+                return KETER;
+            default:
+                return null;
+        }
+    }
+
     int getProtectionForce() {
         return this.protectionForce;
     }
@@ -220,19 +233,6 @@ public class SandBox extends CardHolder {
     @Override
     public Card getCard(int i) {
         return super.getCard(i, sandBox);
-    }
-
-    public static ObjectClassKind numberToClass(int number) {
-        switch (number) {
-            case 0:
-                return SAFE;
-            case 1:
-                return EUCLID;
-            case 2:
-                return KETER;
-            default:
-                return null;
-        }
     }
 
 }

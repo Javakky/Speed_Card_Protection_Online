@@ -7,10 +7,8 @@ import scptcg.game.Place;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 
-import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static scptcg.game.Place.*;
 
@@ -290,7 +288,7 @@ public class GameOperator {
     }
 
     public static List<Pair<String, String>> reContainMent(final int player, final Card subject, final Place before,
-                                                                final Place after, final int coordinate) {
+                                                           final Place after, final int coordinate) {
         StringBuilder sb = new StringBuilder();
         sb.append("ReContainment\n")
                 .append(player)
@@ -315,7 +313,7 @@ public class GameOperator {
     }
 
     public static List<Pair<String, String>> decommission(final int player, final String place, final int coordinate,
-                                                               final Card card) {
+                                                          final Card card) {
         StringBuilder sb = new StringBuilder();
         sb.append("Decommission\n")
                 .append(player)

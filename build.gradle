@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.1'
     testCompile 'javax:javaee-api:8.0'
     compileOnly 'javax:javaee-api:8.0'
     jooqRuntime group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
