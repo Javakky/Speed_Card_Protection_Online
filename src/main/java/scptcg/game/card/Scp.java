@@ -191,4 +191,8 @@ public class Scp extends Card {
     public void addTag(String tag) {
         this.tag.add(tag);
     }
+
+    public List<String> getTags() {
+        return this.tag;
+    }
 }

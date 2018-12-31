@@ -9,6 +9,7 @@ import scptcg.game.Game;
 import scptcg.game.Place;
 import scptcg.game.SandBox;
 import scptcg.game.card.CardFactory;
+import scptcg.game.card.Scp;
 import scptcg.game.effect.Result;
 import scptcg.json.Deck;
 
@@ -57,6 +58,7 @@ public class EffectTest {
         game.decommission(parseInt(res.resStr[2]), Place.create(res.resStr[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
     }
+
 
     @Test
     public void アベル_破壊時() {
@@ -111,6 +113,19 @@ public class EffectTest {
         game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
         assertThat(asList(game.getDecommissioned(0)), hasItem("SCP-1129-JP フライング・アヒージョ"));
         assertEquals(SandBox.KETER_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+    }
+
+    @Test
+    public void 生乾きのタオル() {
+        final int effectPlayer = 0;
+        final int effectSandBox = 2;
+        game.breach(effectPlayer, SAFE, "SCP-1129-JP フライング・アヒージョ", 0);
+        game.breach(effectPlayer == 0 ? 1: 0, SAFE, "SCP-1129-JP フライング・アヒージョ", 0);
+        game.breach(effectPlayer, SAFE, "SCP-1198-JP　生乾きのタオル", 1);
+        game.activeEffects(null, null);
+        assertThat(((Scp)game.getCard(0, "SCP-1129-JP フライング・アヒージョ")).getTags(), hasItem("液体"));
+        assertThat(((Scp)game.getCard(1, "SCP-1129-JP フライング・アヒージョ")).getTags(), hasItem("液体"));
+        assertThat(((Scp)game.getCard(0, "SCP-1198-JP　生乾きのタオル")).getTags(), hasItem("液体"));
     }
 
     @After

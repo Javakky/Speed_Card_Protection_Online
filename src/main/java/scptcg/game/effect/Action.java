@@ -7,6 +7,7 @@ import scptcg.game.Player;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,13 +106,14 @@ public class Action extends AbstractAction {
                 switch (this.param[0]) {
                     case "SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
+                        //System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
                         for (int i : player.select(removeAll(this.param, 0, 1, 2))) {
                             player.addTag(SCP, i, this.param[2]);
                         }
                         break;
                     }
                 }
-
+                result.setParam(new Card[0], new Place[0], null, null);
                 break;
             }
 
