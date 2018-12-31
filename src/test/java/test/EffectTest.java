@@ -8,14 +8,11 @@ import scptcg.game.CreateGame;
 import scptcg.game.Game;
 import scptcg.game.Place;
 import scptcg.game.SandBox;
-import scptcg.game.card.Card;
 import scptcg.game.card.CardFactory;
-import scptcg.game.card.ObjectClassKind;
 import scptcg.game.effect.Result;
 import scptcg.json.Deck;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static java.lang.Integer.*;
@@ -35,19 +32,19 @@ public class EffectTest {
     private static final String user2 = "tip";
 
     @Before
-    public void createGame(){
+    public void createGame() {
         game = CreateGame.create(user1, loadDeck(deck1), user2, loadDeck(deck2));
     }
 
     @Test
-    public void サメの不在(){
+    public void サメの不在() {
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.selectPartner(effectPlayer, "SCP-1057 サメの不在", 0);
-        game.selectEffect(effectPlayer, SITE, effectSandBox);
+        game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
         Result res = game.activeEffects(null, null)[1];
-        game.damage(res.resInt[1] == 0 ? 1: 0, effectSandBox, res.resInt[0]);
+        game.damage(res.resInt[1] == 0 ? 1 : 0, effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 3, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
 
@@ -88,25 +85,40 @@ public class EffectTest {
     }
 
     @Test
-    public void 若さの泉(){
+    public void 若さの泉() {
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.selectPartner(effectPlayer, "SCP-006 若さの泉", 0);
         game.damage(effectPlayer, effectSandBox, 2);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 2, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
-        game.selectEffect(effectPlayer, SITE, effectSandBox);
+        game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
         Result res = game.activeEffects(null, null)[1];
         game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
 
+    @Test
+    public void フライング_アヒージョ() {
+        final int effectPlayer = 0;
+        final int effectSandBox = 2;
+        game.breach(effectPlayer, SAFE, "SCP-1129-JP フライング・アヒージョ", 0);
+        game.damage(effectPlayer, effectSandBox, 6);
+        assertEquals(SandBox.KETER_PROTECTION_FORCE - 6, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+        game.selectEffect(effectPlayer, SITE, 0);
+        game.selectedEffect(effectPlayer);
+        Result res = game.activeEffects(null, null)[2];
+        game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
+        assertThat(asList(game.getDecommissioned(0)), hasItem("SCP-1129-JP フライング・アヒージョ"));
+        assertEquals(SandBox.KETER_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+    }
+
     @After
-    public void fin(){
+    public void fin() {
         game = null;
     }
 
-    private static Deck loadDeck(String fileName){
+    private static Deck loadDeck(String fileName) {
 
         StringBuilder sb = new StringBuilder();
 
