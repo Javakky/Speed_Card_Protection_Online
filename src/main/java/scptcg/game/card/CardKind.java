@@ -10,7 +10,7 @@ public enum CardKind {
 
     private String type;
 
-    private CardKind(String type) {
+    CardKind(String type) {
         this.type = type;
     }
 

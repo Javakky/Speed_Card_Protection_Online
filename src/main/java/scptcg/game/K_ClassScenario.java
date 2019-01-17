@@ -8,7 +8,7 @@ public enum K_ClassScenario {
 
     private String scenario;
 
-    private K_ClassScenario(String scenario) {
+    K_ClassScenario(String scenario) {
         this.scenario = scenario;
     }
 

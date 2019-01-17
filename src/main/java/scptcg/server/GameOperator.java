@@ -283,7 +283,7 @@ public class GameOperator {
     public static List<Pair<String, String>> isFirst(final Game game, final String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("isFirst\n")
-                .append(String.valueOf(game.isFirst(name)));
+                .append(game.isFirst(name));
         return toListMe(sb.toString());
     }
 

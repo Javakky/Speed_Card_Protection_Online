@@ -4,13 +4,11 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jooq.DSLContext;
-import scptcg.game.CreateGame;
 import scptcg.game.GM;
 import scptcg.game.Game;
 import scptcg.game.Place;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
-import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
 import scptcg.json.Data;
 import scptcg.json.Deck;
@@ -154,7 +152,7 @@ public final class EndPoint {
 
     private void main(final String event, final Data data) throws IOException {
         List<Pair<String, String>> list = new LinkedList<>();
-        GM gm = this.game.get(id.get(data.player));
+        GM gm = game.get(id.get(data.player));
         switch (event) {
             case "isFirst":
                 list.addAll(isFirst(gm.getGame(), data.player));
@@ -307,7 +305,7 @@ public final class EndPoint {
         }
 
         Result[] r = gm.activeEffect();
-        if(r != null) {
+        if (r != null) {
             list.addAll(
                     sendEffectResult(gm.getGame(), data, r));
         }

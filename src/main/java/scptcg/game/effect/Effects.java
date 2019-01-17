@@ -66,7 +66,7 @@ public class Effects {
     public List<Effect> getEffectList(int suffix) {
         if (effect != null && effect.length > suffix && effect[suffix] != null) {
             List<Effect> li = effect[suffix].getEffect();
-            return li == null ? new LinkedList<>(): li;
+            return li == null ? new LinkedList<>() : li;
         }
         return new LinkedList<>();
     }

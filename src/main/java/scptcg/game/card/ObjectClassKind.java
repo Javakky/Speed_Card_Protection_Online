@@ -11,7 +11,7 @@ public enum ObjectClassKind {
 
     private String clazz;
 
-    private ObjectClassKind(String clazz) {
+    ObjectClassKind(String clazz) {
         this.clazz = clazz;
     }
 

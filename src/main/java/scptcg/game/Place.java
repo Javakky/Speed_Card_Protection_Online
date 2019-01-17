@@ -12,7 +12,7 @@ public enum Place {
 
     private Class type;
 
-    private Place(Class type) {
+    Place(Class type) {
         this.type = type;
     }
 

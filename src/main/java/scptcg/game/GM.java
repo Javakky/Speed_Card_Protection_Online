@@ -1,21 +1,17 @@
 package scptcg.game;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
-import scptcg.game.effect.Effect;
 import scptcg.game.effect.Result;
 import scptcg.json.Data;
 import scptcg.json.Deck;
 import type.Union;
 
 import java.io.IOException;
-import java.util.*;
 
 import static scptcg.game.Place.*;
-import static scptcg.server.GameOperator.*;
 
 public final class GM {
 
@@ -41,7 +37,7 @@ public final class GM {
                     result = game.crossTest(data.isFirst, data.place[0], data.place[1]);
                     player = data.isFirst == 0 ? 1 : 0;
                 }
-                return new Union<Triple<Integer, Integer, Scp>>(Triple.<Integer, Integer, Scp>of(player, result.getKey(), result.getValue()));
+                return new Union<Triple<Integer, Integer, Scp>>(Triple.of(player, result.getKey(), result.getValue()));
 
             case "breach":
                 return new Union<Scp>(game.breach(data.isFirst, data.place[0]));

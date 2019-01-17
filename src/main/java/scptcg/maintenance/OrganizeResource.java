@@ -47,7 +47,7 @@ public class OrganizeResource {
                         StringBuilder sb = new StringBuilder();
                         for (File f : dir.listFiles()) {
                             if (f.isFile()) {
-                                try (Scanner s = new Scanner(f);) {
+                                try (Scanner s = new Scanner(f)) {
                                     sb.setLength(0);
                                     while (s.hasNextLine()) {
                                         sb.append(s.nextLine());

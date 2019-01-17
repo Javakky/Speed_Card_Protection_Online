@@ -30,7 +30,6 @@ public class SandBox extends CardHolder {
         for (int i = 0; i < num; i++) {
             sandBox.add(null);
         }
-        ;
         this.maxProtectionForce = pf;
         this.protectionForce = pf;
     }

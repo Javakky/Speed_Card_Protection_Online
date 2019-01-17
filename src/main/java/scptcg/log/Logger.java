@@ -49,14 +49,14 @@ public interface Logger {
      *
      * @param msg : 出力メッセージ
      */
-    public void debug(final String msg);
+    void debug(final String msg);
 
     /**
      * infoレベルの情報をロギングする
      *
      * @param msg : 出力メッセージ
      */
-    public void info(final String msg);
+    void info(final String msg);
 
     /**
      * infoレベルの情報をロギングする
@@ -64,19 +64,19 @@ public interface Logger {
      * @param obj : ログが出力される Class Object
      * @param msg : 出力メッセージ
      */
-    public void info(final Object obj, final String msg);
+    void info(final Object obj, final String msg);
 
     /**
      * 警告レベルの情報をロギングする
      *
      * @param msg : 警告メッセージ
      */
-    public void warn(final String msg);
+    void warn(final String msg);
 
     /**
      * エラーレベル情報ををロギングする
      *
      * @param e : 例外情報
      */
-    public void error(final Throwable e);
+    void error(final Throwable e);
 }
