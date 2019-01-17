@@ -380,37 +380,6 @@ public final class EndPoint {
                     break;
 
                 case "Breach":
-                    if (r.resStr != null && r.resStr.length > 0 && r.resStr[0] != null) {
-                        String times = null;
-                        switch (r.resStr[0]) {
-                            case "once":
-                                break;
-                            case "twice":
-                                times = "once";
-                                break;
-                            case "notFullSite":
-                                times = "notFullSite";
-                                break;
-                        }
-                        if (times != null) {
-                            Map<String, String[]> map = new HashMap<>();
-                            map.put(r.getAction(), new String[]{
-                                    r.resStr[0],
-                                    r.resStr[1],
-                                    "select"
-                            });
-                            game.addEffects(
-                                    new Effect(
-                                            "",
-                                            "force",
-                                            1,
-                                            true,
-                                            null,
-                                            map
-                                    )
-                            );
-                        }
-                    }
                     list.addAll(selectBreach(r.getAction(), r.resInt[0]));
                     break;
                 case "Select":

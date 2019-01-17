@@ -160,6 +160,37 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[0], this.param[1]}, new int[]{i});
+                if (result.resStr != null && result.resStr.length > 0 && result.resStr[0] != null) {
+                    String times = null;
+                    switch (result.resStr[0]) {
+                        case "once":
+                            break;
+                        case "twice":
+                            times = "once";
+                            break;
+                        case "notFullSite":
+                            times = "notFullSite";
+                            break;
+                    }
+                    if (times != null) {
+                        Map<String, String[]> map = new HashMap<>();
+                        map.put(result.getAction(), new String[]{
+                                result.resStr[0],
+                                result.resStr[1],
+                                "select"
+                        });
+                        ga.addEffects(
+                                new Effect(
+                                        "",
+                                        "force",
+                                        1,
+                                        true,
+                                        null,
+                                        map
+                                )
+                        );
+                    }
+                }
             }
 
             case "ReContainment": {
