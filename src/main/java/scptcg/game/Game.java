@@ -409,4 +409,8 @@ public class Game implements ICardSetHolder {
     public int getProtectionForceSandBox(int effectPlayer, int clazz) {
         return player[effectPlayer].getProtectionForceSandBox(clazz);
     }
+
+    public int getCardNumberSandBox(int player, int clazz) {
+        return this.player[player].getCardNumber(SANDBOX, clazz);
+    }
 }

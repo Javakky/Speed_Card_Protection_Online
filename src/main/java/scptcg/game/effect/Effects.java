@@ -64,9 +64,9 @@ public class Effects {
     }
 
     public List<Effect> getEffectList(int suffix) {
-        if (effect != null && effect.length > suffix)
+        if (effect != null && effect.length > suffix && effect[suffix] != null)
             return effect[suffix].getEffect();
-        //System.out.println("don't has:" + suffix);
+        System.out.println("don't has:" + suffix);
         return new LinkedList<>();
     }
 }

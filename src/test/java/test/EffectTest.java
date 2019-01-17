@@ -38,6 +38,24 @@ public class EffectTest {
     }
 
     @Test
+    public void 不死身の爬虫類() {
+        final int effectPlayer = 0;
+        final int effectSandBox = 0;
+        game.breach(effectPlayer, KETER, "SCP-682 不死身の爬虫類", 0);
+        Result res = game.activeEffects(null, null)[1];
+        game.damage(res.resInt[1] == 0 ? 1 : 0, effectSandBox, res.resInt[0]);
+        res = game.activeEffects(null, null)[1];
+        game.damage(res.resInt[1], effectSandBox, res.resInt[0]);
+        game.damage(res.resInt[1], effectSandBox + 1, res.resInt[0]);
+        game.damage(res.resInt[1] == 0 ? 1: 0, effectSandBox, res.resInt[0]);
+        game.damage(res.resInt[1] == 0 ? 1: 0, effectSandBox + 1, res.resInt[0]);
+        assertEquals(SandBox.SAFE_CARD_NUMBER - 1, game.getCardNumberSandBox(effectPlayer, effectSandBox));
+        assertEquals(SandBox.EUCLID_CARD_NUMBER - 1, game.getCardNumberSandBox(effectPlayer, effectSandBox + 1));
+        assertEquals(SandBox.SAFE_CARD_NUMBER - 1, game.getCardNumberSandBox(effectPlayer == 0 ? 1: 0, effectSandBox));
+        assertEquals(SandBox.EUCLID_CARD_NUMBER - 1, game.getCardNumberSandBox(effectPlayer == 0 ? 1: 0, effectSandBox + 1));
+    }
+
+    @Test
     public void サメの不在() {
         final int effectPlayer = 0;
         final int effectSandBox = 0;
@@ -48,6 +66,30 @@ public class EffectTest {
         game.damage(res.resInt[1] == 0 ? 1 : 0, effectSandBox, res.resInt[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 3, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
+
+
+    @Test
+    public void 暴走取締車_1() {
+        final int effectPlayer = 0;
+        game.breach(0, SAFE, "SCP-004-JP 矛盾無き電卓", 0);
+        game.crossTest(0, 0, 0);
+        game.breach(1, EUCLID, "SCP-541-JP-GOI 暴走取締車", 1);
+        Result res = game.activeEffects(null, null)[1];
+        game.decommission(0, Place.create(res.resStr[1]), 0);
+        assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
+    }
+
+    @Test
+    public void 暴走取締車_2() {
+        final int effectPlayer = 0;
+        game.breach(0, SAFE, "SCP-004-JP 矛盾無き電卓", 0);
+        game.crossTest(0, 0, 0);
+        game.breach(0, EUCLID, "SCP-541-JP-GOI 暴走取締車", 1);
+        Result res = game.activeEffects(null, null)[1];
+        game.decommission(parseInt(res.resStr[2]), Place.create(res.resStr[1]), 0);
+        assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
+    }
+
 
     @Test
     public void アベル_召喚時() {
@@ -101,6 +143,20 @@ public class EffectTest {
     }
 
     @Test
+    public void 追い炊き込みご飯風呂() {
+        final int effectPlayer = 0;
+        final int effectSandBox = 2;
+        game.breach(effectPlayer, EUCLID, "SCP-403-JP 追い炊き込みご飯風呂", 0);
+        game.damage(effectPlayer, effectSandBox, 4);
+        assertEquals(SandBox.KETER_PROTECTION_FORCE - 4, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+        game.selectEffect(effectPlayer, SITE, 0);
+        game.selectedEffect(effectPlayer);
+        Result res = game.activeEffects(null, null)[2];
+        game.healSandBox(res.resInt[1], effectSandBox, res.resInt[0]);
+        assertEquals(SandBox.KETER_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
+    }
+
+    @Test
     public void フライング_アヒージョ() {
         final int effectPlayer = 0;
         final int effectSandBox = 2;
@@ -126,6 +182,14 @@ public class EffectTest {
         assertThat(((Scp)game.getCard(0, "SCP-1129-JP フライング・アヒージョ")).getTags(), hasItem("液体"));
         assertThat(((Scp)game.getCard(1, "SCP-1129-JP フライング・アヒージョ")).getTags(), hasItem("液体"));
         assertThat(((Scp)game.getCard(0, "SCP-1198-JP　生乾きのタオル")).getTags(), hasItem("液体"));
+    }
+
+    @Test
+    public void _0匹のイナゴ() {
+        final int effectPlayer = 0;
+        game.breach(effectPlayer, EUCLID, "SCP-240-JP 0匹のイナゴ", 0);
+        game.activeEffects(null, null);
+        assertThat(asList(game.getDecommissioned(0)), hasItem("SCP-240-JP 0匹のイナゴ"));
     }
 
     @After

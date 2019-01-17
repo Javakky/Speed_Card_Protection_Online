@@ -45,15 +45,15 @@ public final class EndPoint {
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
         System.out.println(log);
-        //logger.info(log);
+        logger.info(log);
     }
 
     @OnClose
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        //System.out.println(log);
-        //logger.info(log);
+        System.out.println(log);
+        logger.info(log);
         cutConnection(getId(client));
     }
 
@@ -134,9 +134,9 @@ public final class EndPoint {
         try {
             String t = text.replaceAll("\n", "");
             Data data = (new Gson()).fromJson(t, Data.class);
-            //System.out.println(data.event);
+            System.out.println(data.event);
             System.out.println(data);
-            //logger.info(data.toString());
+            logger.info(data.toString());
 
             if (data.event.equals("Login")) {
                 login(data.player, data.name[0], client);
@@ -182,9 +182,8 @@ public final class EndPoint {
             case "crossTest":
             case "damage":
                 Pair<Integer, Scp> result;
-                int player = -1;
+                int player;
                 if (data.event.equals("damage")) {
-                    //System.out.println(data.isFirst + " " + data.place[0] + " " + data.name[0]);
                     result = game.damage(data.isFirst, data.place[1], Integer.parseInt(data.name[0]));
                     player = data.isFirst;
                 } else {
@@ -281,7 +280,7 @@ public final class EndPoint {
                 break;
 
             case "HealSandBox":
-                //System.out.print(data.toString());
+                System.out.print(data.toString());
                 int point = game.healSandBox(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[2]));
                 list.addAll(heal(data.isFirst, data.place[0], point));
                 break;
@@ -319,7 +318,7 @@ public final class EndPoint {
             Result[] r = game.activeEffects(null, null);
             for (Result res : r
             ) {
-                //System.out.println("active:" + res.getAction());
+                System.out.println("active:" + res.getAction());
             }
             list.addAll(
                     sendEffectResult(game, data, r));
@@ -332,12 +331,12 @@ public final class EndPoint {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
-                    //logger.info("me\n: " + e.getValue());
+                    logger.info("me\n: " + e.getValue());
                     System.out.println();
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
-                    //logger.info("enemy:\n " + e.getValue());
+                    logger.info("enemy:\n " + e.getValue());
                     break;
             }
         }
@@ -347,7 +346,7 @@ public final class EndPoint {
         List<Pair<String, String>> list = new LinkedList<>();
         for (Result r : st) {
             if (r == null) {
-                //list.addAll(failEffect());
+                list.addAll(failEffect());
                 continue;
             }
             switch (r.getAction()) {
@@ -468,15 +467,15 @@ public final class EndPoint {
         try {
             DSLContext con = connectionDB();
             String txt = null;
-            //System.out.println(id);
-            //System.out.println(deckName);
+            System.out.println(id);
+            System.out.println(deckName);
             for (org.jooq.Record r :
                     con.select().from(DECK)
                             .where(DECK.ID.eq(id))
                             .and(DECK.NAME.eq(deckName))
                             .fetch()) {
                 txt = r.getValue(DECK.DECK_);
-                //System.out.println(txt);
+                System.out.println(txt);
                 break;
             }
             return (new Gson()).fromJson(txt, Deck.class);

@@ -386,4 +386,14 @@ public class Player implements ICardSetHolder {
     public int getProtectionForceSandBox(int clazz) {
         return sandbox[clazz].getProtectionForce();
     }
+
+    public int getCardNumber(Place place, int clazz) {
+        switch (place) {
+            case SANDBOX:
+                return sandbox[clazz].getNumber();
+            default:
+                break;
+        }
+        return -1;
+    }
 }

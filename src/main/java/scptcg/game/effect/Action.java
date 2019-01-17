@@ -65,7 +65,7 @@ public class Action extends AbstractAction {
                         player = getPlayerNumber(parent, this.param[1]);
                         break;
                     case "both":
-                        //System.out.println("both");
+                        System.out.println("both");
                         Player e = p.getEnemy();
                         int[] ps = p.select(removeAll(this.param, 0, 1));
                         int[] es = e.select(removeAll(this.param, 0, 1));
@@ -98,7 +98,7 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[2]}, new int[]{num, player, Integer.parseInt(this.param[1])});
-                //System.out.println(result.action);
+                System.out.println(result.action);
                 break;
             }
 
@@ -106,7 +106,7 @@ public class Action extends AbstractAction {
                 switch (this.param[0]) {
                     case "SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
-                        //System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
+                        System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
                         for (int i : player.select(removeAll(this.param, 0, 1, 2))) {
                             player.addTag(SCP, i, this.param[2]);
                         }

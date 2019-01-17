@@ -17,7 +17,7 @@ public class Term extends AbstractAction {
 
     public boolean fulfill(Effect parent) {
         Player p = parent.getMyPlayer();
-        //System.out.println("action:" + getAction());
+        System.out.println("action:" + getAction());
         switch (getAction()) {
             case "notPartner": {
                 return !((Scp) parent.getCard()).isPartner();
@@ -26,7 +26,7 @@ public class Term extends AbstractAction {
                 return p.hasPersonnel();
             }
             case "hasSCP": {
-                //System.out.println("\"" + this.param[0] + "\"");
+                System.out.println("\"" + this.param[0] + "\"");
                 switch (this.param[0]) {
                     case "me":
                         return p.hasSCP(remove(param, 0));
