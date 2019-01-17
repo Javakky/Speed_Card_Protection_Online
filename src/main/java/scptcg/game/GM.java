@@ -65,11 +65,9 @@ public final class GM {
                 return new Union<Integer>(len);
 
             case "activeEffect":
-                Card select = game.getSelectEffect();
-
                 boolean canSelect = game.selectedEffect(data.place[0]);
 
-                return new Union<Pair<Card, Boolean>>(ImmutablePair.of(select, canSelect));
+                return new Union<Boolean>(canSelect);
 
             case "decommission":
                 return new Union<Card>(game.decommission(data.isFirst, create(data.name[0]), data.place[0]));
@@ -94,5 +92,9 @@ public final class GM {
             return r;
         }
         return null;
+    }
+
+    public Game getGame() {
+        return this.game;
     }
 }
