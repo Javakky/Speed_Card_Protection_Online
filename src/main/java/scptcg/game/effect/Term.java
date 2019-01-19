@@ -41,6 +41,9 @@ public class Term extends AbstractAction {
             case "firstTimeTurn": {
                 return parent.getAlready() == 0;
             }
+            case "myTurn": {
+                return parent.isMyTurn();
+            }
             default: {
                 return true;
             }

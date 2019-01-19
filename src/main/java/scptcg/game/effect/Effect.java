@@ -185,4 +185,8 @@ public class Effect implements Serializable {
     public void setParent(Card parent) {
         this.parent = parent;
     }
+
+    public boolean isMyTurn() {
+        return parent.isMyTurn();
+    }
 }

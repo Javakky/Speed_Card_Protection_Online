@@ -111,4 +111,12 @@ public abstract class CardHolder {
             throw new RuntimeException("parent isn't player");
         }
     }
+
+    public boolean isMyTurn() {
+        if (parent instanceof Player) {
+            return ((Player) parent).isMyTurn();
+        } else {
+            throw new RuntimeException("parent isn't player");
+        }
+    }
 }

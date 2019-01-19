@@ -175,4 +175,8 @@ public abstract class Card implements Cloneable {
     public Player getEnemy() {
         return parent.getEnemy();
     }
+
+    public boolean isMyTurn() {
+        return parent.isMyTurn();
+    }
 }

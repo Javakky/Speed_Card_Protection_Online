@@ -103,6 +103,8 @@ public class Game implements ICardSetHolder {
         for (Player p : this.player) {
             p.nextTurn();
         }
+        this.addAllEffects(this.player[turnPlayer].getEffectList(TURN_START));
+        this.addAllEffects(this.player[turnPlayer == 0 ? 1 : 0].getEffectList(TURN_START));
     }
 
     public K_ClassScenario isK_ClassScenario() {
@@ -176,7 +178,7 @@ public class Game implements ICardSetHolder {
 
 
     public Scp breach(int player, ObjectClassKind clazz, String name, int place) {
-        Pair<Scp, List<Effect>> e = this.player[player].breach(clazz, name, place);
+        Pair<Scp, List<Effect>> e = this.player[player].breach(clazz, name, place, Place.SITE);
         boolean ef = e.getValue().size() > 0;
         if (ef) {
             addAllEffects(e.getValue());
@@ -412,5 +414,9 @@ public class Game implements ICardSetHolder {
 
     public int getCardNumberSandBox(int player, int clazz) {
         return this.player[player].getCardNumber(SANDBOX, clazz);
+    }
+
+    public int getMyTurn(Player player) {
+        return this.player[0] == player ? 0 : 1;
     }
 }

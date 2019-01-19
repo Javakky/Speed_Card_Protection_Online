@@ -316,4 +316,14 @@ public class Site extends CardHolder {
     public void addTag(int index, String tag) {
         scp.get(index).addTag(tag);
     }
+
+    public List<Effect> getEffectList(int timing) {
+        List<Effect> list = new ArrayList<>();
+        for (Scp tmp : scp) {
+            if (tmp != null) {
+                list.addAll(tmp.getEffectList(timing));
+            }
+        }
+        return list;
+    }
 }

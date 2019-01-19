@@ -177,18 +177,29 @@ public class Player implements ICardSetHolder {
         }
     }
 
-    public Object[] breach(Scp card) {
-        if (card != null) {
-            int place = getEmptySite();
-            return new Object[]{place, site.breach(place, card)};
-        } else {
-            throw new RuntimeException("card is null");
-        }
+    public Pair<Scp, List<Effect>> breach(ObjectClassKind clazz, String name, int index, Place place) {
+        CardHolder before = getHolder(place, index);
+        Scp tmp = sandbox[classToNumber(clazz)].searchSandBox(name);
+        return Pair.of(tmp, site.breach(index, tmp));
     }
 
-    public Pair<Scp, List<Effect>> breach(ObjectClassKind clazz, String name, int place) {
-        Scp tmp = sandbox[classToNumber(clazz)].searchSandBox(name);
-        return Pair.of(tmp, site.breach(place, tmp));
+    private CardHolder getHolder(Place place, int index) {
+        switch (place) {
+            case SITE:
+                return site;
+            case DECOMMISSIONED:
+                return decommissioned;
+            case TALES:
+                return tale;
+            case PERSONNEL_FILE:
+                return personnelFile;
+            case EXCLUSION:
+                return exclusion;
+            case SANDBOX:
+                return sandbox[index];
+            default:
+                return null;
+        }
     }
 
     public int crossTest(int place) {
@@ -223,7 +234,7 @@ public class Player implements ICardSetHolder {
     }
 
     public int[] select(String... param) {
-        Place p = Place.create(param[0]);
+        Place p = create(param[0]);
         switch (p) {
             case SITE:
                 return this.site.select(ArrayUtils.remove(param, 0));
@@ -396,4 +407,13 @@ public class Player implements ICardSetHolder {
         }
         return -1;
     }
+
+    public List<Effect> getEffectList(int timing) {
+        return this.site.getEffectList(timing);
+    }
+
+    public boolean isMyTurn() {
+        return parent.getTurnPlayer() == parent.getMyTurn(this);
+    }
+
 }
