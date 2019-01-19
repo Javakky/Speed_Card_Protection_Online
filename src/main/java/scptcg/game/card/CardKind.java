@@ -1,5 +1,7 @@
 package scptcg.game.card;
 
+import java.util.Arrays;
+
 public enum CardKind {
     SCP("Scp"),
     TALE("Tale"),
@@ -14,23 +16,12 @@ public enum CardKind {
         this.type = type;
     }
 
-    public static CardKind create(String place) {
-        switch (place) {
-            case "SCP":
-                return SCP;
-            case "Incident":
-                return INCIDENT;
-            case "Tale":
-                return TALE;
-            case "Personnel":
-                return PERSONNEL;
-            case "Canon":
-                return CANON;
-            case "Anomalous":
-                return ANOMALOUS;
-            default:
-                throw new NullPointerException();
-        }
+    public static CardKind getByName(String name) {
+        return Arrays.stream(CardKind.values())
+                .filter(data -> data.getType().equals(name))
+                .findFirst()
+                .orElse(null);
+
     }
 
     public String getType() {

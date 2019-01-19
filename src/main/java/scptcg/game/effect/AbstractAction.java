@@ -14,9 +14,7 @@ public abstract class AbstractAction {
         this.param = param;
     }
 
-    public String getAction() {
-        return action;
-    }
+    public abstract IActionKind getAction();
 
     public String[] getParam() {
         return param;

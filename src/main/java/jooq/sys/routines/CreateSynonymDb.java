@@ -4,12 +4,11 @@
 package jooq.sys.routines;
 
 
-import javax.annotation.Generated;
-
 import jooq.sys.Sys;
-
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -26,7 +25,7 @@ import org.jooq.impl.AbstractRoutine;
  *  Parameters
  *  
  *  in_db_name (VARCHAR(64)):
- *  The database name that you would like to create a synonym for.
+ *  The database name that you would like to getByName a synonym for.
  *  in_synonym (VARCHAR(64)):
  *  The database synonym name.
  *  

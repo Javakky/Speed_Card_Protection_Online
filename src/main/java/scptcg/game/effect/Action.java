@@ -25,6 +25,14 @@ public class Action extends AbstractAction {
         super(action, param);
     }
 
+    private ActionKind tmpAction = null;
+
+    @Override
+    public ActionKind getAction() {
+        if (tmpAction == null) return (tmpAction = ActionKind.getByName(action));
+        return tmpAction;
+    }
+
     public Result active(String param, Effect ef, Result before) {
         Card parent = ef.getCard();
         Result result = new Result(
@@ -36,8 +44,8 @@ public class Action extends AbstractAction {
         );
         Player p = parent.getMyPlayer();
         Game ga = p.getGame();
-        switch (action) {
-            case "Decommission": {
+        switch (getAction()) {
+            case DECOMMISSION: {
                 Card c = null;
                 switch (this.param[0]) {
                     case "Personnel": {
@@ -57,7 +65,7 @@ public class Action extends AbstractAction {
                 break;
             }
 
-            case "Select": {
+            case SELECT: {
                 int player = -1;
                 switch (this.param[1]) {
                     case "enemy":
@@ -83,8 +91,8 @@ public class Action extends AbstractAction {
                         p.select(removeAll(this.param, 0, 1)));
                 break;
             }
-            case "DamageSandBox":
-            case "healSandBox": {
+            case DAMAGE_SAND_BOX:
+            case HEAL_SAND_BOX: {
                 int num = 0;
                 int player = getPlayerNumber(parent, this.param[0]);
 
@@ -102,7 +110,7 @@ public class Action extends AbstractAction {
                 break;
             }
 
-            case "addTag": {
+            case ADD_TAG: {
                 switch (this.param[0]) {
                     case "SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
@@ -117,7 +125,7 @@ public class Action extends AbstractAction {
                 break;
             }
 
-            case "AddEffect": {
+            case ADD_EFFECT: {
                 switch (this.param[0]) {
                     case "Personnel": {
                         Map<String, String[]> act = new HashMap();
@@ -143,13 +151,13 @@ public class Action extends AbstractAction {
                 break;
             }
 
-            case "K-class": {
+            case K_CLASS: {
                 ga.ignitionK(IK, ga.getPlayer(Integer.parseInt(param)));
                 result.setParam(new Card[0], new Place[0], null, null);
                 break;
             }
 
-            case "Breach": {
+            case BREACH: {
                 int i = -1;
                 switch (this.param[1]) {
                     case "me":
@@ -193,7 +201,7 @@ public class Action extends AbstractAction {
                 }
             }
 
-            case "ReContainment": {
+            case RECONTAINMENT: {
                 int index = parent.reContainment();
                 result.setParam(new Card[]{parent}, new Place[]{parent.getPlace()}, null, new int[]{index});
                 break;

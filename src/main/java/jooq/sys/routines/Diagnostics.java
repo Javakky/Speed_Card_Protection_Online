@@ -4,13 +4,12 @@
 package jooq.sys.routines;
 
 
-import javax.annotation.Generated;
-
 import jooq.sys.Sys;
-
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
 import org.jooq.types.UInteger;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -97,8 +96,8 @@ import org.jooq.types.UInteger;
  *  
  *  
  *  Example
- *  
- *  To create a report and append it to the file diag.out:
+ *
+ *  To getByName a report and append it to the file diag.out:
  *  
  *  mysql&gt; TEE diag.out;
  *  mysql&gt; CALL sys.diagnostics(120, 30, 'current');

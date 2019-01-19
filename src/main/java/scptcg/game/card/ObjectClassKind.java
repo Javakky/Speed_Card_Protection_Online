@@ -1,5 +1,7 @@
 package scptcg.game.card;
 
+import java.util.Arrays;
+
 public enum ObjectClassKind {
     SAFE("Safe"),
     EUCLID("Euclid"),
@@ -15,25 +17,11 @@ public enum ObjectClassKind {
         this.clazz = clazz;
     }
 
-    public static ObjectClassKind create(String clazz) {
-        switch (clazz) {
-            case "Safe":
-                return SAFE;
-            case "Euclid":
-                return EUCLID;
-            case "Keter":
-                return KETER;
-            case "Neutralized":
-                return NEUTRALIZED;
-            case "Thaumiel":
-                return THAUMIEL;
-            case "Explained":
-                return EXPLAINED;
-            case "Unclassed":
-                return UNCLASSED;
-            default:
-                throw new NullPointerException();
-        }
+    public static ObjectClassKind getByName(String clazz) {
+        return Arrays.stream(ObjectClassKind.values())
+                .filter(data -> data.getClazz().equals(clazz))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getClazz() {

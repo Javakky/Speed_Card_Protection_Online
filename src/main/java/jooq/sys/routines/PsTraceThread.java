@@ -4,15 +4,13 @@
 package jooq.sys.routines;
 
 
-import java.math.BigDecimal;
-
-import javax.annotation.Generated;
-
 import jooq.sys.Sys;
-
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
 import org.jooq.types.ULong;
+
+import javax.annotation.Generated;
+import java.math.BigDecimal;
 
 
 /**
@@ -20,7 +18,7 @@ import org.jooq.types.ULong;
  *  Description
  *  
  *  Dumps all data within Performance Schema for an instrumented thread,
- *  to create a DOT formatted graph file. 
+ *  to getByName a DOT formatted graph file.
  *  
  *  Each resultset returned from the procedure should be used for a complete 
  * graph

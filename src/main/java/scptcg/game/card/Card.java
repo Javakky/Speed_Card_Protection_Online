@@ -70,7 +70,7 @@ public abstract class Card implements Cloneable {
      * @return カードの種類
      */
     public CardKind getType() {
-        return CardKind.create(type);
+        return CardKind.getByName(type);
     }
 
     protected void setType(CardKind type) {

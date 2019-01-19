@@ -69,11 +69,11 @@ public class Effect implements Serializable {
     }
 
     public String getBeforeAction() {
-        return action[point].getAction();
+        return action[point].getAction().getName();
     }
 
     public String getAction() {
-        return action[point + 1].getAction();
+        return action[point + 1].getAction().getName();
     }
 
     public int getNumber() {

@@ -15,17 +15,25 @@ public class Term extends AbstractAction {
         super(action, param);
     }
 
+    private TermKind tmpAction = null;
+
+    @Override
+    public TermKind getAction() {
+        if (tmpAction == null) return (tmpAction = TermKind.getByName(action));
+        return tmpAction;
+    }
+
     public boolean fulfill(Effect parent) {
         Player p = parent.getMyPlayer();
         System.out.println("action:" + getAction());
         switch (getAction()) {
-            case "notPartner": {
+            case NOT_PARTNER: {
                 return !((Scp) parent.getCard()).isPartner();
             }
-            case "hasPersonnel": {
+            case HAS_PERSONNEL: {
                 return p.hasPersonnel();
             }
-            case "hasSCP": {
+            case HAS_SCP: {
                 System.out.println("\"" + this.param[0] + "\"");
                 switch (this.param[0]) {
                     case "me":
@@ -38,10 +46,10 @@ public class Term extends AbstractAction {
                         return false;
                 }
             }
-            case "firstTimeTurn": {
+            case FIRST_TIME_BY_TURN: {
                 return parent.getAlready() == 0;
             }
-            case "myTurn": {
+            case MY_TURN: {
                 return parent.isMyTurn();
             }
             default: {

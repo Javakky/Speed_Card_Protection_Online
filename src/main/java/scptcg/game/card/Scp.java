@@ -78,7 +78,7 @@ public class Scp extends Card {
     }
 
     public ObjectClassKind getClazz() {
-        return ObjectClassKind.create(clazz);
+        return ObjectClassKind.getByName(clazz);
     }
 
     protected void setClazz(String clazz) {
@@ -89,7 +89,7 @@ public class Scp extends Card {
         if (containmentClass == null || containmentClass.equals("")) {
             return null;
         }
-        return ObjectClassKind.create(containmentClass);
+        return ObjectClassKind.getByName(containmentClass);
     }
 
     public String getTagElement(int num) {
