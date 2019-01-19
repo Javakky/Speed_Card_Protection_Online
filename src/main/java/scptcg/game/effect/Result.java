@@ -4,15 +4,15 @@ import scptcg.game.Place;
 import scptcg.game.card.Card;
 
 public class Result {
-    public Card[] object;
-    public Place subjectPlace;
-    public Card subject;
-    public Place[] objectPlace;
-    public String[] resStr;
-    public int[] resInt;
-    int turn;
-    int subjectPlayer;
-    String action;
+    private Card[] object;
+    private Place subjectPlace;
+    private Card subject;
+    private Place[] objectPlace;
+    private String[] resStr;
+    private int[] resInt;
+    private int turn;
+    private int subjectPlayer;
+    private String action;
 
     public Result(int turn, int subjectPlayer, Place subjectPlace, String action, Card subject) {
         this.turn = turn;
@@ -31,5 +31,37 @@ public class Result {
 
     public String getAction() {
         return action;
+    }
+
+    public Card[] getObject() {
+        return object;
+    }
+
+    public Place getSubjectPlace() {
+        return subjectPlace;
+    }
+
+    public Card getSubject() {
+        return subject;
+    }
+
+    public Place[] getObjectPlace() {
+        return objectPlace;
+    }
+
+    public String[] getResStr() {
+        return resStr;
+    }
+
+    public int[] getResInt() {
+        return resInt;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public int getSubjectPlayer() {
+        return subjectPlayer;
     }
 }

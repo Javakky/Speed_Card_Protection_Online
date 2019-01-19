@@ -93,11 +93,11 @@ public class Scp extends Card {
     }
 
     public String getTagElement(int num) {
-        return tag.get(num);
+        return getTag().get(num);
     }
 
     public int getTagLength() {
-        return tag.size();
+        return getTag().size();
     }
 
     public int getAttackNumber() {
@@ -105,7 +105,7 @@ public class Scp extends Card {
     }
 
     public boolean canPartner() {
-        return canPartner;
+        return isCanPartner();
     }
 
     public boolean isPartner() {
@@ -113,19 +113,23 @@ public class Scp extends Card {
     }
 
     public boolean canAttack() {
-        return canAttack && attackNumber > 0;
+        return isCanAttack() && attackNumber > 0;
     }
 
     public void setCanAttackNumber(int canAttackNumber) {
         this.canAttackNumber = canAttackNumber;
     }
 
-    private void setSubClazz(String clazz) {
-        subClazz.add(clazz);
+    private void addTag(List<String> tag) {
+        this.getTag().addAll(tag);
     }
 
-    private void addTag(List<String> tag) {
-        this.tag.addAll(tag);
+    public int crossTest() {
+        if (attackNumber < getCanAttackNumber() && isCanAttack()) {
+            attackNumber++;
+            return getSecure();
+        }
+        return -1;
     }
 
     public void partnerIs() {
@@ -155,12 +159,9 @@ public class Scp extends Card {
         prepareSecure();
     }
 
-    public int crossTest() {
-        if (attackNumber < canAttackNumber && canAttack) {
-            attackNumber++;
-            return getSecure();
-        }
-        return -1;
+    @Override
+    public Card clone() {
+        return new Scp(getParent(), SCP, getName(), cost, secure, getTag(), clazz, getSubClazz());
     }
 
     public void refresh() {
@@ -173,26 +174,45 @@ public class Scp extends Card {
         return getMyPlayer().reContainment(this, SANDBOX);
     }
 
-    @Override
-    public Card clone() {
-        return new Scp(parent, SCP, name, cost, secure, tag, clazz, subClazz);
+    public List<Effect> getEffectList(int suffix) {
+        if (getEffects() != null)
+            return getEffects().getEffectList(suffix);
+        return new LinkedList<>();
     }
 
     public boolean isCrossTested() {
         return attackNumber > 0;
     }
 
-    public List<Effect> getEffectList(int suffix) {
-        if (effects != null)
-            return effects.getEffectList(suffix);
-        return new LinkedList<>();
-    }
-
     public void addTag(String tag) {
-        this.tag.add(tag);
+        this.getTag().add(tag);
     }
 
     public List<String> getTags() {
-        return this.tag;
+        return this.getTag();
+    }
+
+    public boolean isCanAttack() {
+        return canAttack;
+    }
+
+    public int getCanAttackNumber() {
+        return canAttackNumber;
+    }
+
+    public List<String> getSubClazz() {
+        return subClazz;
+    }
+
+    private void setSubClazz(String clazz) {
+        getSubClazz().add(clazz);
+    }
+
+    public List<String> getTag() {
+        return tag;
+    }
+
+    public boolean isCanPartner() {
+        return canPartner;
     }
 }

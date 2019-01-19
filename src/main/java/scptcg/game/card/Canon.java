@@ -18,6 +18,6 @@ public class Canon extends Card {
 
     @Override
     public Canon clone() {
-        return new Canon(parent, name);
+        return new Canon(getParent(), getName());
     }
 }

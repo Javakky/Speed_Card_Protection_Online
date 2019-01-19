@@ -337,26 +337,26 @@ public final class EndPoint {
             switch (r.getAction()) {
                 case "Decommission":
                     list.addAll(decommission(
-                            r.subject.getPlayerNumber(),
-                            r.objectPlace[0].toString(),
-                            r.resInt[0],
-                            r.object[0]
+                            r.getSubject().getPlayerNumber(),
+                            r.getObjectPlace()[0].toString(),
+                            r.getResInt()[0],
+                            r.getObject()[0]
                     ));
                     break;
 
                 case "ReContainment":
                     list.addAll(reContainMent(
-                            r.subject.getPlayerNumber(),
-                            r.subject,
-                            r.subjectPlace,
-                            r.objectPlace[0],
-                            r.resInt[0]
+                            r.getSubject().getPlayerNumber(),
+                            r.getSubject(),
+                            r.getSubjectPlace(),
+                            r.getObjectPlace()[0],
+                            r.getResInt()[0]
                     ));
                     break;
 
                 case "finish":
-                    if (r.subjectPlace == TALES) {
-                        list.addAll(decommission(r.subject.getPlayerNumber(), TALES.toString(), r.resInt[0], r.subject));
+                    if (r.getSubjectPlace() == TALES) {
+                        list.addAll(decommission(r.getSubject().getPlayerNumber(), TALES.toString(), r.getResInt()[0], r.getSubject()));
                     }
                     break;
 
@@ -365,31 +365,31 @@ public final class EndPoint {
                     break;
 
                 case "Breach":
-                    list.addAll(selectBreach(r.getAction(), r.resInt[0]));
+                    list.addAll(selectBreach(r.getAction(), r.getResInt()[0]));
                     break;
                 case "Select":
-                    int len = r.resStr.length > 2 ? 2 : 1;
+                    int len = r.getResStr().length > 2 ? 2 : 1;
                     int[][] coordinate = new int[len][];
 
                     if (len == 2) {
-                        int plen = Integer.parseInt(r.resStr[2]);
+                        int plen = Integer.parseInt(r.getResStr()[2]);
 
                         coordinate[0] = new int[plen];
                         for (int i = 0; i < plen; i++) {
-                            coordinate[0][i] = r.resInt[i];
+                            coordinate[0][i] = r.getResInt()[i];
                         }
 
-                        int elen = r.resInt.length - plen;
+                        int elen = r.getResInt().length - plen;
                         coordinate[1] = new int[elen];
 
                         for (int i = 0; i < elen; i++) {
-                            coordinate[1][i] = r.resInt[i + plen];
+                            coordinate[1][i] = r.getResInt()[i + plen];
                         }
                     } else {
-                        coordinate[0] = r.resInt;
+                        coordinate[0] = r.getResInt();
                     }
 
-                    list.addAll(select(Integer.parseInt(r.resStr[2]), r.getAction(), r.subjectPlace.toString(), coordinate));
+                    list.addAll(select(Integer.parseInt(r.getResStr()[2]), r.getAction(), r.getSubjectPlace().toString(), coordinate));
                     break;
 
                 case "healSandBox":
@@ -397,11 +397,11 @@ public final class EndPoint {
                 case "DamageSandBox":
                     list.addAll(
                             changeProtectionEffect(
-                                    r.resInt[1],
+                                    r.getResInt()[1],
                                     r.getAction(),
-                                    r.resInt[0],
-                                    r.resInt[2],
-                                    r.resStr[0]));
+                                    r.getResInt()[0],
+                                    r.getResInt()[2],
+                                    r.getResStr()[0]));
                     break;
 
                 default:

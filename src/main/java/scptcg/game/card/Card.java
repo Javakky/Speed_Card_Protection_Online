@@ -15,9 +15,6 @@ import java.util.List;
  * ゲーム内に登場するあらゆるカードを表す抽象クラス。
  */
 public abstract class Card implements Cloneable {
-    /**
-     * このカードを保持しているオブジェクトへの参照。
-     */
     protected CardHolder parent;
     /**
      * カードの種類。<br />
@@ -25,21 +22,9 @@ public abstract class Card implements Cloneable {
      * 内部情報としてはStringで保持しているが、getType・setTypeで変換を行う。
      */
     protected String type;
-    /**
-     * カード名。
-     */
     protected String name;
-    /**
-     * 破壊する(Decommissionする)ことが可能であるかどうか。
-     */
     protected boolean canDecommission = true;
-    /**
-     * 保持する効果を体系的にまとめたオブジェクト。
-     */
     protected Effects effects;
-    /**
-     * 利便性のため、全効果オブジェクトへの参照をリストとして保持するためのフィールド。
-     */
     protected List<Effect> tmpEffect;
 
     /**
@@ -73,43 +58,46 @@ public abstract class Card implements Cloneable {
         return CardKind.getByName(type);
     }
 
-    protected void setType(CardKind type) {
+    protected void setType(final CardKind type) {
         this.type = type.toString();
     }
 
+    /**
+     * カード名。
+     */
     public String getName() {
         return name;
     }
 
-    protected void setName(String name) {
+    protected void setName(final String name) {
         this.name = name;
     }
 
     public int getTurn() {
-        return parent.getTurn();
+        return getParent().getTurn();
     }
 
     public Place getPlace() {
-        return parent.getPlace();
+        return getParent().getPlace();
     }
 
     public Player getMyPlayer() {
-        return this.parent.getMyPlayer();
+        return this.getParent().getMyPlayer();
     }
 
     public int getNumber() {
-        return parent.getNumber(this);
+        return getParent().getNumber(this);
     }
 
     protected boolean canDecommission() {
-        return canDecommission;
+        return isCanDecommission();
     }
 
     protected List<Effect> getEffect() {
-        if (effects == null) {
+        if (getEffects() == null) {
             return new ArrayList<>();
         }
-        List<Effect> li = effects.getEffect();
+        List<Effect> li = getEffects().getEffect();
         if (li == null) {
             return new ArrayList<>();
         } else {
@@ -118,35 +106,35 @@ public abstract class Card implements Cloneable {
     }
 
     public Effect getEffect(int timing, int num) {
-        if (effects != null) {
-            return effects.getEffect(timing, num);
+        if (getEffects() != null) {
+            return getEffects().getEffect(timing, num);
         } else {
             return null;
         }
     }
 
     public Pair<Result[], Boolean> activeEffect(int timing, int num, String[] param) {
-        if (effects != null) {
-            return effects.activeEffect(timing, num, param);
+        if (getEffects() != null) {
+            return getEffects().activeEffect(timing, num, param);
         }
         return null;
     }
 
     public void addEffect(Effect e, String type, String compel) {
         e.setParent(this);
-        tmpEffect.add(e);
-        effects.addEffect(e, type, compel);
+        getTmpEffect().add(e);
+        getEffects().addEffect(e, type, compel);
     }
 
     public void decommission() {
-        parent.decommission(this);
+        getParent().decommission(this);
     }
 
     public void refresh() {
-        if (tmpEffect == null) {
+        if (getTmpEffect() == null) {
             return;
         }
-        for (Effect e : tmpEffect) {
+        for (Effect e : getTmpEffect()) {
             e.refresh();
         }
     }
@@ -161,22 +149,50 @@ public abstract class Card implements Cloneable {
     }
 
     public int getEnemyNumber() {
-        return parent.getEnemyNumber();
+        return getParent().getEnemyNumber();
     }
 
     public int getPlayerNumber() {
-        return parent.getPlayerNumber();
+        return getParent().getPlayerNumber();
     }
 
     public List<Effect> getEffectList(int suffix) {
-        return effects.getEffectList(suffix);
+        return getEffects().getEffectList(suffix);
     }
 
     public Player getEnemy() {
-        return parent.getEnemy();
+        return getParent().getEnemy();
     }
 
     public boolean isMyTurn() {
-        return parent.isMyTurn();
+        return getParent().isMyTurn();
+    }
+
+    /**
+     * このカードを保持しているオブジェクトへの参照。
+     */
+    public CardHolder getParent() {
+        return parent;
+    }
+
+    /**
+     * 破壊する(Decommissionする)ことが可能であるかどうか。
+     */
+    public boolean isCanDecommission() {
+        return canDecommission;
+    }
+
+    /**
+     * 保持する効果を体系的にまとめたオブジェクト。
+     */
+    public Effects getEffects() {
+        return effects;
+    }
+
+    /**
+     * 利便性のため、全効果オブジェクトへの参照をリストとして保持するためのフィールド。
+     */
+    public List<Effect> getTmpEffect() {
+        return tmpEffect;
     }
 }

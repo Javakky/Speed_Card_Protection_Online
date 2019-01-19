@@ -12,6 +12,6 @@ public class Incident extends Tale {
 
     @Override
     public Incident clone() {
-        return new Incident(parent, name);
+        return new Incident(getParent(), getName());
     }
 }

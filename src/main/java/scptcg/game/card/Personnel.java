@@ -18,6 +18,6 @@ public class Personnel extends Card {
 
     @Override
     public Personnel clone() {
-        return new Personnel(parent, name);
+        return new Personnel(getParent(), getName());
     }
 }

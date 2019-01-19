@@ -22,7 +22,7 @@ public class Tale extends Card {
 
     @Override
     public Tale clone() {
-        return new Tale(parent, name);
+        return new Tale(getParent(), getName());
     }
 
 }

@@ -98,7 +98,7 @@ public class Action extends AbstractAction {
 
                 switch (this.param[3]) {
                     case "Cost":
-                        Scp tmp = (Scp) before.object[0];
+                        Scp tmp = (Scp) before.getObject()[0];
                         num = tmp.getCost();
                         break;
                     case "Point":
@@ -106,7 +106,7 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[2]}, new int[]{num, player, Integer.parseInt(this.param[1])});
-                System.out.println(result.action);
+                System.out.println(result.getAction());
                 break;
             }
 
@@ -168,9 +168,9 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[0], this.param[1]}, new int[]{i});
-                if (result.resStr != null && result.resStr.length > 0 && result.resStr[0] != null) {
+                if (result.getResStr() != null && result.getResStr().length > 0 && result.getResStr()[0] != null) {
                     String times = null;
-                    switch (result.resStr[0]) {
+                    switch (result.getResStr()[0]) {
                         case "once":
                             break;
                         case "twice":
@@ -183,8 +183,8 @@ public class Action extends AbstractAction {
                     if (times != null) {
                         Map<String, String[]> map = new HashMap<>();
                         map.put(result.getAction(), new String[]{
-                                result.resStr[0],
-                                result.resStr[1],
+                                result.getResStr()[0],
+                                result.getResStr()[1],
                                 "select"
                         });
                         ga.addEffects(

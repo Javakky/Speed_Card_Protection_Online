@@ -20,6 +20,6 @@ public class Anomalous extends Scp {
 
     @Override
     public Anomalous clone() {
-        return new Anomalous(parent, name, secure, tag, clazz, subClazz);
+        return new Anomalous(getParent(), getName(), secure, getTag(), clazz, getSubClazz());
     }
 }
