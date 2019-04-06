@@ -118,7 +118,7 @@ public class GameOperator {
                 .append("\n")
                 .append(coordinate)
                 .append("\n");
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         List m = toListMe(sb.toString() + "true");
         m.addAll(toListEnemy(sb.toString() + "false"));
         return m;
@@ -151,7 +151,7 @@ public class GameOperator {
                 .append("\n")
                 .append(player)
                 .append("\n");
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         return toListBoth(sb.toString());
     }
 

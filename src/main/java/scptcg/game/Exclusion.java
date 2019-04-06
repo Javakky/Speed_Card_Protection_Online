@@ -1,6 +1,7 @@
 package scptcg.game;
 
 import scptcg.game.card.Card;
+import scptcg.game.effect.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class Exclusion extends CardHolder {
     }
 
     @Override
-    public void decommission(Card card) {
+    public List<Effect> decommission(Card card) {
         throw new RuntimeException("can't decommission");
     }
 

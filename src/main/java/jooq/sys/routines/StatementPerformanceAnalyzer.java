@@ -68,17 +68,17 @@ import javax.annotation.Generated;
  *  * snapshot      The snapshot is created based on the specified table. 
  * Set to NULL or NOW() to use
  *  the current content of performance_schema.events_statements_summary_by_digest.
- *  * overall       The table with the content to getByName the overall analyzis
+ *  * overall       The table with the content to create the overall analyzis 
  * for. The following values
  *  can be used:
  *  - A table name - use the content of that table.
- *  - NOW()        - getByName a fresh snapshot and overwrite the existing snapshot.
+ *  - NOW()        - create a fresh snapshot and overwrite the existing snapshot.
  *  - NULL         - use the last stored snapshot.
  *  * delta         The table name is mandatory and specified the reference 
  * view to compare the currently
  *  stored snapshot against. If no snapshot exists, a new will be created.
- *  * create_table  The name of the regular table to getByName.
- *  * create_tmp    The name of the temporary table to getByName.
+ *  * create_table  The name of the regular table to create.
+ *  * create_tmp    The name of the temporary table to create.
  *  * save          The name of the table to save the currently stored snapshot 
  * into.
  *  
@@ -103,7 +103,7 @@ import javax.annotation.Generated;
  * definition if @sys.statement_performance_analyzer.limit &gt; 0. If specifying 
  * a view, use the same format as for in_table.  sys.debug Whether to provide 
  * debugging output. Default is 'OFF'. Set to 'ON' to include.   Example  
- * To getByName a report with the queries in the 95th percentile since last truncate
+ * To create a report with the queries in the 95th percentile since last truncate 
  * of performance_schema.events_statements_summary_by_digest and the delta 
  * for a 1 minute period:  1. Create a temporary table to store the initial 
  * snapshot. 2. Create the initial snapshot. 3. Save the initial snapshot 
@@ -124,7 +124,7 @@ import javax.annotation.Generated;
  * 'mydb.tmp_digests_ini', 'with_runtimes_in_95th_percentile'); +-----------------------------------------+ 
  * | Next Output                             | +-----------------------------------------+ 
  * | Queries with Runtime in 95th Percentile | +-----------------------------------------+ 
- * 1 row in set (0.03 sec)  ...   To getByName an overall report of the 95th
+ * 1 row in set (0.03 sec)  ...   To create an overall report of the 95th 
  * percentile queries and the top 10 queries with full table scans:  mysql&gt; 
  * CALL sys.statement_performance_analyzer('snapshot', NULL, NULL); Query 
  * OK, 0 rows affected (0.01 sec)                                     mysql&gt; 

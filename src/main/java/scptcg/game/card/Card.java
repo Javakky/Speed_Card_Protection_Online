@@ -126,8 +126,8 @@ public abstract class Card implements Cloneable {
         getEffects().addEffect(e, type, compel);
     }
 
-    public void decommission() {
-        getParent().decommission(this);
+    public List<Effect> decommission() {
+        return getParent().decommission(this);
     }
 
     public void refresh() {

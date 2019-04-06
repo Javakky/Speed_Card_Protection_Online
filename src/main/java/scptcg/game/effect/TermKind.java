@@ -1,13 +1,12 @@
 package scptcg.game.effect;
 
-import java.util.Arrays;
-
 public enum TermKind implements IActionKind {
     NOT_PARTNER("notPartner"),
     HAS_PERSONNEL("hasPersonnel"),
     HAS_SCP("hasSCP"),
     FIRST_TIME_BY_TURN("firstTimeTurn"),
-    MY_TURN("myTurn");
+    MY_TURN("myTurn"),
+    HAVE_PERSONNEL("havePersonnel");
 
     private String name;
 
@@ -16,10 +15,10 @@ public enum TermKind implements IActionKind {
     }
 
     public static TermKind getByName(String name) {
-        return Arrays.stream(TermKind.values())
-                .filter(data -> data.getName().equals(name))
-                .findFirst()
-                .orElse(null);
+        for (TermKind v : TermKind.values()) {
+            if (v.getName().equals(name)) return v;
+        }
+        return null;
     }
 
     @Override

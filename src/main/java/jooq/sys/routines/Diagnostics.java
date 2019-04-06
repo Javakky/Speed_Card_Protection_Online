@@ -97,7 +97,7 @@ import javax.annotation.Generated;
  *  
  *  Example
  *
- *  To getByName a report and append it to the file diag.out:
+ *  To create a report and append it to the file diag.out:
  *  
  *  mysql&gt; TEE diag.out;
  *  mysql&gt; CALL sys.diagnostics(120, 30, 'current');

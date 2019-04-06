@@ -23,7 +23,7 @@ public interface Logger {
         pos += 2;
         StackTraceElement m = stackTraceElements[pos];
         //ログ出力対象のクラス名:[メソッド名] + log message
-        return m.getClassName() + ":" + m.getMethodName() + "() \n[\n" + msg + "\n]";
+        return (stackTraceElements.length <= pos + 1 ? "" : stackTraceElements[pos + 1].getMethodName() + "->") + m.getClassName() + ":" + m.getMethodName() + "()" + (0 > pos - 1 ? "" : "->" + stackTraceElements[pos - 1].getMethodName()) + "\n[\n" + msg + "\n]";
     }
 
     default String getErrorMessage(final Throwable e) {

@@ -94,7 +94,6 @@ public class Effect implements Serializable {
 
     public Pair<Result[], Boolean> active(String[] param, Result result) {
         List<Result> li = new ArrayList<Result>();
-        li.add(null);
         if (result != null) before = result;
         if (activeNum <= 0) {
             canActive = false;
@@ -137,7 +136,7 @@ public class Effect implements Serializable {
         li.add(r);
 
         if (parent.getPlace() == TALES) {
-            parent.decommission();
+            parent.getMyPlayer().getGame().decommission(parent.getPlayerNumber(), parent);
             p.activeTale();
         }
         activeNum--;
@@ -152,7 +151,7 @@ public class Effect implements Serializable {
     }
 
     private boolean fulfill() {
-        System.out.println(terms == null);
+        ////System.out.println(terms == null);
         if (terms == null) {
             return canActive;
         }
@@ -160,7 +159,7 @@ public class Effect implements Serializable {
             return false;
         }
         for (int i = 0; i < terms.length; i++) {
-            System.out.println("term:" + terms[i].getAction());
+            ////System.out.println("term:" + terms[i].getAction());
             boolean can = terms[i].fulfill(this);
             if (!can) {
                 return false;

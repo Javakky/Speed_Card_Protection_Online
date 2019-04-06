@@ -25,7 +25,7 @@ import javax.annotation.Generated;
  *  Parameters
  *  
  *  in_db_name (VARCHAR(64)):
- *  The database name that you would like to getByName a synonym for.
+ *  The database name that you would like to create a synonym for.
  *  in_synonym (VARCHAR(64)):
  *  The database synonym name.
  *  

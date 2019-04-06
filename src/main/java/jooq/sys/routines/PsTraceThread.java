@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  *  Description
  *  
  *  Dumps all data within Performance Schema for an instrumented thread,
- *  to getByName a DOT formatted graph file.
+ *  to create a DOT formatted graph file. 
  *  
  *  Each resultset returned from the procedure should be used for a complete 
  * graph

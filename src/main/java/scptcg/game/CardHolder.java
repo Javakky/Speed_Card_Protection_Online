@@ -1,6 +1,7 @@
 package scptcg.game;
 
 import scptcg.game.card.Card;
+import scptcg.game.effect.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,9 @@ public abstract class CardHolder {
         return res;
     }
 
-    public void decommission(Card card) {
+    public List<Effect> decommission(Card card) {
         if (parent instanceof Player) {
-            ((Player) parent).decommission(card);
+            return ((Player) parent).decommission(card);
         } else {
             throw new RuntimeException("can't decommission");
         }

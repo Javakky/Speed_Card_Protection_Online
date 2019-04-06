@@ -42,9 +42,9 @@ public class EffectTest {
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.breach(effectPlayer, KETER, "SCP-682 不死身の爬虫類", 0);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.damage(res.getResInt()[1] == 0 ? 1 : 0, effectSandBox, res.getResInt()[0]);
-        res = game.activeEffects(null, null)[1];
+        res = game.activeEffects(null, null)[0];
         game.damage(res.getResInt()[1], effectSandBox, res.getResInt()[0]);
         game.damage(res.getResInt()[1], effectSandBox + 1, res.getResInt()[0]);
         game.damage(res.getResInt()[1] == 0 ? 1 : 0, effectSandBox, res.getResInt()[0]);
@@ -56,13 +56,24 @@ public class EffectTest {
     }
 
     @Test
+    public void アルトクレフ略() {
+        final int effectPlayer = 0;
+        game.selectEffect(effectPlayer, TALES, 0);
+        game.selectedEffect(effectPlayer);
+        Result res = game.activeEffects(null, null)[0];
+        game.decommission(effectPlayer, PERSONNEL_FILE, 0);
+        game.activeEffects(null, null);
+        assertNotNull(game.isK_ClassScenario());
+    }
+
+    @Test
     public void サメの不在() {
         final int effectPlayer = 0;
         final int effectSandBox = 0;
         game.selectPartner(effectPlayer, "SCP-1057 サメの不在", 0);
         game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.damage(res.getResInt()[1] == 0 ? 1 : 0, effectSandBox, res.getResInt()[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 3, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
@@ -74,7 +85,7 @@ public class EffectTest {
         game.breach(0, SAFE, "SCP-004-JP 矛盾無き電卓", 0);
         game.crossTest(0, 0, 0);
         game.breach(1, EUCLID, "SCP-541-JP-GOI 暴走取締車", 1);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.decommission(0, Place.create(res.getResStr()[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
     }
@@ -85,7 +96,7 @@ public class EffectTest {
         game.breach(0, SAFE, "SCP-004-JP 矛盾無き電卓", 0);
         game.crossTest(0, 0, 0);
         game.breach(0, EUCLID, "SCP-541-JP-GOI 暴走取締車", 1);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.decommission(parseInt(res.getResStr()[2]), Place.create(res.getResStr()[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
     }
@@ -96,7 +107,7 @@ public class EffectTest {
         final int effectPlayer = 0;
         game.breach(0, SAFE, "SCP-1057 サメの不在", 0);
         game.breach(0, KETER, "SCP-076 “アベル“", 1);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.decommission(parseInt(res.getResStr()[2]), Place.create(res.getResStr()[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
     }
@@ -107,7 +118,7 @@ public class EffectTest {
         final int effectPlayer = 0;
         game.breach(0, SAFE, "SCP-1057 サメの不在", 0);
         game.breach(0, KETER, "SCP-076 “アベル“", 1);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.decommission(parseInt(res.getResStr()[2]), Place.create(res.getResStr()[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
         game.decommission(0, SITE, 1);
@@ -120,7 +131,7 @@ public class EffectTest {
     public void アベル_自己参照() {
         final int effectPlayer = 0;
         game.breach(0, KETER, "SCP-076 “アベル“", 0);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.decommission(parseInt(res.getResStr()[2]), Place.create(res.getResStr()[1]), 0);
         assertThat(asList(toObject(game.getEmptySite(0))), hasItem(0));
         game.activeEffects(null, null);
@@ -137,7 +148,7 @@ public class EffectTest {
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 2, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
         game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
-        Result res = game.activeEffects(null, null)[1];
+        Result res = game.activeEffects(null, null)[0];
         game.healSandBox(res.getResInt()[1], effectSandBox, res.getResInt()[0]);
         assertEquals(SandBox.SAFE_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
@@ -151,7 +162,7 @@ public class EffectTest {
         assertEquals(SandBox.KETER_PROTECTION_FORCE - 4, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
         game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
-        Result res = game.activeEffects(null, null)[2];
+        Result res = game.activeEffects(null, null)[1];
         game.healSandBox(res.getResInt()[1], effectSandBox, res.getResInt()[0]);
         assertEquals(SandBox.KETER_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
     }
@@ -165,7 +176,7 @@ public class EffectTest {
         assertEquals(SandBox.KETER_PROTECTION_FORCE - 6, game.getProtectionForceSandBox(effectPlayer, effectSandBox));
         game.selectEffect(effectPlayer, SITE, 0);
         game.selectedEffect(effectPlayer);
-        Result res = game.activeEffects(null, null)[2];
+        Result res = game.activeEffects(null, null)[1];
         game.healSandBox(res.getResInt()[1], effectSandBox, res.getResInt()[0]);
         assertThat(asList(game.getDecommissioned(0)), hasItem("SCP-1129-JP フライング・アヒージョ"));
         assertEquals(SandBox.KETER_PROTECTION_FORCE - 1, game.getProtectionForceSandBox(effectPlayer, effectSandBox));

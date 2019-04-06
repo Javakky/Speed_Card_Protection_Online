@@ -14,7 +14,7 @@
             "canActive": true,
             "terms": [
               {
-                "action": "HavePersonnel"
+                "action": "havePersonnel"
               }
             ],
             "action": [

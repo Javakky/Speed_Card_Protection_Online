@@ -27,7 +27,7 @@ public class SCPClient {
         Session session = container.connectToServer(SCPClient.class, uri);
 
         while (!session.isOpen()) Thread.sleep(500);
-        System.out.println("open");
+        //System.out.println("open");
 
         try (Scanner s = new Scanner(System.in)) {
             StringBuilder sb = new StringBuilder();
@@ -54,13 +54,13 @@ public class SCPClient {
     @OnOpen
     public void onOpen(Session session) {
         /* セッション確立時の処理 */
-        System.out.println("[セッション確立]");
+        //System.out.println("[セッション確立]");
     }
 
     @OnMessage
     public void onMessage(String message) {
         /* メッセージ受信時の処理 */
-        System.out.println("[受信]:" + message);
+        //System.out.println("[受信]:" + message);
     }
 
     @OnError
@@ -72,7 +72,7 @@ public class SCPClient {
     @OnClose
     public void onClose(Session session) {
         /* セッション解放時の処理 */
-        System.out.println("[切断]");
+        //System.out.println("[切断]");
     }
 
 }

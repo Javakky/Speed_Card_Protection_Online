@@ -251,20 +251,30 @@ public class Game implements ICardSetHolder {
 
     public Card decommission(int player, Place place, int index) {
         Pair<Card, List<Effect>> e = this.player[player].decommission(place, index, player);
+        afterDecommission(e.getValue(), e.getKey(), player);
+        return e.getKey();
+    }
 
-        boolean eff = e.getValue().size() > 0;
+    private void afterDecommission(List<Effect> e, Card c, int player) {
+        boolean eff = e.size() > 0;
 
         if (eff) {
-            addAllEffects(e.getValue());
+            addAllEffects(e);
         }
 
-        Log4j.getInstance().info("decommission\nplayer:" + this.player[player].getName() + "\ncard:" + e.getKey().getName() + "\nplace:" + index);
-        if (e.getValue() != null) {
-            for (Effect tmp : e.getValue()) {
-                Log4j.getInstance().info("effect\nplayer:" + this.player[player].getName() + "\ncard:" + e.getKey() + "\neffect:" + tmp.getMessage());
+        Log4j.getInstance().info("decommission\nplayer:" + this.player[player].getName() + "\ncard:" + c.getName() + "\n");
+        if (e != null) {
+            for (Effect tmp : e) {
+                Log4j.getInstance().info("effect\nplayer:" + this.player[player].getName() + "\ncard:" + c.getName() + "\neffect:" + tmp.getMessage());
             }
         }
-        return e.getKey();
+    }
+
+
+    public Card decommission(int player, Card card) {
+        List<Effect> e = this.player[player].decommission(card);
+        afterDecommission(e, card, player);
+        return card;
     }
 
     public int healSandBox(int player, int clazz, int num) {
@@ -419,4 +429,5 @@ public class Game implements ICardSetHolder {
     public int getMyTurn(Player player) {
         return this.player[0] == player ? 0 : 1;
     }
+
 }

@@ -45,7 +45,7 @@ public final class EndPoint {
     @OnOpen
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
-        System.out.println(log);
+        ////System.out.println(log);
         logger.info(log);
     }
 
@@ -53,7 +53,7 @@ public final class EndPoint {
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        System.out.println(log);
+        //System.out.println(log);
         logger.info(log);
         cutConnection(getId(client));
     }
@@ -136,8 +136,7 @@ public final class EndPoint {
             String t = text.replaceAll("\n", "");
             Data data = (new Gson()).fromJson(t, Data.class);
             System.out.println(data.event);
-            System.out.println(data);
-            logger.info(data.toString());
+            Log4j.getInstance().info(data.toString());
 
             if (data.event.equals("Login")) {
                 login(data.player, data.name[0], client);
@@ -312,12 +311,14 @@ public final class EndPoint {
         String enemy = gm.getGame().getEnemyName(data.player);
         String me = data.player;
 
+        list.addAll(checkK_Class(gm.getGame()));
+
         for (Pair<String, String> e : list) {
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
                     logger.info("me\n: " + e.getValue());
-                    System.out.println();
+                    //System.out.println();
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
@@ -421,15 +422,15 @@ public final class EndPoint {
         try {
             DSLContext con = connectionDB();
             String txt = null;
-            System.out.println(id);
-            System.out.println(deckName);
+            //System.out.println(id);
+            //System.out.println(deckName);
             for (org.jooq.Record r :
                     con.select().from(DECK)
                             .where(DECK.ID.eq(id))
                             .and(DECK.NAME.eq(deckName))
                             .fetch()) {
                 txt = r.getValue(DECK.DECK_);
-                System.out.println(txt);
+                //System.out.println(txt);
                 break;
             }
             return (new Gson()).fromJson(txt, Deck.class);

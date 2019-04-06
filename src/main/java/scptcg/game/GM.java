@@ -31,7 +31,7 @@ public final class GM {
                 Pair<Integer, Scp> result;
                 int player;
                 if (data.event.equals("damage")) {
-                    result = game.damage(data.isFirst, data.place[1], Integer.parseInt(data.name[0]));
+                    result = game.damage(data.isFirst, data.place[0], Integer.parseInt(data.name[0]));
                     player = data.isFirst;
                 } else {
                     result = game.crossTest(data.isFirst, data.place[0], data.place[1]);
@@ -44,12 +44,12 @@ public final class GM {
 
             case "turnEnd":
                 game.nextTurn();
-                return new Union<Object>(null);
+                return new Union<Object>(new Object());
 
             case "getEffect":
                 int len = 0;
                 switch (data.name[0]) {
-                    case "PersonnelFiles":
+                    case "PersonnelFile":
                         len = game.personnelEffectNumber(data.isFirst);
                         break;
                     case "Tales":

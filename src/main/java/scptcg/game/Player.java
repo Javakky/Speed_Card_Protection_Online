@@ -135,10 +135,7 @@ public class Player implements ICardSetHolder {
 
     protected Scp searchSandBox(String name, int place) {
         Scp tmp = sandbox[place].searchSandBox(name);
-        if (tmp != null) {
-            return tmp;
-        }
-        return null;
+        return tmp;
     }
 
     Scp selectPartner(String name, int place) {
@@ -211,6 +208,7 @@ public class Player implements ICardSetHolder {
             this.site.decommission(site.getNumber(c));
         } else if (c instanceof Personnel) {
             this.personnelFile.decommission();
+            System.out.println(c.getEffectList(DECOMMISSIONED).get(0) + "\n\n\n\n\n\n");
         } else if (c instanceof Tale) {
             this.tale.decommission((Tale) c);
         }
@@ -256,6 +254,12 @@ public class Player implements ICardSetHolder {
                 return tale;
             case SITE:
                 return site;
+            case PERSONNEL_FILE:
+                return personnelFile;
+            case DECOMMISSIONED:
+                return decommissioned;
+            case EXCLUSION:
+                return exclusion;
         }
         return null;
     }
@@ -285,10 +289,7 @@ public class Player implements ICardSetHolder {
             return tmp;
         }
         tmp = exclusion.findCard(s);
-        if (tmp != null) {
-            return tmp;
-        }
-        return null;
+        return tmp;
     }
 
     public int reContainment(Card c, Place place) {
