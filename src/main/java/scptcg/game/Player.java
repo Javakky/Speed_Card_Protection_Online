@@ -208,7 +208,7 @@ public class Player implements ICardSetHolder {
             this.site.decommission(site.getNumber(c));
         } else if (c instanceof Personnel) {
             this.personnelFile.decommission();
-            System.out.println(c.getEffectList(DECOMMISSIONED).get(0) + "\n\n\n\n\n\n");
+            //System.out.println(c.getEffectList(DECOMMISSIONED).get(0) + "\n\n\n\n\n\n");
         } else if (c instanceof Tale) {
             this.tale.decommission((Tale) c);
         }

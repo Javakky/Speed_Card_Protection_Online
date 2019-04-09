@@ -71,7 +71,7 @@ public final class GM {
             case "HealSandBox":
                 return new Union<Integer>(game.healSandBox(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[2])));
 
-            case "damageSandBox":
+            case "DamageSandBox":
                 return new Union<Pair<Integer, Scp>>(game.damage(Integer.parseInt(data.name[1]) == 0 ? 1 : 0, data.place[0], Integer.parseInt(data.name[0])));
 
             case "selectEffect":

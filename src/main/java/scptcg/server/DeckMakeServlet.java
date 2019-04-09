@@ -203,7 +203,7 @@ public class DeckMakeServlet extends HttpServlet {
             }
 
             case "/login": {
-                //System.out.println("login");
+                ////System.out.println("login");
                 try {
                     DSLContext con = connectionDB();
                     Result<Record> result = con.select().from(ID)
@@ -215,7 +215,7 @@ public class DeckMakeServlet extends HttpServlet {
                     }
                     boolean flg = false;
                     for (Record r : result) {
-                        //System.out.println(r.getValue(ID.PASS));
+                        ////System.out.println(r.getValue(ID.PASS));
                         if (r.getValue(ID.PASS).equals(req.getParameter("Pass"))) {
                             flg = true;
                         }
@@ -255,7 +255,7 @@ public class DeckMakeServlet extends HttpServlet {
                 break;
             }
         }
-        //System.out.println("end");
+        ////System.out.println("end");
         return;
     }
 

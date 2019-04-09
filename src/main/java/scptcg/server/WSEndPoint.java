@@ -18,7 +18,7 @@ public final class WSEndPoint {
     @OnOpen
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
-        //System.out.println(log);
+        ////System.out.println(log);
     }
 
     // 切断時に呼ばれるメソッド
@@ -26,7 +26,7 @@ public final class WSEndPoint {
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        //System.out.println(log);
+        ////System.out.println(log);
     }
 
     // エラー時に呼ばれるメソッド
@@ -43,7 +43,7 @@ public final class WSEndPoint {
         String[] t = text.split(" ");
         String event = t[0];
         String id = t[1];
-        //System.out.println(text);
+        ////System.out.println(text);
         //eventの内容毎に分岐
         switch (event) {
             case "login":
@@ -51,14 +51,14 @@ public final class WSEndPoint {
                 session.put(id, client);
                 //idで保存したセッションに文字列を送信。
                 session.get(id).getBasicRemote().sendText(id);
-                //System.out.println(id);
+                ////System.out.println(id);
                 break;
             case "commit":
                 // ブロードキャスト
                 for (Session s : session.values()) {
                     s.getBasicRemote().sendText(t[2]);
                 }
-                //System.out.println(t[2]);
+                ////System.out.println(t[2]);
                 break;
             case "close":
                 // セッション一覧から削除

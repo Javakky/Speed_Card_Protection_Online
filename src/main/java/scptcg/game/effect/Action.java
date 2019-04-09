@@ -61,6 +61,7 @@ public class Action extends AbstractAction {
                         new Place[]{c.getPlace()},
                         null,
                         new int[]{c.getMyPlayer().find(parent.getPlace(), parent)});
+                System.out.println("DEC:" + c.getEffect(DECOMMISSIONED, 0).action[0].action);
                 ga.decommission(parent.getPlayerNumber(), c);
                 break;
             }
@@ -73,7 +74,7 @@ public class Action extends AbstractAction {
                         player = getPlayerNumber(parent, this.param[1]);
                         break;
                     case "both":
-                        ////System.out.println("both");
+                        //////System.out.println("both");
                         Player e = p.getEnemy();
                         int[] ps = p.select(removeAll(this.param, 0, 1));
                         int[] es = e.select(removeAll(this.param, 0, 1));
@@ -106,7 +107,7 @@ public class Action extends AbstractAction {
                         break;
                 }
                 result.setParam(null, null, new String[]{this.param[2]}, new int[]{num, player, Integer.parseInt(this.param[1])});
-                ////System.out.println(result.getAction());
+                //////System.out.println(result.getAction());
                 break;
             }
 
@@ -114,7 +115,7 @@ public class Action extends AbstractAction {
                 switch (this.param[0]) {
                     case "SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
-                        ////System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
+                        //////System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
                         for (int i : player.select(removeAll(this.param, 0, 1, 2))) {
                             player.addTag(SCP, i, this.param[2]);
                         }
@@ -126,11 +127,14 @@ public class Action extends AbstractAction {
             }
 
             case ADD_EFFECT: {
+                //System.out.println("addeffect");
                 switch (this.param[0]) {
                     case "Personnel": {
+                        //System.out.println("personnel");
                         Map<String, String[]> act = new HashMap();
                         for (int i = 8; i < this.param.length; i++) {
                             String[] str = this.param[i].split(",");
+                            //System.out.println(str[0]);
                             act.put(str[0], ArrayUtils.remove(str, 0));
                         }
                         p.getPersonnel().addEffect(
@@ -144,7 +148,7 @@ public class Action extends AbstractAction {
                                 this.param[1],
                                 this.param[2]
                         );
-                        System.out.println(p.getPersonnel().getEffect(DECOMMISSIONED, 0).getMessage());
+                        //System.out.println(p.getPersonnel().getEffect(DECOMMISSIONED, 0).getMessage());
                         break;
                     }
                 }
@@ -153,6 +157,7 @@ public class Action extends AbstractAction {
             }
 
             case K_CLASS: {
+                //System.out.println("K-Class");
                 ga.ignitionK(IK, parent.getMyPlayer());
                 result.setParam(new Card[0], new Place[0], null, null);
                 break;

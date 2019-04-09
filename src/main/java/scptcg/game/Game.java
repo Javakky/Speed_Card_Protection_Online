@@ -29,6 +29,7 @@ public class Game implements ICardSetHolder {
     private Scp waitingBreach;
     private boolean onActive = false;
     private boolean onActiveEffect = false;
+    private boolean effectIsSorted;
 
     private List<List<Effect>> waitingEffects;
 
@@ -242,6 +243,7 @@ public class Game implements ICardSetHolder {
         if (waitingEffects.size() == 0) {
             waitingEffects.add(new ArrayList());
         }
+        //System.out.println("ADDEFFECT" + e.get(0).getAction());
         waitingEffects.get(waitingEffects.size() - 1).addAll(e);
     }
 
@@ -257,7 +259,7 @@ public class Game implements ICardSetHolder {
 
     private void afterDecommission(List<Effect> e, Card c, int player) {
         boolean eff = e.size() > 0;
-
+        //System.out.println(e.size());
         if (eff) {
             addAllEffects(e);
         }
@@ -388,6 +390,8 @@ public class Game implements ICardSetHolder {
     }
 
     public boolean hasWaitEffects() {
+        //System.out.println(waitingEffects.size());
+        //if(waitingEffects.size() > 0)System.out.println(waitingEffects.get(0).size());
         return waitingEffects.get(0).size() > 0;
     }
 
@@ -398,13 +402,14 @@ public class Game implements ICardSetHolder {
             if (waitingEffects.get(0).size() <= 0) {
                 waitingEffects.remove(0);
                 waitingEffects.add(new ArrayList<>());
+                effectIsSorted = false;
                 if (hasWaitEffects()) onActive = false;
             }
         }
     }
 
     public Card[] getWaitingEffectsCard() {
-        Card[] tmp = new Card[waitingEffects.size()];
+        Card[] tmp = new Card[waitingEffects.get(0).size()];
         for (int i = 0; i < tmp.length; i++) tmp[i] = waitingEffects.get(0).get(i).getParent();
         return tmp;
     }
@@ -416,6 +421,7 @@ public class Game implements ICardSetHolder {
             list.set(order[i], waitingEffects.get(0).get(order[i]));
         }
         waitingEffects.set(0, list);
+        effectIsSorted = true;
     }
 
     public int getProtectionForceSandBox(int effectPlayer, int clazz) {
@@ -430,4 +436,7 @@ public class Game implements ICardSetHolder {
         return this.player[0] == player ? 0 : 1;
     }
 
+    public boolean effectIsSorted() {
+        return effectIsSorted;
+    }
 }

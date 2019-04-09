@@ -45,7 +45,7 @@ public final class EndPoint {
     @OnOpen
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
-        ////System.out.println(log);
+        //////System.out.println(log);
         logger.info(log);
     }
 
@@ -53,7 +53,7 @@ public final class EndPoint {
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        //System.out.println(log);
+        ////System.out.println(log);
         logger.info(log);
         cutConnection(getId(client));
     }
@@ -135,7 +135,7 @@ public final class EndPoint {
         try {
             String t = text.replaceAll("\n", "");
             Data data = (new Gson()).fromJson(t, Data.class);
-            System.out.println(data.event);
+            //System.out.println(data.event);
             Log4j.getInstance().info(data.toString());
 
             if (data.event.equals("Login")) {
@@ -271,7 +271,7 @@ public final class EndPoint {
                 break;
             }
 
-            case "damageSandBox": {
+            case "DamageSandBox": {
                 Union<Pair<Integer, Scp>> u = gm.MainProcess(data);
                 Pair<Integer, Scp> result = u.getClazz().cast(u.getData());
                 list.addAll(damage(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[0]), -1));
@@ -294,20 +294,21 @@ public final class EndPoint {
                 break;
         }
 
-        boolean flg = true;
-        if (!gm.getGame().isOnActive() && gm.getGame().hasWaitEffects()) {
+        if (!gm.getGame().effectIsSorted() && gm.getGame().hasWaitEffects()) {
             Card[] cards = gm.getGame().getWaitingEffectsCard();
             if (cards.length > 1) {
                 list.addAll(selectingEffect(cards));
-                flg = false;
             }
         }
 
-        Result[] r = gm.activeEffect();
-        if (r != null) {
-            list.addAll(
-                    sendEffectResult(gm.getGame(), data, r));
-        }
+        do {
+            Result[] r = gm.activeEffect();
+            if (r != null) {
+                list.addAll(
+                        sendEffectResult(gm.getGame(), data, r));
+            }
+        } while (gm.getGame().hasWaitEffects() && !gm.getGame().isOnActiveEffect());
+
         String enemy = gm.getGame().getEnemyName(data.player);
         String me = data.player;
 
@@ -318,7 +319,7 @@ public final class EndPoint {
                 case "me":
                     send(me, e.getValue());
                     logger.info("me\n: " + e.getValue());
-                    //System.out.println();
+                    ////System.out.println();
                     break;
                 case "enemy":
                     send(enemy, e.getValue());
@@ -422,15 +423,15 @@ public final class EndPoint {
         try {
             DSLContext con = connectionDB();
             String txt = null;
-            //System.out.println(id);
-            //System.out.println(deckName);
+            ////System.out.println(id);
+            ////System.out.println(deckName);
             for (org.jooq.Record r :
                     con.select().from(DECK)
                             .where(DECK.ID.eq(id))
                             .and(DECK.NAME.eq(deckName))
                             .fetch()) {
                 txt = r.getValue(DECK.DECK_);
-                //System.out.println(txt);
+                ////System.out.println(txt);
                 break;
             }
             return (new Gson()).fromJson(txt, Deck.class);

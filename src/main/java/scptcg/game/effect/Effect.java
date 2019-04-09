@@ -151,7 +151,7 @@ public class Effect implements Serializable {
     }
 
     private boolean fulfill() {
-        ////System.out.println(terms == null);
+        //////System.out.println(terms == null);
         if (terms == null) {
             return canActive;
         }
@@ -159,7 +159,7 @@ public class Effect implements Serializable {
             return false;
         }
         for (int i = 0; i < terms.length; i++) {
-            ////System.out.println("term:" + terms[i].getAction());
+            //////System.out.println("term:" + terms[i].getAction());
             boolean can = terms[i].fulfill(this);
             if (!can) {
                 return false;
