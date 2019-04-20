@@ -1,4 +1,4 @@
-package scptcg.game;
+/*package scptcg.game;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -24,7 +24,7 @@ public final class GM {
     public Union MainProcess(Data data) throws IOException {
         switch (data.event) {
             case "selectPartner":
-                return new Union<Scp>(game.selectPartner(data.isFirst, data.name[0], data.place[0]));
+                return new Union<Scp>();
 
             case "crossTest":
             case "damage":
@@ -43,52 +43,36 @@ public final class GM {
                 return new Union<Scp>(game.breach(data.isFirst, data.place[0]));
 
             case "turnEnd":
-                game.nextTurn();
+                ;
                 return new Union<Object>(new Object());
 
             case "getEffect":
-                int len = 0;
-                switch (data.name[0]) {
-                    case "PersonnelFile":
-                        len = game.personnelEffectNumber(data.isFirst);
-                        break;
-                    case "Tales":
-                        len = game.taleEffectNumber(data.isFirst, data.place[0]);
-                        break;
-                    case "Site":
-                        len = game.siteEffectNumber(data.isFirst, data.place[0]);
-                }
+
                 return new Union<Integer>(len);
 
             case "activeEffect":
-                boolean canSelect = game.selectedEffect(data.place[0]);
+
 
                 return new Union<Boolean>(canSelect);
 
             case "decommission":
-                return new Union<Card>(game.decommission(data.isFirst, create(data.name[0]), data.place[0]));
+                return new Union<Card>();
 
             case "HealSandBox":
-                return new Union<Integer>(game.healSandBox(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[2])));
+                return new Union<Integer>();
 
             case "DamageSandBox":
-                return new Union<Pair<Integer, Scp>>(game.damage(Integer.parseInt(data.name[1]) == 0 ? 1 : 0, data.place[0], Integer.parseInt(data.name[0])));
+                return new Union<Pair<Integer, Scp>>();
 
             case "selectEffect":
-                game.sortWaitingEffects(data.place);
+                ;
                 return new Union<Object>(null);
             default:
                 return new Union<Object>(null);
         }
     }
 
-    public Result[] activeEffect() {
-        if (!game.isOnActiveEffect() && game.hasWaitEffects()) {
-            Result[] r = game.activeEffects(null, null);
-            return r;
-        }
-        return null;
-    }
+
 
     public Game getGame() {
         return this.game;

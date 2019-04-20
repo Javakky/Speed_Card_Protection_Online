@@ -1,30 +1,29 @@
 package scptcg.json;
 
-import java.util.Arrays;
+import com.google.gson.Gson;
+import lombok.ToString;
 
+@ToString
 public class Data {
-    public String[] name;
-    public String player;
-    public int[] place;
-    public String event;
-    public int isFirst;
+    public String PlayerName;
+    public String Event;
+    public String DeckName;
+    public String[] CardName;
+    public int[][] Coordinate;
+    public int SandBox;
+    public String[] Zone;
+    public boolean Player;
+    public int Index;
+    public int[] Order;
     public int ObjectClass;
-    public String effect;
+    public int Count;
+    public boolean BeAbleTo;
+    public String Scenario;
+    public int Secure;
+    public int Cost;
+    public int[] Point;
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("receive = [\tplayer:")
-                .append(player)
-                .append("\n\tevent:")
-                .append(event)
-                .append("\n\tisFirst:")
-                .append(isFirst)
-                .append("\n\tname:")
-                .append(Arrays.toString(name))
-                .append("\n\tplace:")
-                .append(Arrays.toString(place))
-                .append("\n]");
-        return sb.toString();
+    public String toJson() {
+        return new Gson().toJson(this);
     }
 }

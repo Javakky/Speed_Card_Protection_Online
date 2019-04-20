@@ -60,6 +60,14 @@ public class Game implements ICardSetHolder {
         return null;
     }
 
+    public String getEnemyName(int number) {
+        return player[number == 0 ? 1 : 0].getName();
+    }
+
+    public String getMyName(int number) {
+        return player[number].getName();
+    }
+
     public int getXkCost() {
         return xkCost;
     }

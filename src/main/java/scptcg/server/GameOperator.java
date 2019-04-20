@@ -6,7 +6,9 @@ import scptcg.game.K_ClassScenario;
 import scptcg.game.Place;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
+import scptcg.json.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,344 +16,270 @@ import static scptcg.game.Place.*;
 
 public class GameOperator {
 
-    public static List<Pair<String, String>> selectBreach(String action, int player) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(action)
-                .append("\n")
-                .append(player)
-                .append("\n");
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> selectBreach(String action, boolean player) {
+        Data d = new Data();
+        d.Event = action;
+        d.Player = player;
+        return toListMe(d.toJson());
     }
 
     public static List<Pair<String, String>> selectingEffect(Card[] cards) {
-        StringBuilder sb_1 = new StringBuilder();
-        StringBuilder sb_2 = new StringBuilder();
-        sb_1.append("selectEffect\n");
+        String[] card = new String[cards.length];
+        String[] place = new String[cards.length];
         for (int i = 0; i < cards.length; i++) {
-            sb_1.append(cards[i].getName());
-            sb_2.append(cards[i].getPlace().toString());
-            if (i == cards.length - 1) continue;
-            sb_1.append(",");
-            sb_2.append(",");
+            card[i] = cards[i].getName();
+            place[i] = cards[i].getPlace().toString();
         }
-        sb_1.append("\n")
-                .append(sb_2);
-        return toListMe(sb_1.toString());
+        Data d = new Data();
+        d.Zone = place;
+        d.CardName = card;
+        return toListMe(d.toJson());
     }
 
 
-    public static List<Pair<String, String>> changeProtectionEffect(final int player, final String action, final int point, final int count, final String overlap) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(action)
-                .append("\n")
-                .append(player)
-                .append("\n")
-                .append(point)
-                .append("\n")
-                .append(count)
-                .append("\n")
-                .append(overlap);
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> changeProtectionEffect(final boolean player, final String action, final int point, final int count, final boolean overlap) {
+        Data d = new Data();
+        d.Event = action;
+        d.Player = player;
+        d.Point = new int[]{point};
+        d.Count = count;
+        d.BeAbleTo = overlap;
+
+        return toListMe(d.toJson()
+        );
     }
 
-    public static List<Pair<String, String>> select(final int player, final String action, final String place, int[][] coordinate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Select")
-                .append(action)
-                .append("\n")
-                .append(player)
-                .append("\n")
-                .append(place)
-                .append("\n");
-        for (int i = 0; i < coordinate.length; i++) {
-            for (int j = 0; j < coordinate[i].length; j++) {
-                sb.append(coordinate[i]);
-                if (j == coordinate[i].length - 1) {
-                    continue;
-                }
-                sb.append(",");
-            }
-            sb.append("\n");
-        }
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> select(final boolean player, final String action, final String place, int[][] coordinate) {
+        Data d = new Data();
+        d.Event = action;
+        d.Player = player;
+        d.Zone = new String[1];
+        d.Zone[0] = place;
+        d.Coordinate = coordinate;
+
+        return toListMe(d.toJson());
     }
 
-    public static List<Pair<String, String>> getMyDeck(final int player, final int clazz, final Game game) {
-        String[] txt = game.getMyDeckList(player, clazz);
-        StringBuilder sb = new StringBuilder();
-        sb.append("getMyDeck\n");
-        for (String s : txt) {
-            if (s != null) {
-                sb.append(s)
-                        .append("\n");
-            }
+    public static List<Pair<String, String>> getMyDeck(final boolean player, final int clazz, final Game game) {
+        List<String> card = new ArrayList<>();
+        for (String s : game.getMyDeckList(player ? 0 : 1, clazz)) {
+            if (s != null) card.add(s);
         }
-        return toListMe(sb.toString());
+        Data d = new Data();
+        d.Event = "GetMyDeck";
+        d.CardName = card.toArray(new String[card.size()]);
+        return toListMe(d.toJson());
     }
 
-    public static List<Pair<String, String>> getDecommission(final int player, final Game game) {
-        String[] txt = game.getDecommissioned(player);
-        StringBuilder sb = new StringBuilder();
-        sb.append("getDecommissioned\n");
-        for (String s : txt) {
-            if (s != null) {
-                sb.append(s).append("\n");
-            }
+    public static List<Pair<String, String>> getDecommission(final boolean player, final Game game) {
+        List<String> cards = new ArrayList<>();
+        for (String s : game.getDecommissioned(player ? 0 : 1)) {
+            if (s != null) cards.add(s);
         }
-        return toListMe(sb.toString());
+        Data data = new Data();
+        data.Event = "GetDecommissioned";
+        data.CardName = cards.toArray(new String[cards.size()]);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> getCanPartners(final int player, final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getCanPartners\n");
-        String[] str = game.getPartnerList(player);
-        for (String s : str) {
-            sb.append(s).append("\n");
-        }
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getCanPartners(final boolean player, final Game game) {
+        Data data = new Data();
+        data.Event = "GetCanPartners";
+        data.CardName = game.getPartnerList(player ? 0 : 1);
+        return toListMe(data.toJson());
     }
 
     public static List<Pair<String, String>> selectPartner(final int coordinate, final Scp scp) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("selectPartner\n")
-                .append(scp.getName())
-                .append("\n")
-                .append(coordinate)
-                .append("\n");
-        ////System.out.println(sb.toString());
-        List m = toListMe(sb.toString() + "true");
-        m.addAll(toListEnemy(sb.toString() + "false"));
+        Data data = new Data();
+        data.Event = "selectPartner";
+        data.CardName = new String[]{scp.getName()};
+        data.Coordinate = new int[][]{{coordinate}};
+        data.Player = true;
+        List m = toListMe(data.toJson());
+        data.Player = false;
+        m.addAll(toListEnemy(data.toJson()));
         return m;
     }
 
-    public static List<Pair<String, String>> getEmptysite(final int player, final Game game) {
-        int[] li = game.getEmptySite(player);
-        StringBuilder sb = new StringBuilder();
-        sb.append("getEmptySite\n")
-                .append(li.length).append("\n");
-        for (int i : li) {
-            sb.append(i).append("\n");
-        }
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getEmptysite(final boolean player, final Game game) {
+        int[] li = game.getEmptySite(player ? 0 : 1);
+        Data data = new Data();
+        data.Event = "getEmptySite";
+        data.Coordinate = new int[][]{li};
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> canAttack(final int player, final int coordinate, final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("canAttack\n")
-                .append(game.canAttack(player, coordinate));
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> canAttack(final boolean player, final int coordinate, final Game game) {
+        Data data = new Data();
+        data.Event = "CanAttack";
+        data.BeAbleTo = game.canAttack(player ? 0 : 1, coordinate);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> breach(final int player, int coordinate, final Scp scp) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("breach\n")
-                .append(scp.getName())
-                .append("\n")
-                .append(coordinate)
-                .append("\n")
-                .append(player)
-                .append("\n");
-        ////System.out.println(sb.toString());
-        return toListBoth(sb.toString());
+    public static List<Pair<String, String>> breach(final boolean player, int coordinate, final Scp scp) {
+        Data data = new Data();
+        data.Event = "ViewBreach";
+        data.CardName = new String[]{scp.getName()};
+        data.Coordinate = new int[][]{{coordinate}};
+        data.Player = player;
+        return toListBoth(data.toJson());
     }
 
     public static List<Pair<String, String>> turnEnd(final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("turnEnd\n")
-                .append(game.getTurn());
-        return toListBoth(sb.toString());
+        Data data = new Data();
+        data.Event = "TurnEnd";
+        data.Player = game.getTurn() == 0;
+        return toListBoth(data.toJson());
     }
 
-    public static List<Pair<String, String>> getPersonnel(final int player, final Game game) {
-        String[] str = game.getPersonnel();
-        StringBuilder sb = new StringBuilder();
-        sb.append("getPersonnel\n")
-                .append(str[player])
-                .append("\n")
-                .append(str[player == 0 ? 1 : 0])
-                .append("\n");
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getPersonnel(final boolean player, final Game game) {
+        Data data = new Data();
+        data.CardName = new String[]{game.getPersonnel()[player ? 0 : 1]};
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> getTale(final int player, final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getTale\n");
-        String[] str = game.getTale(player);
-        for (int i = 0; i < str.length; i++) {
-            sb.append(str[i])
-                    .append("\n");
-        }
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getTale(final boolean player, final Game game) {
+        Data data = new Data();
+        data.Event = "GetTale";
+        data.CardName = game.getTale(player ? 0 : 1);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> getCost(final int player, final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getCost\n")
-                .append(game.getCost(player))
-                .append("\n")
-                .append(game.getCost(player == 0 ? 1 : 0))
-                .append("\n");
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getCost(final boolean player, final Game game) {
+        Data data = new Data();
+        data.Event = "GetCost";
+        data.Cost = game.getCost(player ? 0 : 1);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> getSiteNumber(final int player, final Game game) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getSiteNumber\n")
-                .append(game.getSiteNumber(player))
-                .append("\n");
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getSiteNumber(final boolean player, final Game game) {
+        Data data = new Data();
+        data.Event = "GetSCPCount";
+        data.Count = game.getSiteNumber(player ? 0 : 1);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> getSandBoxNumber(final int player, final Game game) {
-        int[] arr = game.getSandBoxNumber(player);
-        StringBuilder sb = new StringBuilder();
-        sb.append("getSandBoxNumber\n")
-                .append(player)
-                .append("\n")
-                .append(arr[0])
-                .append("\n")
-                .append(arr[1])
-                .append("\n")
-                .append(arr[2])
-                .append("\n");
-        return toListMe(sb.toString());
+    public static List<Pair<String, String>> getSandBoxNumber(final boolean player, final Game game) {
+        int[] arr = game.getSandBoxNumber(player ? 0 : 1);
+        Data data = new Data();
+        data.Event = "GetSandBoxProtection";
+        data.Player = player;
+        data.Point = arr;
+        return toListMe(data.toJson());
     }
 
     public static List<Pair<String, String>> getEffect(final Game game, final int length) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getEffect\n");
-        sb.append(length);
-        return toListMe(sb.toString());
+        Data data = new Data();
+        data.Event = "GetEffectCount";
+        data.Count = length;
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> activeTale(final int player, final String name, final int coordinate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("activeTale\n")
-                .append(player)
-                .append("\n")
-                .append(name)
-                .append("\n")
-                .append(coordinate);
-        return toListBoth(sb.toString());
+    public static List<Pair<String, String>> activeTale(final boolean player, final String name, final int coordinate) {
+        Data data = new Data();
+        data.Event = "ActiveTale";
+        data.Player = player;
+        data.CardName = new String[]{name};
+        data.Coordinate = new int[][]{{coordinate}};
+        return toListBoth(data.toJson());
     }
 
     public static List<Pair<String, String>> failEffect() {
-        return toListMe("failEffect\n");
+        Data data = new Data();
+        data.Event = "Impossible";
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> heal(final int player, final int coordinate, final int point) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("HealSandBox\n")
-                .append(player)
-                .append("\n")
-                .append(point)
-                .append("\n")
-                .append(coordinate)
-                .append("\n");
-        return toListBoth(sb.toString());
+    public static List<Pair<String, String>> heal(final boolean player, final int coordinate, final int point) {
+        Data data = new Data();
+        data.Event = "HealSandBox";
+        data.Player = player;
+        data.Point = new int[]{point};
+        data.Coordinate = new int[][]{{coordinate}};
+        return toListBoth(data.toJson());
     }
 
-    public static List<Pair<String, String>> damage(final int player, final int coordinate, final int point, final int atkCoordinate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("damage\n")
-                .append(player)
-                .append("\n")
-                .append(point)
-                .append("\n")
-                .append(atkCoordinate)
-                .append("\n")
-                .append(coordinate)
-                .append("\n");
-        return toListBoth(sb.toString());
+    public static List<Pair<String, String>> damage(final boolean player, final int coordinate, final int point, final int atkCoordinate) {
+        Data data = new Data();
+        data.Event = "Damage";
+        data.Player = player;
+        data.Point = new int[]{point};
+        data.Coordinate = new int[][]{{atkCoordinate}};
+        data.SandBox = coordinate;
+        return toListBoth(data.toJson());
     }
 
     public static List<Pair<String, String>> startBreach(final Scp scp, final boolean isMe) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("breaching\n")
-                .append(scp.getName());
+        Data data = new Data();
+        data.Event = "SelectBreach";
+        data.CardName = new String[]{scp.getName()};
+        Data data2 = new Data();
         List m;
         if (!isMe) {
-            m = toListMe("breachWait\n");
-            m.addAll(toListEnemy(sb.toString()));
+            data2.Event = "Wait";
+            m = toListMe(data2.toJson());
+            m.addAll(toListEnemy(data.toJson()));
         } else {
-            m = toListEnemy("breachWait\n");
-            m.addAll(toListMe(sb.toString()));
+            data2.Event = "Wait";
+            m = toListEnemy(data2.toJson());
+            m.addAll(toListMe(data.toJson()));
         }
         return m;
     }
 
     public static List<Pair<String, String>> isFirst(final Game game, final String name) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("isFirst\n")
-                .append(game.isFirst(name));
-        return toListMe(sb.toString());
+        Data data = new Data();
+        data.Event = "IsFirst";
+        data.Player = game.isFirst(name);
+        return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> reContainMent(final int player, final Card subject, final Place before,
+    public static List<Pair<String, String>> reContainMent(final boolean player, final Card subject, final Place before,
                                                            final Place after, final int coordinate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ReContainment\n")
-                .append(player)
-                .append("\n")
-                .append(before.toString())
-                .append("\n")
-                .append(0)
-                .append("\n")
-                .append(after.toString())
-                .append("\n")
-                .append(coordinate)
-                .append("\n")
-                .append(subject.getName());
+        Data data = new Data();
+        data.Event = "ReContainment";
+        data.Player = player;
+        data.Coordinate = new int[][]{{0, coordinate}};
+        data.Zone = new String[]{before.toString(), after.toString()};
         if (before == DECOMMISSIONED) {
             Card c = subject.getMyPlayer().getDecommissionedTop();
-            if (c != null) {
-                sb.append("\n");
-                sb.append(c.getName());
-            }
+            data.CardName = new String[]{subject.getName(), c.getName()};
+        } else {
+            data.CardName = new String[]{subject.getName()};
         }
-        return toListBoth(sb.toString());
+        return toListBoth(data.toJson());
     }
 
-    public static List<Pair<String, String>> decommission(final int player, final String place, final int coordinate,
+    public static List<Pair<String, String>> decommission(final boolean player, final String place, final int coordinate,
                                                           final Card card) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Decommission\n")
-                .append(player)
-                .append("\n")
-                .append(place)
-                .append("\n")
-                .append(coordinate)
-                .append("\n")
-                .append(card.getName());
-        return toListBoth(sb.toString());
+        Data data = new Data();
+        data.Event = "Decommission";
+        data.Player = player;
+        data.Coordinate = new int[][]{{coordinate}};
+        data.CardName = new String[]{card.getName()};
+        return toListBoth(data.toJson());
     }
 
     public static List<Pair<String, String>> checkK_Class(final Game ga) {
         K_ClassScenario k = ga.isK_ClassScenario();
         if (k != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("K-Class-Scenario\n")
-                    .append(k.toString())
-                    .append("\n")
-                    .append(ga.getKClassPlayer())
-                    .append("\n");
-            return toListBoth(sb.toString());
+            Data data = new Data();
+            data.Event = "K-Class-Scenario";
+            data.Scenario = k.toString();
+            data.Player = ga.getKClassPlayer() == 0;
+            return toListBoth(data.toJson());
         }
         return new LinkedList<>();
     }
 
-    public static List<Pair<String, String>> getCardParam(final int player, final int index, final Scp scp) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("getCardParam\n");
-        sb.append(player);
-        sb.append("\n");
-        sb.append(index);
-        sb.append("\n");
-        sb.append(scp.getCost());
-        sb.append("\n");
-        sb.append(scp.getSecure());
-        sb.append("\n");
-        return toListBoth(sb.toString());
+    public static List<Pair<String, String>> getCardParam(final boolean player, final int index, final Scp scp) {
+        Data data = new Data();
+        data.Event = "GetCardParameter";
+        data.Player = player;
+        data.Coordinate = new int[][]{{index}};
+        data.Cost = scp.getCost();
+        data.Secure = scp.getSecure();
+        return toListBoth(data.toJson());
     }
 
     static List<Pair<String, String>> toListMe(final List<String> list_1) {
@@ -408,4 +336,5 @@ public class GameOperator {
         list.add(Pair.of("enemy", str));
         return list;
     }
+
 }

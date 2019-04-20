@@ -2,9 +2,9 @@ package scptcg.server;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 import org.jooq.DSLContext;
-import scptcg.game.GM;
+import scptcg.game.CreateGame;
+import scptcg.game.Events;
 import scptcg.game.Game;
 import scptcg.game.Place;
 import scptcg.game.card.Card;
@@ -14,7 +14,6 @@ import scptcg.json.Data;
 import scptcg.json.Deck;
 import scptcg.log.Log4j;
 import scptcg.log.Logger;
-import type.Union;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -23,6 +22,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static jooq.scp_tcg.tables.Deck.*;
+import static scptcg.game.Events.*;
 import static scptcg.game.Place.*;
 import static scptcg.server.DeckMakeServlet.*;
 import static scptcg.server.GameOperator.*;
@@ -31,7 +31,7 @@ import static scptcg.server.GameOperator.*;
 public final class EndPoint {
 
     private static Map<String, Session> session = new HashMap<>();
-    private static List<GM> game = new ArrayList<>();
+    private static List<Game> game = new ArrayList<>();
     private static Map<String, Integer> id = new HashMap<>();
     private static boolean wait = false;
     private static String waiting;
@@ -64,7 +64,7 @@ public final class EndPoint {
         sb.append("IK");
         sb.append("\n");
         try {
-            Game ga = game.get(EndPoint.id.get(id)).getGame();
+            Game ga = game.get(EndPoint.id.get(id));
             sb.append(ga.getPlayerNumber(id));
             sb.append("\n");
             try {
@@ -96,7 +96,6 @@ public final class EndPoint {
                 return key;
             }
         }
-
         return null;
     }
 
@@ -122,7 +121,7 @@ public final class EndPoint {
             }
         } else {
             sb.append("start");
-            game.add(new GM(waiting, getDeck(waiting, waitingDeck), player, getDeck(player, name)));
+            game.add(CreateGame.create(waiting, getDeck(waiting, waitingDeck), player, getDeck(player, name)));
             send(waiting, sb.toString());
             waiting = null;
         }
@@ -133,15 +132,14 @@ public final class EndPoint {
     @OnMessage
     public void onMessage(final String text, final Session client) throws IOException {
         try {
-            String t = text.replaceAll("\n", "");
-            Data data = (new Gson()).fromJson(t, Data.class);
+            Data data = (new Gson()).fromJson(text, Data.class);
             //System.out.println(data.event);
             Log4j.getInstance().info(data.toString());
 
-            if (data.event.equals("Login")) {
-                login(data.player, data.name[0], client);
+            if (data.Event.equals(LOGIN.name())) {
+                login(data.PlayerName, data.DeckName, client);
             } else {
-                main(data.event, data);
+                main(data.Event, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,168 +149,190 @@ public final class EndPoint {
 
     private void main(final String event, final Data data) throws IOException {
         List<Pair<String, String>> list = new LinkedList<>();
-        GM gm = game.get(id.get(data.player));
-        switch (event) {
-            case "isFirst":
-                list.addAll(isFirst(gm.getGame(), data.player));
+        Game game = EndPoint.game.get(id.get(data.Player ? 0 : 1));
+        switch (Events.getEventByValue(event)) {
+            case IS_FIRST:
+                list.addAll(isFirst(game, data.PlayerName));
                 break;
 
-            case "getMyDeck":
-                list.addAll(getMyDeck(data.isFirst, data.ObjectClass, gm.getGame()));
+            case GET_MY_DECK:
+                list.addAll(getMyDeck(data.Player, data.ObjectClass, game));
                 break;
 
-            case "getDecommissioned":
-                list.addAll(getDecommission(data.isFirst, gm.getGame()));
+            case GET_DECOMMISSIONED:
+                list.addAll(getDecommission(data.Player, game));
                 break;
 
-            case "getCanPartners":
-                list.addAll(getCanPartners(data.isFirst, gm.getGame()));
+            case GET_CAN_PARTNERS:
+                list.addAll(getCanPartners(data.Player, game));
                 break;
 
-            case "selectPartner": {
-                Union<Scp> u = gm.MainProcess(data);
-                Scp scp = u.getClazz().cast(u.getData());
-                list.addAll(selectPartner(data.place[0], scp));
-                list.addAll(getCardParam(data.isFirst, data.place[0], scp));
+            case SELECT_PARTNER: {
+                Scp scp = game.selectPartner(data.Player ? 0 : 1, data.CardName[0], data.Coordinate[0][0]);
+                list.addAll(selectPartner(data.Coordinate[0][0], scp));
+                list.addAll(getCardParam(data.Player, data.Coordinate[0][0], scp));
                 break;
             }
-            case "getEmptySite":
-                list.addAll(getEmptysite(data.isFirst, gm.getGame()));
+            case GET_EMPTY_SITE:
+                list.addAll(getEmptysite(data.Player, game));
                 break;
 
-            case "crossTest":
-            case "damage": {
-                Union<Triple<Integer, Integer, Scp>> u = gm.MainProcess(data);
-                Triple<Integer, Integer, Scp> result = u.getClazz().cast(u.getData());
-
-                Integer damage = result.getMiddle();
+            case CROSS_TEST: {
+                Pair<Integer, Scp> result = game.crossTest(data.Player ? 0 : 1, data.Coordinate[0][0], data.SandBox);
+                Integer damage = result.getLeft();
                 Scp wait = result.getRight();
-                Integer player = result.getLeft();
-                list.addAll(damage(player,
-                        data.place[data.place.length >= 2 ? 1 : 0],
+                list.addAll(damage(data.Player,
+                        data.SandBox,
                         damage,
-                        data.place.length >= 2 ? data.place[0] : -1));
+                        data.Coordinate[0][0]));
 
                 if (wait != null) {
-                    list.addAll(startBreach(wait, player == data.isFirst));
+                    list.addAll(startBreach(wait, false));
                 }
 
-                list.addAll(checkK_Class(gm.getGame()));
+                list.addAll(checkK_Class(game));
+                break;
+            }
+            case DAMAGE: {
+                Pair<Integer, Scp> result = game.damage(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
+                int damage = result.getLeft();
+                Scp wait = result.getRight();
+                list.addAll(damage(data.Player,
+                        data.SandBox,
+                        damage,
+                        -1));
+
+                if (wait != null) {
+                    list.addAll(startBreach(wait, true));
+                }
+
+                list.addAll(checkK_Class(game));
                 break;
             }
 
-            case "canAttack":
-                list.addAll(canAttack(data.isFirst, data.place[0], gm.getGame()));
+            case CAN_ATTACK:
+                list.addAll(canAttack(data.Player, data.Coordinate[0][0], game));
                 break;
 
-            case "breach": {
-                Union<Scp> u = gm.MainProcess(data);
-                Scp scp = u.getClazz().cast(u.getData());
-                list.addAll(breach(data.isFirst, data.place[0], scp));
-                list.addAll(getCardParam(data.isFirst, data.place[0], scp));
-                list.addAll(checkK_Class(gm.getGame()));
-                break;
-            }
-
-            case "turnEnd":
-                gm.MainProcess(data);
-                list.addAll(turnEnd(gm.getGame()));
-                break;
-
-            case "getPersonnel":
-                list.addAll(getPersonnel(data.isFirst, gm.getGame()));
-                break;
-
-            case "getTale":
-                list.addAll(getTale(data.isFirst, gm.getGame()));
-                break;
-
-            case "getCost":
-                list.addAll(getCost(data.isFirst, gm.getGame()));
-                break;
-
-            case "getSiteNumber":
-                list.addAll(getSiteNumber(data.isFirst, gm.getGame()));
-                break;
-
-            case "getSandBoxNumber":
-                list.addAll(getSandBoxNumber(data.isFirst, gm.getGame()));
-                break;
-
-            case "getEffect": {
-                Union<Integer> u = gm.MainProcess(data);
-                int len = u.getClazz().cast(u.getData());
-                list.addAll(getEffect(gm.getGame(), len));
+            case BREACH: {
+                Scp scp = game.breach(data.Player ? 0 : 1, data.Coordinate[0][0]);
+                list.addAll(breach(data.Player, data.Coordinate[0][0], scp));
+                list.addAll(getCardParam(data.Player, data.Coordinate[0][0], scp));
+                list.addAll(checkK_Class(game));
                 break;
             }
 
-            case "activeEffect": {
-                Place pl = gm.getGame().getSelectEffectPlace();
-                Card select = gm.getGame().getSelectEffect();
-                Union<Boolean> u = gm.MainProcess(data);
-                boolean canSelect = u.getClazz().cast(u.getData());
+            case TURN_END:
+                game.nextTurn();
+                list.addAll(turnEnd(game));
+                break;
+
+            case GET_PERSONNEL:
+                list.addAll(getPersonnel(data.Player, game));
+                break;
+
+            case GET_TALE:
+                list.addAll(getTale(data.Player, game));
+                break;
+
+            case GET_SUM_SITE_COST:
+                list.addAll(getCost(data.Player, game));
+                break;
+
+            case GET_SCP_COUNT:
+                switch (Place.create(data.Zone[0])) {
+                    case SITE:
+                        list.addAll(getSiteNumber(data.Player, game));
+                        break;
+                }
+                break;
+
+            case GET_SANDBOX_PROTECTION:
+                list.addAll(getSandBoxNumber(data.Player, game));
+                break;
+
+            case GET_EFFECT: {
+                int len = 0;
+                switch (Place.create(data.Zone[0])) {
+                    case PERSONNEL_FILE:
+                        len = game.personnelEffectNumber(data.Player ? 0 : 1);
+                        break;
+                    case TALES:
+                        len = game.taleEffectNumber(data.Player ? 0 : 1, data.Coordinate[0][0]);
+                        break;
+                    case SITE:
+                        len = game.siteEffectNumber(data.Player ? 0 : 1, data.Coordinate[0][0]);
+                }
+                list.addAll(getEffect(game, len));
+                break;
+            }
+
+            case ACTIVE_EFFECT: {
+                Place pl = game.getSelectEffectPlace();
+                Card select = game.getSelectEffect();
+                boolean canSelect = game.selectedEffect(data.Index);
 
                 if (canSelect && pl == TALES) {
-                    list.addAll(activeTale(data.isFirst, select.getName(), select.getNumber()));
+                    list.addAll(activeTale(data.Player, select.getName(), select.getNumber()));
                 }
                 break;
             }
-            case "decommission": {
-                Union<Card> u = gm.MainProcess(data);
-                Card card = u.getClazz().cast(u.getData());
-                list.addAll(decommission(data.isFirst, data.name[0], data.place[0], card));
+            case DECOMMISSION: {
+                Card card = game.decommission(data.Player ? 0 : 1, create(data.Zone[0]), data.Coordinate[0][0]);
+                list.addAll(decommission(data.Player, data.Zone[0], data.Coordinate[0][0], card));
                 break;
             }
 
-            case "HealSandBox": {
-                Union<Integer> u = gm.MainProcess(data);
-                int point = u.getClazz().cast(u.getData());
-                list.addAll(heal(data.isFirst, data.place[0], point));
+            case HEAL_SANDBOX: {
+                int point = game.healSandBox(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
+                list.addAll(heal(data.Player, data.SandBox, point));
                 break;
             }
 
-            case "DamageSandBox": {
-                Union<Pair<Integer, Scp>> u = gm.MainProcess(data);
-                Pair<Integer, Scp> result = u.getClazz().cast(u.getData());
-                list.addAll(damage(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[0]), -1));
+            case DAMAGE_SANDBOX: {
+                Pair<Integer, Scp> result = game.damage(data.Player ? 1 : 0, data.SandBox, data.Point[0]);
+                list.addAll(damage(data.Player, data.SandBox, data.Point[0], -1));
 
                 if (result.getValue() != null) {
                     list.addAll(startBreach(result.getValue(), true));
                 }
-                list.addAll(checkK_Class(gm.getGame()));
+                list.addAll(checkK_Class(game));
                 break;
             }
 
-            case "getCardParam": {
-                Scp scp = (Scp) gm.getGame().getCard(data.isFirst, data.name[0], data.place[0]);
-                list.addAll(getCardParam(data.isFirst, data.place[0], scp));
+            case GET_CARD_PARAMETER: {
+                Scp scp = (Scp) game.getCard(data.Player ? 0 : 1, data.Zone[0], data.Coordinate[0][0]);
+                list.addAll(getCardParam(data.Player, data.Coordinate[0][0], scp));
                 break;
             }
 
-            case "selectEffect":
-                gm.MainProcess(data);
+            case SELECT_EFFECT:
+                game.sortWaitingEffects(data.Order);
                 break;
         }
 
-        if (!gm.getGame().effectIsSorted() && gm.getGame().hasWaitEffects()) {
-            Card[] cards = gm.getGame().getWaitingEffectsCard();
+        if (!game.effectIsSorted() && game.hasWaitEffects()) {
+            Card[] cards = game.getWaitingEffectsCard();
             if (cards.length > 1) {
                 list.addAll(selectingEffect(cards));
             }
         }
 
         do {
-            Result[] r = gm.activeEffect();
-            if (r != null) {
-                list.addAll(
-                        sendEffectResult(gm.getGame(), data, r));
+            Result[] r = null;
+            if (!game.isOnActiveEffect() && game.hasWaitEffects()) {
+                r = game.activeEffects(null, null);
+                if (r != null) {
+                    list.addAll(
+                            sendEffectResult(game, data, r));
+                }
             }
-        } while (gm.getGame().hasWaitEffects() && !gm.getGame().isOnActiveEffect());
+        } while (game.hasWaitEffects() && !game.isOnActiveEffect());
 
-        String enemy = gm.getGame().getEnemyName(data.player);
-        String me = data.player;
+        String enemy = game.getEnemyName(data.Player ? 0 : 1);
+        String me = game.getMyName(data.Player ? 0 : 1);
 
-        list.addAll(checkK_Class(gm.getGame()));
+        list.addAll(checkK_Class(game));
 
         for (Pair<String, String> e : list) {
             switch (e.getKey()) {
@@ -339,7 +359,7 @@ public final class EndPoint {
             switch (r.getAction()) {
                 case "Decommission":
                     list.addAll(decommission(
-                            r.getSubject().getPlayerNumber(),
+                            r.getSubject().getPlayerNumber() == 0,
                             r.getObjectPlace()[0].toString(),
                             r.getResInt()[0],
                             r.getObject()[0]
@@ -348,7 +368,7 @@ public final class EndPoint {
 
                 case "ReContainment":
                     list.addAll(reContainMent(
-                            r.getSubject().getPlayerNumber(),
+                            r.getSubject().getPlayerNumber() == 0,
                             r.getSubject(),
                             r.getSubjectPlace(),
                             r.getObjectPlace()[0],
@@ -358,7 +378,7 @@ public final class EndPoint {
 
                 case "finish":
                     if (r.getSubjectPlace() == TALES) {
-                        list.addAll(decommission(r.getSubject().getPlayerNumber(), TALES.toString(), r.getResInt()[0], r.getSubject()));
+                        list.addAll(decommission(r.getSubject().getPlayerNumber() == 0, TALES.toString(), r.getResInt()[0], r.getSubject()));
                     }
                     break;
 
@@ -367,7 +387,7 @@ public final class EndPoint {
                     break;
 
                 case "Breach":
-                    list.addAll(selectBreach(r.getAction(), r.getResInt()[0]));
+                    list.addAll(selectBreach(r.getAction(), r.getResInt()[0] == 0));
                     break;
                 case "Select":
                     int len = r.getResStr().length > 2 ? 2 : 1;
@@ -391,7 +411,7 @@ public final class EndPoint {
                         coordinate[0] = r.getResInt();
                     }
 
-                    list.addAll(select(Integer.parseInt(r.getResStr()[2]), r.getAction(), r.getSubjectPlace().toString(), coordinate));
+                    list.addAll(select(Integer.parseInt(r.getResStr()[2]) == 0, r.getAction(), r.getSubjectPlace().toString(), coordinate));
                     break;
 
                 case "healSandBox":
@@ -399,11 +419,11 @@ public final class EndPoint {
                 case "DamageSandBox":
                     list.addAll(
                             changeProtectionEffect(
-                                    r.getResInt()[1],
+                                    r.getResInt()[1] == 0,
                                     r.getAction(),
                                     r.getResInt()[0],
                                     r.getResInt()[2],
-                                    r.getResStr()[0]));
+                                    Boolean.valueOf(r.getResStr()[0])));
                     break;
 
                 default:
