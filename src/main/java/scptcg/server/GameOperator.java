@@ -91,7 +91,7 @@ public class GameOperator {
 
     public static List<Pair<String, String>> selectPartner(final int coordinate, final Scp scp) {
         Data data = new Data();
-        data.Event = "selectPartner";
+        data.Event = "SelectPartner";
         data.CardName = new String[]{scp.getName()};
         data.Coordinate = new int[][]{{coordinate}};
         data.Player = true;
@@ -104,7 +104,8 @@ public class GameOperator {
     public static List<Pair<String, String>> getEmptysite(final boolean player, final Game game) {
         int[] li = game.getEmptySite(player ? 0 : 1);
         Data data = new Data();
-        data.Event = "getEmptySite";
+        data.Player = player;
+        data.Event = "GetEmptySite";
         data.Coordinate = new int[][]{li};
         return toListMe(data.toJson());
     }
@@ -134,6 +135,8 @@ public class GameOperator {
 
     public static List<Pair<String, String>> getPersonnel(final boolean player, final Game game) {
         Data data = new Data();
+        data.Event = "GetPersonnel";
+        data.Player = player;
         data.CardName = new String[]{game.getPersonnel()[player ? 0 : 1]};
         return toListMe(data.toJson());
     }
@@ -231,6 +234,7 @@ public class GameOperator {
         Data data = new Data();
         data.Event = "IsFirst";
         data.Player = game.isFirst(name);
+        data.PlayerName = name;
         return toListMe(data.toJson());
     }
 

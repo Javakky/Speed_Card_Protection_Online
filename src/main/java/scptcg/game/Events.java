@@ -11,7 +11,7 @@ public enum Events {
     BREACH("Breach"),
     GET_EFFECT("GetEffect"),
     GET_DECOMMISSIONED("GetDecommissioned"),
-    GET_CAN_PARTNERS("GetCanPartners"),
+    GET_CAN_PARTNERS("GetCanPertners"),
     GET_EMPTY_SITE("GetEmptySite"),
     TURN_END("TurnEnd"),
     GET_PERSONNEL("GetPersonnel"),
@@ -22,7 +22,7 @@ public enum Events {
     DECOMMISSION("Decommission"),
     HEAL_SANDBOX("HealSandBox"),
     DAMAGE_SANDBOX("DamageSandBox"),
-    GET_CARD_PARAMETER("GetCardParameter"),
+    GET_CARD_PARAMETER("GetCardParameters"),
     SELECT_EFFECT("SelectEffect"),
     GET_SCP_COUNT("GetSCPCount"),
     WAIT("Wait"),
@@ -34,7 +34,8 @@ public enum Events {
     BREACH_PARTNER("BreachPartner"),
     GET_EFFECT_COUNT("GetEffectCount"),
     IMPOSSIBLE("Impossible"),
-    IS_FIRST("IsFirst");
+    IS_FIRST("IsFirst"),
+    GET_COST("GetCost");
 
     private String event;
 

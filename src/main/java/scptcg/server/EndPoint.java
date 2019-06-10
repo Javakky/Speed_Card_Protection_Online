@@ -133,10 +133,13 @@ public final class EndPoint {
     public void onMessage(final String text, final Session client) throws IOException {
         try {
             Data data = (new Gson()).fromJson(text, Data.class);
-            //System.out.println(data.event);
-            Log4j.getInstance().info(data.toString());
+            if (data.PlayerName == null || data.PlayerName.equals("")) {
+                Log4j.getInstance().error(new RuntimeException(data.Event + "のPlayerNameは空です。"));
+                return;
+            }
+            Log4j.getInstance().info(data.toJson());
 
-            if (data.Event.equals(LOGIN.name())) {
+            if (data.Event.equals(LOGIN.getEvent())) {
                 login(data.PlayerName, data.DeckName, client);
             } else {
                 main(data.Event, data);
@@ -149,7 +152,7 @@ public final class EndPoint {
 
     private void main(final String event, final Data data) throws IOException {
         List<Pair<String, String>> list = new LinkedList<>();
-        Game game = EndPoint.game.get(id.get(data.Player ? 0 : 1));
+        Game game = EndPoint.game.get(id.get(data.PlayerName));
         switch (Events.getEventByValue(event)) {
             case IS_FIRST:
                 list.addAll(isFirst(game, data.PlayerName));
@@ -251,6 +254,10 @@ public final class EndPoint {
                 list.addAll(getSandBoxNumber(data.Player, game));
                 break;
 
+            case GET_COST:
+                list.addAll(getCost(data.Player, game));
+                break;
+
             case GET_EFFECT: {
                 int len = 0;
                 switch (Place.create(data.Zone[0])) {
@@ -329,8 +336,8 @@ public final class EndPoint {
             }
         } while (game.hasWaitEffects() && !game.isOnActiveEffect());
 
-        String enemy = game.getEnemyName(data.Player ? 0 : 1);
-        String me = game.getMyName(data.Player ? 0 : 1);
+        String enemy = game.getEnemyName(data.PlayerName);
+        String me = data.PlayerName;
 
         list.addAll(checkK_Class(game));
 

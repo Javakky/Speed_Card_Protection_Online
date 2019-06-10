@@ -1,9 +1,7 @@
 package scptcg.json;
 
 import com.google.gson.Gson;
-import lombok.ToString;
 
-@ToString
 public class Data {
     public String PlayerName;
     public String Event;

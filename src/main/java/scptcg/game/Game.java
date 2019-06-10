@@ -16,6 +16,9 @@ import static scptcg.game.Place.*;
 import static scptcg.game.SandBox.*;
 import static scptcg.game.effect.EFFECT_TYPE_LIST.*;
 
+/**
+ * ゲーム本体.
+ */
 public class Game implements ICardSetHolder {
     private final int firstPlayer;
     protected HeadCanon canon;
@@ -35,14 +38,14 @@ public class Game implements ICardSetHolder {
 
     private Player[] player = new Player[2];
 
-    Game(String[][][] deckList, String name1, String name2) {
-        Log4j.getInstance().info("player1:" + name1 + "\nplayer2:" + name2);
+    Game(String[][][] deckList, final String name, String name2) {
+        Log4j.getInstance().info("player1:" + name + "\nplayer2:" + name2);
         int r = new Random(System.currentTimeMillis()).nextInt(2);
         if (r == 0) {
-            player[0] = new Player(this, deckList[0], name1);
+            player[0] = new Player(this, deckList[0], name);
             player[1] = new Player(this, deckList[1], name2);
         } else {
-            player[1] = new Player(this, deckList[0], name1);
+            player[1] = new Player(this, deckList[0], name);
             player[0] = new Player(this, deckList[1], name2);
         }
         firstPlayer = 0;
