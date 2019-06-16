@@ -51,7 +51,7 @@ public class Game implements ICardSetHolder {
         firstPlayer = 0;
         turnPlayer = this.firstPlayer;
         waitingEffects = new ArrayList<List<Effect>>();
-        waitingEffects.add(new ArrayList<Effect>());
+        addEmptyWaitingEffects();
     }
 
     public String getEnemyName(String name) {
@@ -244,18 +244,22 @@ public class Game implements ICardSetHolder {
     }
 
     public void addEffects(Effect e) {
-        if (waitingEffects.size() == 0) {
-            waitingEffects.add(new ArrayList());
+        addEmptyWaitingEffects();
+        if (isTurnPlayer(e.getMyPlayer())) {
+            waitingEffects.get(waitingEffects.size() - 2).add(e);
+        } else {
+            waitingEffects.get(waitingEffects.size() - 1).add(e);
         }
-        waitingEffects.get(waitingEffects.size() - 1).add(e);
+    }
+
+    private boolean isTurnPlayer(Player myPlayer) {
+        return myPlayer == player[turnPlayer];
     }
 
     private void addAllEffects(List<Effect> e) {
-        if (waitingEffects.size() == 0) {
-            waitingEffects.add(new ArrayList());
+        for (Effect ef : e) {
+            addEffects(ef);
         }
-        //System.out.println("ADDEFFECT" + e.get(0).getAction());
-        waitingEffects.get(waitingEffects.size() - 1).addAll(e);
     }
 
     public int getTurn() {
@@ -394,7 +398,6 @@ public class Game implements ICardSetHolder {
             Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
             boolean isFinish = (res == null ? true : res.getValue());
             ajustWaitEffects(isFinish);
-
             return res.getKey();
         }
         return null;
@@ -410,12 +413,28 @@ public class Game implements ICardSetHolder {
         if (fin) {
             waitingEffects.get(0).remove(0);
             onActiveEffect = false;
-            if (waitingEffects.get(0).size() <= 0) {
+            while (waitingEffects.size() > 0 && waitingEffects.get(0).size() <= 0) {
                 waitingEffects.remove(0);
-                waitingEffects.add(new ArrayList<>());
-                effectIsSorted = false;
-                if (hasWaitEffects()) onActive = false;
             }
+            addEmptyWaitingEffects();
+            effectIsSorted = false;
+            if (!hasWaitEffects()) onActive = false;
+        }
+    }
+
+    private void addEmptyWaitingEffects() {
+        switch (waitingEffects.size()) {
+            case 0:
+            case 2:
+                while (waitingEffects.size() < 4) {
+                    waitingEffects.add(new ArrayList<>());
+                }
+                break;
+            case 1:
+                for (int i = 0; i < 2; i++) {
+                    waitingEffects.add(new ArrayList<>());
+                }
+                break;
         }
     }
 
