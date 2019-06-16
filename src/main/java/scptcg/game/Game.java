@@ -395,6 +395,10 @@ public class Game implements ICardSetHolder {
         if (hasWaitEffects()) {
             onActive = true;
             onActiveEffect = true;
+            while (waitingEffects.size() > 0 && waitingEffects.get(0).size() <= 0) {
+                waitingEffects.remove(0);
+            }
+            addEmptyWaitingEffects();
             Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
             boolean isFinish = (res == null ? true : res.getValue());
             ajustWaitEffects(isFinish);
@@ -406,7 +410,13 @@ public class Game implements ICardSetHolder {
     public boolean hasWaitEffects() {
         //System.out.println(waitingEffects.size());
         //if(waitingEffects.size() > 0)System.out.println(waitingEffects.get(0).size());
-        return waitingEffects.get(0).size() > 0;
+        return waitingEffects.size() > 0 && waitingEffects.get(0).size() > 0;
+    }
+
+    public boolean hasEffects(int index) {
+        //System.out.println(waitingEffects.size());
+        //if(waitingEffects.size() > 0)System.out.println(waitingEffects.get(0).size());
+        return waitingEffects.size() > index && waitingEffects.get(index).size() > 0;
     }
 
     private void ajustWaitEffects(boolean fin) {
