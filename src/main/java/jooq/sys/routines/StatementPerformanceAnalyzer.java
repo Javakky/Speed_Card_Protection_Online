@@ -176,19 +176,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class StatementPerformanceAnalyzer extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -86982490;
+
     /**
      * The parameter <code>sys.statement_performance_analyzer.in_action</code>.
      */
     public static final Parameter<String> IN_ACTION = Internal.createParameter("in_action", org.jooq.impl.SQLDataType.VARCHAR(12), false, false);
+
     /**
      * The parameter <code>sys.statement_performance_analyzer.in_table</code>.
      */
     public static final Parameter<String> IN_TABLE = Internal.createParameter("in_table", org.jooq.impl.SQLDataType.VARCHAR(129), false, false);
+
     /**
      * The parameter <code>sys.statement_performance_analyzer.in_views</code>.
      */
     public static final Parameter<String> IN_VIEWS = Internal.createParameter("in_views", org.jooq.impl.SQLDataType.VARCHAR(124), false, false);
-    private static final long serialVersionUID = -86982490;
 
     /**
      * Create a new routine call instance

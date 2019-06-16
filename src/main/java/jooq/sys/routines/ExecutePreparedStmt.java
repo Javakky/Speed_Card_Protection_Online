@@ -61,11 +61,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ExecutePreparedStmt extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -1301594149;
+
     /**
      * The parameter <code>sys.execute_prepared_stmt.in_query</code>.
      */
     public static final Parameter<String> IN_QUERY = Internal.createParameter("in_query", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = -1301594149;
 
     /**
      * Create a new routine call instance

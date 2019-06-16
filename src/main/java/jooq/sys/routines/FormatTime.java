@@ -69,15 +69,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FormatTime extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = 1592465824;
+
     /**
      * The parameter <code>sys.format_time.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.format_time.picoseconds</code>.
      */
     public static final Parameter<String> PICOSECONDS = Internal.createParameter("picoseconds", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = 1592465824;
 
     /**
      * Create a new routine call instance

@@ -65,15 +65,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FormatBytes extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -2091532616;
+
     /**
      * The parameter <code>sys.format_bytes.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.format_bytes.bytes</code>.
      */
     public static final Parameter<String> BYTES = Internal.createParameter("bytes", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = -2091532616;
 
     /**
      * Create a new routine call instance

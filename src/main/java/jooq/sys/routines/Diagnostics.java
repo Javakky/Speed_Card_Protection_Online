@@ -116,19 +116,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Diagnostics extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -1321750862;
+
     /**
      * The parameter <code>sys.diagnostics.in_max_runtime</code>.
      */
     public static final Parameter<UInteger> IN_MAX_RUNTIME = Internal.createParameter("in_max_runtime", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.diagnostics.in_interval</code>.
      */
     public static final Parameter<UInteger> IN_INTERVAL = Internal.createParameter("in_interval", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.diagnostics.in_auto_config</code>.
      */
     public static final Parameter<String> IN_AUTO_CONFIG = Internal.createParameter("in_auto_config", org.jooq.impl.SQLDataType.VARCHAR(7), false, false);
-    private static final long serialVersionUID = -1321750862;
 
     /**
      * Create a new routine call instance

@@ -44,11 +44,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class VersionMajor extends AbstractRoutine<UByte> {
 
+    private static final long serialVersionUID = 788796327;
+
     /**
      * The parameter <code>sys.version_major.RETURN_VALUE</code>.
      */
     public static final Parameter<UByte> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.TINYINTUNSIGNED, false, false);
-    private static final long serialVersionUID = 788796327;
 
     /**
      * Create a new routine call instance

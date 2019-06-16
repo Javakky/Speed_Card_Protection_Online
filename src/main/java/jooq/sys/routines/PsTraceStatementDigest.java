@@ -148,27 +148,32 @@ import java.math.BigDecimal;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsTraceStatementDigest extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -148274729;
+
     /**
      * The parameter <code>sys.ps_trace_statement_digest.in_digest</code>.
      */
     public static final Parameter<String> IN_DIGEST = Internal.createParameter("in_digest", org.jooq.impl.SQLDataType.VARCHAR(32), false, false);
+
     /**
      * The parameter <code>sys.ps_trace_statement_digest.in_runtime</code>.
      */
     public static final Parameter<Integer> IN_RUNTIME = Internal.createParameter("in_runtime", org.jooq.impl.SQLDataType.INTEGER, false, false);
+
     /**
      * The parameter <code>sys.ps_trace_statement_digest.in_interval</code>.
      */
     public static final Parameter<BigDecimal> IN_INTERVAL = Internal.createParameter("in_interval", org.jooq.impl.SQLDataType.DECIMAL(2, 2), false, false);
+
     /**
      * The parameter <code>sys.ps_trace_statement_digest.in_start_fresh</code>.
      */
     public static final Parameter<Byte> IN_START_FRESH = Internal.createParameter("in_start_fresh", org.jooq.impl.SQLDataType.TINYINT, false, false);
+
     /**
      * The parameter <code>sys.ps_trace_statement_digest.in_auto_enable</code>.
      */
     public static final Parameter<Byte> IN_AUTO_ENABLE = Internal.createParameter("in_auto_enable", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = -148274729;
 
     /**
      * Create a new routine call instance

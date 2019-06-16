@@ -62,15 +62,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FormatPath extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -1122273956;
+
     /**
      * The parameter <code>sys.format_path.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(512), false, false);
+
     /**
      * The parameter <code>sys.format_path.in_path</code>.
      */
     public static final Parameter<String> IN_PATH = Internal.createParameter("in_path", org.jooq.impl.SQLDataType.VARCHAR(512), false, false);
-    private static final long serialVersionUID = -1122273956;
 
     /**
      * Create a new routine call instance

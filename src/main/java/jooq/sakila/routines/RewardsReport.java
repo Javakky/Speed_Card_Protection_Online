@@ -27,19 +27,22 @@ import java.math.BigDecimal;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RewardsReport extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -2037505287;
+
     /**
      * The parameter <code>sakila.rewards_report.min_monthly_purchases</code>.
      */
     public static final Parameter<UByte> MIN_MONTHLY_PURCHASES = Internal.createParameter("min_monthly_purchases", org.jooq.impl.SQLDataType.TINYINTUNSIGNED, false, false);
+
     /**
      * The parameter <code>sakila.rewards_report.min_dollar_amount_purchased</code>.
      */
     public static final Parameter<BigDecimal> MIN_DOLLAR_AMOUNT_PURCHASED = Internal.createParameter("min_dollar_amount_purchased", org.jooq.impl.SQLDataType.DECIMAL(10, 2), false, false);
+
     /**
      * The parameter <code>sakila.rewards_report.count_rewardees</code>.
      */
     public static final Parameter<Integer> COUNT_REWARDEES = Internal.createParameter("count_rewardees", org.jooq.impl.SQLDataType.INTEGER, false, false);
-    private static final long serialVersionUID = -2037505287;
 
     /**
      * Create a new routine call instance

@@ -55,11 +55,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsSetupDisableThread extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = 1938445752;
+
     /**
      * The parameter <code>sys.ps_setup_disable_thread.in_connection_id</code>.
      */
     public static final Parameter<Long> IN_CONNECTION_ID = Internal.createParameter("in_connection_id", org.jooq.impl.SQLDataType.BIGINT, false, false);
-    private static final long serialVersionUID = 1938445752;
 
     /**
      * Create a new routine call instance

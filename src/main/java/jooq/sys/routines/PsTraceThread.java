@@ -104,35 +104,42 @@ import java.math.BigDecimal;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsTraceThread extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -1003464649;
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_thread_id</code>.
      */
     public static final Parameter<ULong> IN_THREAD_ID = Internal.createParameter("in_thread_id", org.jooq.impl.SQLDataType.BIGINTUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_outfile</code>.
      */
     public static final Parameter<String> IN_OUTFILE = Internal.createParameter("in_outfile", org.jooq.impl.SQLDataType.VARCHAR(255), false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_max_runtime</code>.
      */
     public static final Parameter<BigDecimal> IN_MAX_RUNTIME = Internal.createParameter("in_max_runtime", org.jooq.impl.SQLDataType.DECIMAL(20, 2), false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_interval</code>.
      */
     public static final Parameter<BigDecimal> IN_INTERVAL = Internal.createParameter("in_interval", org.jooq.impl.SQLDataType.DECIMAL(20, 2), false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_start_fresh</code>.
      */
     public static final Parameter<Byte> IN_START_FRESH = Internal.createParameter("in_start_fresh", org.jooq.impl.SQLDataType.TINYINT, false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_auto_setup</code>.
      */
     public static final Parameter<Byte> IN_AUTO_SETUP = Internal.createParameter("in_auto_setup", org.jooq.impl.SQLDataType.TINYINT, false, false);
+
     /**
      * The parameter <code>sys.ps_trace_thread.in_debug</code>.
      */
     public static final Parameter<Byte> IN_DEBUG = Internal.createParameter("in_debug", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = -1003464649;
 
     /**
      * Create a new routine call instance

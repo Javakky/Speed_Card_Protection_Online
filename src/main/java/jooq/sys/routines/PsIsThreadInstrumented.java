@@ -50,15 +50,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsIsThreadInstrumented extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -536958796;
+
     /**
      * The parameter <code>sys.ps_is_thread_instrumented.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(7), false, false);
+
     /**
      * The parameter <code>sys.ps_is_thread_instrumented.in_connection_id</code>.
      */
     public static final Parameter<ULong> IN_CONNECTION_ID = Internal.createParameter("in_connection_id", org.jooq.impl.SQLDataType.BIGINTUNSIGNED, false, false);
-    private static final long serialVersionUID = -536958796;
 
     /**
      * Create a new routine call instance

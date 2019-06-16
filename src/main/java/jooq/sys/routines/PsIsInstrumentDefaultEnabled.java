@@ -50,15 +50,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsIsInstrumentDefaultEnabled extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = 270026199;
+
     /**
      * The parameter <code>sys.ps_is_instrument_default_enabled.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(3), false, false);
+
     /**
      * The parameter <code>sys.ps_is_instrument_default_enabled.in_instrument</code>.
      */
     public static final Parameter<String> IN_INSTRUMENT = Internal.createParameter("in_instrument", org.jooq.impl.SQLDataType.VARCHAR(128), false, false);
-    private static final long serialVersionUID = 270026199;
 
     /**
      * Create a new routine call instance

@@ -85,19 +85,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SysGetConfig extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = 1261339505;
+
     /**
      * The parameter <code>sys.sys_get_config.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(128), false, false);
+
     /**
      * The parameter <code>sys.sys_get_config.in_variable_name</code>.
      */
     public static final Parameter<String> IN_VARIABLE_NAME = Internal.createParameter("in_variable_name", org.jooq.impl.SQLDataType.VARCHAR(128), false, false);
+
     /**
      * The parameter <code>sys.sys_get_config.in_default_value</code>.
      */
     public static final Parameter<String> IN_DEFAULT_VALUE = Internal.createParameter("in_default_value", org.jooq.impl.SQLDataType.VARCHAR(128), false, false);
-    private static final long serialVersionUID = 1261339505;
 
     /**
      * Create a new routine call instance

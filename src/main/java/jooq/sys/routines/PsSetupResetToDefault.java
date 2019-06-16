@@ -54,11 +54,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsSetupResetToDefault extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = 1127756746;
+
     /**
      * The parameter <code>sys.ps_setup_reset_to_default.in_verbose</code>.
      */
     public static final Parameter<Byte> IN_VERBOSE = Internal.createParameter("in_verbose", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = 1127756746;
 
     /**
      * Create a new routine call instance

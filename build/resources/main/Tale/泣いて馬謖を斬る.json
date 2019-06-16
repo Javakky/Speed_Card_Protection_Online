@@ -34,7 +34,7 @@
                 ]
               },
               {
-                "action": "healSandBox",
+                "action": "HealSandBox",
                 "param": [
                   "me",
                   "1",

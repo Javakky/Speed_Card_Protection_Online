@@ -11,7 +11,7 @@ public enum ActionKind implements IActionKind {
     BREACH("Breach"),
     RECONTAINMENT("ReContainment"),
     DAMAGE_SAND_BOX("DamageSandBox"),
-    HEAL_SAND_BOX("healSandBox");
+    HEAL_SAND_BOX("HealSandBox");
 
     private final String name;
 

@@ -88,15 +88,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CreateSynonymDb extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = 1072986727;
+
     /**
      * The parameter <code>sys.create_synonym_db.in_db_name</code>.
      */
     public static final Parameter<String> IN_DB_NAME = Internal.createParameter("in_db_name", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
+
     /**
      * The parameter <code>sys.create_synonym_db.in_synonym</code>.
      */
     public static final Parameter<String> IN_SYNONYM = Internal.createParameter("in_synonym", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
-    private static final long serialVersionUID = 1072986727;
 
     /**
      * Create a new routine call instance

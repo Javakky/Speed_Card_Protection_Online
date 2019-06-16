@@ -68,15 +68,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FormatStatement extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = 599807284;
+
     /**
      * The parameter <code>sys.format_statement.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.format_statement.statement</code>.
      */
     public static final Parameter<String> STATEMENT = Internal.createParameter("statement", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = 599807284;
 
     /**
      * Create a new routine call instance

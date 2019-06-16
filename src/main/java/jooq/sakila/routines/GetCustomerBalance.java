@@ -28,19 +28,22 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GetCustomerBalance extends AbstractRoutine<BigDecimal> {
 
+    private static final long serialVersionUID = 1608721840;
+
     /**
      * The parameter <code>sakila.get_customer_balance.RETURN_VALUE</code>.
      */
     public static final Parameter<BigDecimal> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.DECIMAL(5, 2), false, false);
+
     /**
      * The parameter <code>sakila.get_customer_balance.p_customer_id</code>.
      */
     public static final Parameter<Integer> P_CUSTOMER_ID = Internal.createParameter("p_customer_id", org.jooq.impl.SQLDataType.INTEGER, false, false);
+
     /**
      * The parameter <code>sakila.get_customer_balance.p_effective_date</code>.
      */
     public static final Parameter<Timestamp> P_EFFECTIVE_DATE = Internal.createParameter("p_effective_date", org.jooq.impl.SQLDataType.TIMESTAMP, false, false);
-    private static final long serialVersionUID = 1608721840;
 
     /**
      * Create a new routine call instance

@@ -52,19 +52,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsIsAccountEnabled extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -1137365442;
+
     /**
      * The parameter <code>sys.ps_is_account_enabled.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(3), false, false);
+
     /**
      * The parameter <code>sys.ps_is_account_enabled.in_host</code>.
      */
     public static final Parameter<String> IN_HOST = Internal.createParameter("in_host", org.jooq.impl.SQLDataType.VARCHAR(60), false, false);
+
     /**
      * The parameter <code>sys.ps_is_account_enabled.in_user</code>.
      */
     public static final Parameter<String> IN_USER = Internal.createParameter("in_user", org.jooq.impl.SQLDataType.VARCHAR(32), false, false);
-    private static final long serialVersionUID = -1137365442;
 
     /**
      * Create a new routine call instance

@@ -20,6 +20,7 @@ public class Data {
     public int Secure;
     public int Cost;
     public int[] Point;
+    public String After;
 
     public String toJson() {
         return new Gson().toJson(this);

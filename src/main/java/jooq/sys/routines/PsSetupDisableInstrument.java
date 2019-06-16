@@ -67,11 +67,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsSetupDisableInstrument extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -667457331;
+
     /**
      * The parameter <code>sys.ps_setup_disable_instrument.in_pattern</code>.
      */
     public static final Parameter<String> IN_PATTERN = Internal.createParameter("in_pattern", org.jooq.impl.SQLDataType.VARCHAR(128), false, false);
-    private static final long serialVersionUID = -667457331;
 
     /**
      * Create a new routine call instance

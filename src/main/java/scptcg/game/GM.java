@@ -1,4 +1,4 @@
-/*package scptcg.game;
+package scptcg.game;/*package scptcg.game;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;

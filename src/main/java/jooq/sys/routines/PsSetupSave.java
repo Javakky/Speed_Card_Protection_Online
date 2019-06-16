@@ -64,11 +64,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsSetupSave extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -2014725269;
+
     /**
      * The parameter <code>sys.ps_setup_save.in_timeout</code>.
      */
     public static final Parameter<Integer> IN_TIMEOUT = Internal.createParameter("in_timeout", org.jooq.impl.SQLDataType.INTEGER, false, false);
-    private static final long serialVersionUID = -2014725269;
 
     /**
      * Create a new routine call instance

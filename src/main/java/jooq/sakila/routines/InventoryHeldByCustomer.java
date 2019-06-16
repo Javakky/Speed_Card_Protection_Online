@@ -26,15 +26,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class InventoryHeldByCustomer extends AbstractRoutine<Integer> {
 
+    private static final long serialVersionUID = 1122769876;
+
     /**
      * The parameter <code>sakila.inventory_held_by_customer.RETURN_VALUE</code>.
      */
     public static final Parameter<Integer> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.INTEGER, false, false);
+
     /**
      * The parameter <code>sakila.inventory_held_by_customer.p_inventory_id</code>.
      */
     public static final Parameter<Integer> P_INVENTORY_ID = Internal.createParameter("p_inventory_id", org.jooq.impl.SQLDataType.INTEGER, false, false);
-    private static final long serialVersionUID = 1122769876;
 
     /**
      * Create a new routine call instance

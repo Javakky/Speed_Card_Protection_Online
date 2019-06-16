@@ -58,15 +58,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class QuoteIdentifier extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -755207676;
+
     /**
      * The parameter <code>sys.quote_identifier.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.quote_identifier.in_identifier</code>.
      */
     public static final Parameter<String> IN_IDENTIFIER = Internal.createParameter("in_identifier", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = -755207676;
 
     /**
      * Create a new routine call instance

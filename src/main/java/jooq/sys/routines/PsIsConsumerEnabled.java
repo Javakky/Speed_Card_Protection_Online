@@ -51,15 +51,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsIsConsumerEnabled extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = 1547989316;
+
     /**
      * The parameter <code>sys.ps_is_consumer_enabled.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(3), false, false);
+
     /**
      * The parameter <code>sys.ps_is_consumer_enabled.in_consumer</code>.
      */
     public static final Parameter<String> IN_CONSUMER = Internal.createParameter("in_consumer", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
-    private static final long serialVersionUID = 1547989316;
 
     /**
      * Create a new routine call instance

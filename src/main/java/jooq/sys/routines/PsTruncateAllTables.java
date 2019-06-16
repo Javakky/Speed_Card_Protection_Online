@@ -47,11 +47,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsTruncateAllTables extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -1790882654;
+
     /**
      * The parameter <code>sys.ps_truncate_all_tables.in_verbose</code>.
      */
     public static final Parameter<Byte> IN_VERBOSE = Internal.createParameter("in_verbose", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = -1790882654;
 
     /**
      * Create a new routine call instance

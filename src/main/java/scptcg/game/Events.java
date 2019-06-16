@@ -11,11 +11,12 @@ public enum Events {
     BREACH("Breach"),
     GET_EFFECT("GetEffect"),
     GET_DECOMMISSIONED("GetDecommissioned"),
-    GET_CAN_PARTNERS("GetCanPertners"),
+    GET_CAN_PARTNERS("GetCanPartners"),
     GET_EMPTY_SITE("GetEmptySite"),
     TURN_END("TurnEnd"),
     GET_PERSONNEL("GetPersonnel"),
     GET_TALE("GetTale"),
+    SELECT("Select"),
     GET_SUM_SITE_COST("GetSumSiteCost"),
     GET_SANDBOX_PROTECTION("GetSandBoxProtection"),
     ACTIVE_EFFECT("ActiveEffect"),
@@ -35,7 +36,8 @@ public enum Events {
     GET_EFFECT_COUNT("GetEffectCount"),
     IMPOSSIBLE("Impossible"),
     IS_FIRST("IsFirst"),
-    GET_COST("GetCost");
+    GET_COST("GetCost"),
+    HEAL("Heal");
 
     private String event;
 

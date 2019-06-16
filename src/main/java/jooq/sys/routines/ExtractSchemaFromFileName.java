@@ -58,15 +58,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ExtractSchemaFromFileName extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -1680693597;
+
     /**
      * The parameter <code>sys.extract_schema_from_file_name.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
+
     /**
      * The parameter <code>sys.extract_schema_from_file_name.path</code>.
      */
     public static final Parameter<String> PATH = Internal.createParameter("path", org.jooq.impl.SQLDataType.VARCHAR(512), false, false);
-    private static final long serialVersionUID = -1680693597;
 
     /**
      * Create a new routine call instance

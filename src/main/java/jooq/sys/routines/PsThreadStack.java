@@ -56,19 +56,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsThreadStack extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -1034660003;
+
     /**
      * The parameter <code>sys.ps_thread_stack.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.ps_thread_stack.thd_id</code>.
      */
     public static final Parameter<ULong> THD_ID = Internal.createParameter("thd_id", org.jooq.impl.SQLDataType.BIGINTUNSIGNED, false, false);
+
     /**
      * The parameter <code>sys.ps_thread_stack.debug</code>.
      */
     public static final Parameter<Byte> DEBUG = Internal.createParameter("debug", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = -1034660003;
 
     /**
      * Create a new routine call instance

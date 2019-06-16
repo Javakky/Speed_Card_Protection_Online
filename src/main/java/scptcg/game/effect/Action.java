@@ -13,7 +13,6 @@ import java.util.Map;
 import static org.apache.commons.lang3.ArrayUtils.*;
 import static scptcg.game.K_ClassScenario.*;
 import static scptcg.game.card.CardKind.*;
-import static scptcg.game.effect.EFFECT_TYPE_LIST.*;
 
 public class Action extends AbstractAction {
 
@@ -61,7 +60,7 @@ public class Action extends AbstractAction {
                         new Place[]{c.getPlace()},
                         null,
                         new int[]{c.getMyPlayer().find(parent.getPlace(), parent)});
-                System.out.println("DEC:" + c.getEffect(DECOMMISSIONED, 0).action[0].action);
+                //System.out.println("DEC:" + c.getEffect(DECOMMISSIONED, 0).action[0].action);
                 ga.decommission(parent.getPlayerNumber(), c);
                 break;
             }

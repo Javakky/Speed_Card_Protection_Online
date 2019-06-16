@@ -72,19 +72,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ListAdd extends AbstractRoutine<String> {
 
+    private static final long serialVersionUID = -166331424;
+
     /**
      * The parameter <code>sys.list_add.RETURN_VALUE</code>.
      */
     public static final Parameter<String> RETURN_VALUE = Internal.createParameter("RETURN_VALUE", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.list_add.in_list</code>.
      */
     public static final Parameter<String> IN_LIST = Internal.createParameter("in_list", org.jooq.impl.SQLDataType.CLOB, false, false);
+
     /**
      * The parameter <code>sys.list_add.in_add_value</code>.
      */
     public static final Parameter<String> IN_ADD_VALUE = Internal.createParameter("in_add_value", org.jooq.impl.SQLDataType.CLOB, false, false);
-    private static final long serialVersionUID = -166331424;
 
     /**
      * Create a new routine call instance

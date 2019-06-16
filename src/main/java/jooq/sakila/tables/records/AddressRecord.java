@@ -133,16 +133,16 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
      * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
     @java.lang.Deprecated
-    public Object getLocation() {
-        return get(7);
+    public void setLocation(Object value) {
+        set(7, value);
     }
 
     /**
      * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
     @java.lang.Deprecated
-    public void setLocation(Object value) {
-        set(7, value);
+    public Object getLocation() {
+        return get(7);
     }
 
     /**

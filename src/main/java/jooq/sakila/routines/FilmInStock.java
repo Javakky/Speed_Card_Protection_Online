@@ -25,19 +25,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FilmInStock extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -1288925835;
+
     /**
      * The parameter <code>sakila.film_in_stock.p_film_id</code>.
      */
     public static final Parameter<Integer> P_FILM_ID = Internal.createParameter("p_film_id", org.jooq.impl.SQLDataType.INTEGER, false, false);
+
     /**
      * The parameter <code>sakila.film_in_stock.p_store_id</code>.
      */
     public static final Parameter<Integer> P_STORE_ID = Internal.createParameter("p_store_id", org.jooq.impl.SQLDataType.INTEGER, false, false);
+
     /**
      * The parameter <code>sakila.film_in_stock.p_film_count</code>.
      */
     public static final Parameter<Integer> P_FILM_COUNT = Internal.createParameter("p_film_count", org.jooq.impl.SQLDataType.INTEGER, false, false);
-    private static final long serialVersionUID = -1288925835;
 
     /**
      * Create a new routine call instance

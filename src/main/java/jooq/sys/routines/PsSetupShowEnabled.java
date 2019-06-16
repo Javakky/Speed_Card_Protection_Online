@@ -117,15 +117,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PsSetupShowEnabled extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -941647195;
+
     /**
      * The parameter <code>sys.ps_setup_show_enabled.in_show_instruments</code>.
      */
     public static final Parameter<Byte> IN_SHOW_INSTRUMENTS = Internal.createParameter("in_show_instruments", org.jooq.impl.SQLDataType.TINYINT, false, false);
+
     /**
      * The parameter <code>sys.ps_setup_show_enabled.in_show_threads</code>.
      */
     public static final Parameter<Byte> IN_SHOW_THREADS = Internal.createParameter("in_show_threads", org.jooq.impl.SQLDataType.TINYINT, false, false);
-    private static final long serialVersionUID = -941647195;
 
     /**
      * Create a new routine call instance

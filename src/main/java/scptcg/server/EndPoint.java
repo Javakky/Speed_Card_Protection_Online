@@ -184,7 +184,7 @@ public final class EndPoint {
                 Pair<Integer, Scp> result = game.crossTest(data.Player ? 0 : 1, data.Coordinate[0][0], data.SandBox);
                 Integer damage = result.getLeft();
                 Scp wait = result.getRight();
-                list.addAll(damage(data.Player,
+                list.addAll(damage(!data.Player,
                         data.SandBox,
                         damage,
                         data.Coordinate[0][0]));
@@ -197,6 +197,8 @@ public final class EndPoint {
                 break;
             }
             case DAMAGE: {
+                data.SandBox = data.Coordinate[0][0];
+                data.Point = new int[]{Integer.parseInt(data.CardName[0])};
                 Pair<Integer, Scp> result = game.damage(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
                 int damage = result.getLeft();
                 Scp wait = result.getRight();
@@ -222,6 +224,10 @@ public final class EndPoint {
                 list.addAll(breach(data.Player, data.Coordinate[0][0], scp));
                 list.addAll(getCardParam(data.Player, data.Coordinate[0][0], scp));
                 list.addAll(checkK_Class(game));
+                list.addAll(getCost(true, game));
+                list.addAll(getCosttoEnemy(true, game));
+                list.addAll(getCost(false, game));
+                list.addAll(getCosttoEnemy(false, game));
                 break;
             }
 
@@ -231,7 +237,7 @@ public final class EndPoint {
                 break;
 
             case GET_PERSONNEL:
-                list.addAll(getPersonnel(data.Player, game));
+                list.addAll(getPersonnel(data.Player, data.BeAbleTo, game));
                 break;
 
             case GET_TALE:
@@ -253,10 +259,10 @@ public final class EndPoint {
             case GET_SANDBOX_PROTECTION:
                 list.addAll(getSandBoxNumber(data.Player, game));
                 break;
-
+/*
             case GET_COST:
                 list.addAll(getCost(data.Player, game));
-                break;
+                break;*/
 
             case GET_EFFECT: {
                 int len = 0;
@@ -285,23 +291,39 @@ public final class EndPoint {
                 break;
             }
             case DECOMMISSION: {
+                data.Zone = new String[]{data.CardName[0]};
+                if (data.CardName[1].equals("True")) {
+                    data.Player = !data.Player;
+                }
                 Card card = game.decommission(data.Player ? 0 : 1, create(data.Zone[0]), data.Coordinate[0][0]);
                 list.addAll(decommission(data.Player, data.Zone[0], data.Coordinate[0][0], card));
                 break;
             }
 
             case HEAL_SANDBOX: {
+                data.SandBox = data.Coordinate[0][0];
+                boolean me = data.Player;
+                if (!data.CardName[0].equals("True")) {
+                    data.Player = !data.Player;
+                }
+                data.Point = new int[]{Integer.parseInt(data.CardName[1])};
                 int point = game.healSandBox(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
                 list.addAll(heal(data.Player, data.SandBox, point));
                 break;
             }
 
             case DAMAGE_SANDBOX: {
-                Pair<Integer, Scp> result = game.damage(data.Player ? 1 : 0, data.SandBox, data.Point[0]);
+                data.SandBox = data.Coordinate[0][0];
+                boolean me = data.Player;
+                if (!data.CardName[0].equals("True")) {
+                    data.Player = !data.Player;
+                }
+                data.Point = new int[]{Integer.parseInt(data.CardName[1])};
+                Pair<Integer, Scp> result = game.damage(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
                 list.addAll(damage(data.Player, data.SandBox, data.Point[0], -1));
 
                 if (result.getValue() != null) {
-                    list.addAll(startBreach(result.getValue(), true));
+                    list.addAll(startBreach(result.getValue(), data.Player == me));
                 }
                 list.addAll(checkK_Class(game));
                 break;
@@ -418,7 +440,7 @@ public final class EndPoint {
                         coordinate[0] = r.getResInt();
                     }
 
-                    list.addAll(select(Integer.parseInt(r.getResStr()[2]) == 0, r.getAction(), r.getSubjectPlace().toString(), coordinate));
+                    list.addAll(select(Integer.parseInt(r.getResStr()[2]) == 0, r.getResStr()[0], r.getSubjectPlace().toString(), coordinate));
                     break;
 
                 case "healSandBox":

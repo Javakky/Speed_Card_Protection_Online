@@ -110,19 +110,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TableExists extends AbstractRoutine<java.lang.Void> {
 
+    private static final long serialVersionUID = -303593103;
+
     /**
      * The parameter <code>sys.table_exists.in_db</code>.
      */
     public static final Parameter<String> IN_DB = Internal.createParameter("in_db", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
+
     /**
      * The parameter <code>sys.table_exists.in_table</code>.
      */
     public static final Parameter<String> IN_TABLE = Internal.createParameter("in_table", org.jooq.impl.SQLDataType.VARCHAR(64), false, false);
+
     /**
      * The parameter <code>sys.table_exists.out_exists</code>.
      */
     public static final Parameter<String> OUT_EXISTS = Internal.createParameter("out_exists", org.jooq.impl.SQLDataType.VARCHAR(10), false, false);
-    private static final long serialVersionUID = -303593103;
 
     /**
      * Create a new routine call instance
