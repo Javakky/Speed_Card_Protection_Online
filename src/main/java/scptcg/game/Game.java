@@ -392,12 +392,12 @@ public class Game implements ICardSetHolder {
     }
 
     public Result[] activeEffects(String[] param, Result result) {
+        while (waitingEffects.size() > 0 && waitingEffects.get(0).size() <= 0) {
+            waitingEffects.remove(0);
+        }
         if (hasWaitEffects()) {
             onActive = true;
             onActiveEffect = true;
-            while (waitingEffects.size() > 0 && waitingEffects.get(0).size() <= 0) {
-                waitingEffects.remove(0);
-            }
             addEmptyWaitingEffects();
             Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
             boolean isFinish = (res == null ? true : res.getValue());

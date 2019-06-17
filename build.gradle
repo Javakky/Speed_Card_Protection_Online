@@ -3,11 +3,11 @@ plugins {
     id 'nu.studer.jooq' version '3.0.3'
     id 'com.github.hierynomus.license' version '0.15.0'
     id 'war'
-    id "org.gretty" version "2.2.0"
+    //id "org.gretty" version "2.3.0"
 }
 
 /*apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty.plugin'*/
-/*apply from: 'gretty.plugin'*/
+apply from: 'gretty.plugin'
 
 
 version '1.0-SNAPSHOT'

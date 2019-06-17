@@ -33,11 +33,11 @@
     <Console name="console" target="SYSTEM_OUT">
         <PatternLayout pattern="${ptn}" />
     </Console>
-<Loggers>
-    <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
+    <Loggers>
+        <!-- パッケージごとにAppenderとログレベルを組み合わせる -->
         <Logger name="scptcg.log.Log4j" level="info" additivity="true">
             <AppenderRef ref="file"/>
             <AppenderRef ref="console"/>
         </Logger>
-</Loggers>
+    </Loggers>
 </Configuration>
