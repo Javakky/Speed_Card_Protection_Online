@@ -6,7 +6,8 @@ public enum TermKind implements IActionKind {
     HAS_SCP("hasSCP"),
     FIRST_TIME_BY_TURN("firstTimeTurn"),
     MY_TURN("myTurn"),
-    HAVE_PERSONNEL("havePersonnel");
+    HAVE_PERSONNEL("havePersonnel"),
+    HAS_SECURE("hasSecure");
 
     private String name;
 

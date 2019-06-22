@@ -514,6 +514,10 @@ public final class EndPoint {
                     list.addAll(doActive(r.getSubject().getName(), r.getResStr()[0], data.Player, r.getSubjectPlayer()));
                     break;
 
+                case "MinusSecure":
+                    list.addAll(getCardParam(r.getSubjectPlayer() == 0, game.find(r.getSubjectPlayer(), SITE, r.getSubject()), (Scp) r.getSubject()));
+                    break;
+
                 default:
                     break;
             }

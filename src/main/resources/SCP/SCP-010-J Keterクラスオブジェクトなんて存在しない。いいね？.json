@@ -1,0 +1,17 @@
+{
+  "type": "SCP",
+  "name": "SCP-010-J Keterクラスオブジェクトなんて存在しない。いいね？",
+  "cost": 3,
+  "secure": 12,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Unclassed",
+  "containmentClass": "Safe",
+  "tag": [
+    "joke",
+    "scp",
+    "情報災害",
+    "毒性",
+    "認識災害"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "type": "SCP",
+  "name": "SCP-097-JP ミスター・ずぶずぶ",
+  "cost": 1,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Safe",
+  "tag": [
+    "scp-jp",
+    "mister",
+    "safe",
+    "人間型",
+    "ワンダーテインメント",
+    "博士"
+  ],
+  "effects": {
+    "effect": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "effects": [
+          {
+            "number": 1,
+            "message": "自分のターン終了時、このオブジェクトの確保力を-1する",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "hasSecure"
+              }
+            ],
+            "action": [
+              {
+                "action": "MinusSecure",
+                "param": [
+                  "1"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

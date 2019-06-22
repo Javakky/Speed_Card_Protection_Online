@@ -96,6 +96,7 @@ public class OrganizeResource {
                                         }
                                     } catch (JsonSyntaxException | NullPointerException e) {
                                         e.printStackTrace();
+                                        System.out.println(sb.toString());
                                     }
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();

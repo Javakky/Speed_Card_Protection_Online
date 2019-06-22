@@ -1,0 +1,18 @@
+{
+  "type": "SCP",
+  "name": "SCP-743 チョコレート・ファウンテン",
+  "cost": 3,
+  "secure": 1,
+  "canAttack": true,
+  "canPartner": true,
+  "canAttackNumber": 6,
+  "clazz": "Keter",
+  "tag": [
+    "scp",
+    "異次元",
+    "肉食",
+    "自己修復",
+    "雑食",
+    "食物"
+  ]
+}

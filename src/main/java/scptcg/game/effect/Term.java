@@ -58,6 +58,9 @@ public class Term extends AbstractAction {
             case MY_TURN: {
                 return parent.isMyTurn();
             }
+            case HAS_SECURE: {
+                return ((Scp) parent.getCard()).getSecure() > 0;
+            }
             default: {
                 return true;
             }

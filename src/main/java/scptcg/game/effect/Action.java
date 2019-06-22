@@ -165,6 +165,11 @@ public class Action extends AbstractAction {
                 break;
             }
 
+            case MINUS_SECURE: {
+                ((Scp) parent).minusSecure(Integer.parseInt(this.param[0]));
+                break;
+            }
+
             case BREACH: {
                 int i = -1;
                 switch (this.param[1]) {

@@ -117,7 +117,7 @@ public class Game implements ICardSetHolder {
             p.nextTurn();
         }
         this.addAllEffects(this.player[turnPlayer].getEffectList(TURN_START));
-        this.addAllEffects(this.player[turnPlayer == 0 ? 1 : 0].getEffectList(TURN_START));
+        this.addAllEffects(this.player[turnPlayer == 0 ? 1 : 0].getEffectList(TURN_END));
     }
 
     public K_ClassScenario isK_ClassScenario() {

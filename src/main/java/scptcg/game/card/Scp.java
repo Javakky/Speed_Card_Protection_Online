@@ -146,7 +146,7 @@ public class Scp extends Card {
         }
     }
 
-    protected void minusSecure(int point) {
+    public void minusSecure(int point) {
         if (point < 0) {
             throw new RuntimeException("minus-Force is minus");
         }
