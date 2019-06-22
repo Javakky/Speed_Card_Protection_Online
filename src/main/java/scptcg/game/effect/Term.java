@@ -61,6 +61,20 @@ public class Term extends AbstractAction {
             case HAS_SECURE: {
                 return ((Scp) parent.getCard()).getSecure() > 0;
             }
+            case DECOMMISSIONED_SCP: {
+                switch (this.param[0]) {
+                    case "me":
+                        return parent.getMyPlayer().getDecommissinoed().length > 0;
+                    case "enemy":
+                        return parent.getMyPlayer().getEnemy().getDecommissinoed().length > 0;
+                    case "both":
+                        return parent.getMyPlayer().getDecommissinoed().length > 0 && parent.getMyPlayer().getEnemy().getDecommissinoed().length > 0;
+                    case "any":
+                        return parent.getMyPlayer().getDecommissinoed().length > 0 || parent.getMyPlayer().getEnemy().getDecommissinoed().length > 0;
+                    default:
+                        return false;
+                }
+            }
             default: {
                 return true;
             }

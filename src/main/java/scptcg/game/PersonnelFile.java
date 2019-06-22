@@ -5,6 +5,9 @@ import scptcg.game.card.CardFactory;
 import scptcg.game.card.CardKind;
 import scptcg.game.card.Personnel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static scptcg.game.Place.*;
 
 public class PersonnelFile extends CardHolder {
@@ -80,6 +83,17 @@ public class PersonnelFile extends CardHolder {
     @Override
     public Card getCard(int i) {
         return pf;
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        if (hasPersonnel()) {
+            Map<Card, Integer> map = new HashMap<>();
+            map.put(pf, 0);
+            return map;
+        } else {
+            return new HashMap<>();
+        }
     }
 
     public Personnel decommission() {

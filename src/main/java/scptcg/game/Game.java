@@ -365,7 +365,7 @@ public class Game implements ICardSetHolder {
         Place p = Place.create(s);
         switch (p) {
             case SITE:
-                return player[isFirst].site.scp.get(i);
+                return player[isFirst].site.site.get(i);
         }
         return null;
     }

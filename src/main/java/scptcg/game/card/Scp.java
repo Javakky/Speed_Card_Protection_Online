@@ -87,7 +87,7 @@ public class Scp extends Card {
 
     public ObjectClassKind getContainmentClass() {
         if (containmentClass == null || containmentClass.equals("")) {
-            return null;
+            return ObjectClassKind.getByName(clazz);
         }
         return ObjectClassKind.getByName(containmentClass);
     }

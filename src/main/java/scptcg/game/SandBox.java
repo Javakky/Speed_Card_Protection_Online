@@ -5,6 +5,7 @@ import scptcg.game.card.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static scptcg.game.K_ClassScenario.*;
 import static scptcg.game.Place.*;
@@ -232,6 +233,11 @@ public class SandBox extends CardHolder {
     @Override
     public Card getCard(int i) {
         return super.getCard(i, sandBox);
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        return deleteCardAll(sandBox, kind);
     }
 
 }

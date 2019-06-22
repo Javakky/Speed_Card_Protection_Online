@@ -6,8 +6,12 @@ import scptcg.game.card.*;
 import scptcg.game.effect.Effect;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static scptcg.game.Place.*;
+import static scptcg.game.card.CardKind.*;
+import static scptcg.game.card.ObjectClassKind.*;
 import static scptcg.game.effect.EFFECT_TYPE_LIST.DECOMMISSIONED;
 
 public class Player implements ICardSetHolder {
@@ -417,4 +421,45 @@ public class Player implements ICardSetHolder {
         return parent.getTurnPlayer() == parent.getMyTurn(this);
     }
 
+    public int[] reContainmentAll(Place place, CardKind k) {
+        CardHolder before = null;
+        CardHolder after = null;
+
+        switch (place) {
+            case DECOMMISSIONED:
+                before = decommissioned;
+                break;
+            case SITE:
+                before = site;
+                break;
+        }
+
+        int index = -1;
+        Map<Card, Integer> deletes = null;
+        switch (k) {
+            case TALE:
+                after = tale;
+                deletes = Objects.requireNonNull(before).deleteCardAll(TALE);
+                after.addCardAll(deletes.keySet().toArray(new Card[0]));
+                break;
+            case PERSONNEL:
+                after = personnelFile;
+                deletes = Objects.requireNonNull(before).deleteCardAll(PERSONNEL);
+                after.addCardAll(deletes.keySet().toArray(new Card[0]));
+                break;
+            case SCP:
+                deletes = Objects.requireNonNull(before).deleteCardAll(PERSONNEL);
+                for (Card c : deletes.keySet().toArray(new Card[0])) {
+                    if (((Scp) c).getContainmentClass() == SAFE) {
+                        sandbox[0].addCard(c);
+                    } else if (((Scp) c).getContainmentClass() == EUCLID) {
+                        sandbox[1].addCard(c);
+                    } else if (((Scp) c).getContainmentClass() == KETER) {
+                        sandbox[2].addCard(c);
+                    }
+                }
+                break;
+        }
+        return ArrayUtils.toPrimitive(deletes.values().toArray(new Integer[0]));
+    }
 }

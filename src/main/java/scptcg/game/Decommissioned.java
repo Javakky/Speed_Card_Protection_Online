@@ -1,9 +1,11 @@
 package scptcg.game;
 
 import scptcg.game.card.Card;
+import scptcg.game.card.CardKind;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static scptcg.game.Place.*;
 
@@ -41,6 +43,11 @@ public class Decommissioned extends CardHolder {
     @Override
     public Card getCard(int i) {
         return super.getCard(i, decommissioned);
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        return super.deleteCardAll(decommissioned, kind);
     }
 
     @Override

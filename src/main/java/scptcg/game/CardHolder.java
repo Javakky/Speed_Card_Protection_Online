@@ -1,10 +1,13 @@
 package scptcg.game;
 
 import scptcg.game.card.Card;
+import scptcg.game.card.CardKind;
 import scptcg.game.effect.Effect;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class CardHolder {
     protected ICardSetHolder parent;
@@ -120,4 +123,28 @@ public abstract class CardHolder {
             throw new RuntimeException("parent isn't player");
         }
     }
+
+    public abstract Map<Card, Integer> deleteCardAll(CardKind kind);
+
+    protected Map<Card, Integer> deleteCardAll(List<? extends Card> list, CardKind kind) {
+        Map<Card, Integer> map = new HashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            Card c = list.get(i);
+            if (c != null) {
+                if (kind == null || kind == c.getType())
+                    map.put(c, i);
+            }
+        }
+        for (Card c : map.keySet()) {
+            deleteCard(c);
+        }
+        return map;
+    }
+
+    public void addCardAll(Card[] adds) {
+        for (Card c : adds) {
+            addCard(c);
+        }
+    }
+
 }

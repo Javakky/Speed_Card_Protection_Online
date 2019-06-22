@@ -107,6 +107,9 @@ public class Action extends AbstractAction {
                     case "Point":
                         num = Integer.parseInt(this.param[4]);
                         break;
+                    case "Number":
+                        num = before.getResInt().length;
+                        break;
                 }
                 result.setParam(null, null, new String[]{this.param[2]}, new int[]{num, player, Integer.parseInt(this.param[1])});
                 //////System.out.println(result.getAction());
@@ -217,6 +220,30 @@ public class Action extends AbstractAction {
             case RECONTAINMENT: {
                 int index = parent.reContainment();
                 result.setParam(new Card[]{parent}, new Place[]{parent.getPlace()}, null, new int[]{index});
+                break;
+            }
+
+            case RECONTAINMENT_ALL: {
+                Player player = parent.getMyPlayer();
+                Player enemy = parent.getMyPlayer().getEnemy();
+                int[] array = new int[0];
+                int index = -1;
+                switch (this.param[1]) {
+                    case "me":
+                        array = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        break;
+                    case "enemy":
+                        array = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        break;
+                    case "both":
+                        int[] a, b;
+                        a = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        index = a.length;
+                        b = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        array = ArrayUtils.addAll(a, b);
+                        break;
+                }
+                result.setParam(new Card[]{parent}, new Place[]{parent.getPlace()}, index > 0 ? new String[]{String.valueOf(index)} : null, array);
                 break;
             }
         }

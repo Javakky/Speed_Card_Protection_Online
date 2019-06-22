@@ -3,11 +3,13 @@ package scptcg.game;
 import org.apache.commons.lang3.ArrayUtils;
 import scptcg.game.card.Anomalous;
 import scptcg.game.card.Card;
+import scptcg.game.card.CardKind;
 import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static scptcg.game.K_ClassScenario.*;
 import static scptcg.game.Place.*;
@@ -16,15 +18,15 @@ import static scptcg.game.effect.EFFECT_TYPE_LIST.*;
 
 public class Site extends CardHolder {
 
-    protected List<Scp> scp;
+    protected List<Scp> site;
     int size = 6;
     private int anomalousCost = 0;
 
     Site(Player parent) {
         super(parent);
-        scp = new ArrayList<>(6);
+        site = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
-            scp.add(null);
+            site.add(null);
         }
     }
 
@@ -37,15 +39,15 @@ public class Site extends CardHolder {
     }
 
     public int getForce(int place) {
-        if (scp.size() <= place) {
+        if (site.size() <= place) {
             throw new RuntimeException("this place is bigger than length");
         }
-        return scp.get(place).getSecure();
+        return site.get(place).getSecure();
     }
 
     protected int getCost() {
         int cost = 0;
-        for (Scp scp : this.scp) {
+        for (Scp scp : this.site) {
             if (scp != null) {
                 if (scp.getType() == SCP) {
                     cost += scp.getCost();
@@ -67,8 +69,8 @@ public class Site extends CardHolder {
     }
 
     int getEmptySite() {
-        for (int i = 0; i < scp.size(); i++) {
-            if (scp.get(i) == null) {
+        for (int i = 0; i < site.size(); i++) {
+            if (site.get(i) == null) {
                 return i;
             }
         }
@@ -77,8 +79,8 @@ public class Site extends CardHolder {
 
     int[] getEmptySiteList() {
         List<Integer> arr = new ArrayList<Integer>();
-        for (int i = 0; i < scp.size(); i++) {
-            if (scp.get(i) == null) {
+        for (int i = 0; i < site.size(); i++) {
+            if (site.get(i) == null) {
                 arr.add(i);
             }
         }
@@ -87,7 +89,7 @@ public class Site extends CardHolder {
 
     int getEmptySiteNumber() {
         int count = 0;
-        for (Scp scp : scp) {
+        for (Scp scp : site) {
             if (scp == null) {
                 count++;
             }
@@ -96,20 +98,20 @@ public class Site extends CardHolder {
     }
 
     boolean hasSCP(int place) {
-        if (place >= scp.size()) {
-            throw new RuntimeException("place is bigger than scp num");
+        if (place >= site.size()) {
+            throw new RuntimeException("place is bigger than site num");
         }
-        return scp.get(place) != null;
+        return site.get(place) != null;
     }
 
     public boolean canAttack(int i) {
-        return this.scp.get(i).canAttack();
+        return this.site.get(i).canAttack();
     }
 
     private K_ClassScenario isXK() {
         int cost = 0;
         boolean anom = false;
-        for (Scp s : scp) {
+        for (Scp s : site) {
             if (s != null) {
                 if ((s instanceof Anomalous) && !anom) {
                     anom = true;
@@ -132,7 +134,7 @@ public class Site extends CardHolder {
 
     @Override
     public int getNumber(Card parent) {
-        return scp.indexOf(parent);
+        return site.indexOf(parent);
     }
 
     private boolean fullTerm(Scp card, String... param) {
@@ -169,7 +171,7 @@ public class Site extends CardHolder {
 
     public boolean onlyPartner() {
         boolean only = true;
-        for (Scp s : scp) {
+        for (Scp s : site) {
             if (!only) {
                 break;
             }
@@ -182,7 +184,7 @@ public class Site extends CardHolder {
     }
 
     public boolean hasCost(int cost) {
-        for (Scp s : scp) {
+        for (Scp s : site) {
             if (s == null) {
                 continue;
             }
@@ -195,7 +197,7 @@ public class Site extends CardHolder {
     }
 
     public boolean hasSecure(int cost) {
-        for (Scp s : scp) {
+        for (Scp s : site) {
             if (s == null) {
                 continue;
             }
@@ -209,14 +211,14 @@ public class Site extends CardHolder {
 
     @Override
     public int[] select(String full) {
-        return super.select(full, scp);
+        return super.select(full, site);
     }
 
     public int[] select(String... param) {
         int[] index = this.select(param[0]);
         List<Integer> li = new ArrayList<>();
         for (int i = 0; i < index.length; i++) {
-            Scp tmp = scp.get(index[i]);
+            Scp tmp = site.get(index[i]);
             if (tmp == null) {
                 continue;
             }
@@ -234,14 +236,14 @@ public class Site extends CardHolder {
     @Override
     public void deleteCard(Card card) {
         if (card instanceof Scp) {
-            super.deleteCard(card, scp);
+            super.deleteCard(card, site);
         } else {
-            throw new RuntimeException("card isn't scp");
+            throw new RuntimeException("card isn't site");
         }
     }
 
     public void nextTurn() {
-        for (Scp scp : this.scp) {
+        for (Scp scp : this.site) {
             if (scp != null) {
                 scp.refresh();
             }
@@ -249,11 +251,11 @@ public class Site extends CardHolder {
     }
 
     public int crossTest(int place) {
-        return this.scp.get(place).crossTest();
+        return this.site.get(place).crossTest();
     }
 
     public Scp decommission(int index) {
-        Scp tmp = scp.get(index);
+        Scp tmp = site.get(index);
         deleteCard(tmp);
         return tmp;
     }
@@ -280,7 +282,7 @@ public class Site extends CardHolder {
             if (card.getAttackNumber() <= 0) {
                 card.setCanAttackNumber(1);
             }
-            scp.set(place, card);
+            site.set(place, card);
             card.setParent(this);
             K_ClassScenario k = isXK();
             if (k != null) {
@@ -291,7 +293,7 @@ public class Site extends CardHolder {
 
     @Override
     public Card findCard(String s) {
-        return super.findCard(s, scp);
+        return super.findCard(s, site);
     }
 
     @Override
@@ -301,11 +303,16 @@ public class Site extends CardHolder {
 
     @Override
     public Card getCard(int i) {
-        return super.getCard(i, scp);
+        return super.getCard(i, site);
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        return deleteCardAll(site, kind);
     }
 
     public boolean hasCrossTested() {
-        for (Scp s : scp) {
+        for (Scp s : site) {
             if (s == null) {
                 continue;
             }
@@ -318,12 +325,12 @@ public class Site extends CardHolder {
     }
 
     public void addTag(int index, String tag) {
-        scp.get(index).addTag(tag);
+        site.get(index).addTag(tag);
     }
 
     public List<Effect> getEffectList(int timing) {
         List<Effect> list = new ArrayList<>();
-        for (Scp tmp : scp) {
+        for (Scp tmp : site) {
             if (tmp != null) {
                 list.addAll(tmp.getEffectList(timing));
             }

@@ -1,8 +1,12 @@
 package scptcg.game;
 
+import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Canon;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardFactory;
+import scptcg.game.card.CardKind;
+
+import java.util.Map;
 
 import static scptcg.game.Place.*;
 import static scptcg.game.card.CardKind.*;
@@ -57,11 +61,16 @@ public class HeadCanon extends CardHolder {
 
     @Override
     public int addCard(Card c) {
-        throw new RuntimeException("cannot add");
+        throw new NotImplementedException("cannot add");
     }
 
     @Override
     public Card getCard(int i) {
         return canon;
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        throw new NotImplementedException("cannot add");
     }
 }

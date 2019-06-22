@@ -7,6 +7,7 @@ import scptcg.game.card.Tale;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static scptcg.game.Place.*;
 
@@ -75,6 +76,11 @@ public class Tales extends CardHolder {
     @Override
     public Card getCard(int i) {
         return super.getCard(i, tale);
+    }
+
+    @Override
+    public Map<Card, Integer> deleteCardAll(CardKind kind) {
+        return deleteCardAll(tale, kind);
     }
 
     public void nextTurn() {
