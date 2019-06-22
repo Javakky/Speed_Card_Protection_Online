@@ -1,0 +1,21 @@
+{
+  "type": "SCP",
+  "name": "SCP-828 Qallupilluk",
+  "cost": 2,
+  "secure": 6,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Euclid",
+  "tag": [
+    "scp",
+    "人間型",
+    "嗅覚",
+    "服",
+    "植物",
+    "水棲",
+    "生命",
+    "知性",
+    "自我",
+    "魚"
+  ]
+}

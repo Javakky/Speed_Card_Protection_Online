@@ -7,6 +7,7 @@ import scptcg.game.Player;
 import scptcg.game.card.Card;
 import scptcg.game.card.Scp;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +77,9 @@ public class Action extends AbstractAction {
                         //////System.out.println("both");
                         Player e = p.getEnemy();
                         int[] ps = p.select(removeAll(this.param, 0, 1));
+                        System.out.println(Arrays.asList(ps).toString());
                         int[] es = e.select(removeAll(this.param, 0, 1));
+                        System.out.println(Arrays.asList(es).toString());
                         result.setParam(
                                 null,
                                 null,
@@ -138,7 +141,7 @@ public class Action extends AbstractAction {
                         }
                         p.getPersonnel().addEffect(
                                 new Effect(this.param[3],
-                                        this.param[4],
+                                        Boolean.parseBoolean(this.param[4]),
                                         Integer.parseInt(this.param[5]),
                                         Boolean.parseBoolean(this.param[6]),
                                         this.param[7].split(","),
@@ -195,7 +198,7 @@ public class Action extends AbstractAction {
                         ga.addEffects(
                                 new Effect(
                                         "",
-                                        "force",
+                                        false,
                                         1,
                                         true,
                                         null,

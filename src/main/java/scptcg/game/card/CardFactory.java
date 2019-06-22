@@ -58,12 +58,15 @@ public class CardFactory {
 
     private static Card create(String path, String name, Class<? extends Card> clazz) throws IOException {
         StringBuilder sb = new StringBuilder();
-
-        Scanner s =
-                new Scanner(
-                        CardFactory.class.getResource(
-                                "/" + path + "/" + name + ".json"
-                        ).openStream());
+        Scanner s = null;
+        try {
+            s =
+                    new Scanner(
+                            CardFactory.class.getResource(
+                                    "/" + path + "/" + name + ".json"
+                            ).openStream());
+        } catch (NullPointerException e) {
+        }
 
         while (s.hasNextLine()) {
             sb.append(s.nextLine());

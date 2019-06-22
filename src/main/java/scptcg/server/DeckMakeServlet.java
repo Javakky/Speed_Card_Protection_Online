@@ -133,7 +133,8 @@ public class DeckMakeServlet extends HttpServlet {
                                 .append(",")
                                 .append(record.getValue(DECK.MAINTYPE) + "\n");
                     }
-                    sb.setLength(sb.length() - 1);
+                    if (sb.length() >= 1)
+                        sb.setLength(sb.length() - 1);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -248,6 +249,7 @@ public class DeckMakeServlet extends HttpServlet {
                             .where(DECK.ID.eq(req.getParameter("Id")))
                             .and(DECK.NAME.eq(req.getParameter("Name")))
                             .fetch().get(0).getValue(DECK.DECK_);
+                    System.out.println(json);
                     out.println(json);
                 } catch (SQLException e) {
                     e.printStackTrace();

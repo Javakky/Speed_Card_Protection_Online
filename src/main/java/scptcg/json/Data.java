@@ -21,6 +21,8 @@ public class Data {
     public int Cost;
     public int[] Point;
     public String After;
+    public String Text;
+    public boolean Continue;
 
     public String toJson() {
         return new Gson().toJson(this);

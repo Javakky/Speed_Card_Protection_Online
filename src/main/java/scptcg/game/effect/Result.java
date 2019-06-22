@@ -13,6 +13,7 @@ public class Result {
     private int turn;
     private int subjectPlayer;
     private String action;
+    private boolean isContinue = false;
 
     public Result(int turn, int subjectPlayer, Place subjectPlace, String action, Card subject) {
         this.turn = turn;
@@ -63,5 +64,13 @@ public class Result {
 
     public int getSubjectPlayer() {
         return subjectPlayer;
+    }
+
+    public boolean getIsContinue() {
+        return isContinue;
+    }
+
+    public void setIsContinue(boolean isContinue) {
+        this.isContinue = isContinue;
     }
 }

@@ -50,7 +50,7 @@ public class GameOperator {
         );
     }
 
-    public static List<Pair<String, String>> select(final boolean player, final String action, final String place, int[][] coordinate) {
+    public static List<Pair<String, String>> select(final boolean player, final String action, final String place, int[][] coordinate, boolean cont) {
         Data d = new Data();
         d.Event = SELECT.getEvent();
         d.Player = player;
@@ -58,7 +58,7 @@ public class GameOperator {
         d.Zone[0] = place;
         d.Coordinate = coordinate;
         d.After = action;
-
+        d.Continue = cont;
         return toListMe(d.toJson());
     }
 
@@ -223,6 +223,18 @@ public class GameOperator {
         return toListBoth(data.toJson());
     }
 
+    public static List<Pair<String, String>> doActive(String card, String txt, boolean player, int subjectPlayer) {
+        Data data = new Data();
+        data.Event = "ReceiveEffect";
+        data.CardName = new String[]{card};
+        data.Text = txt;
+        if ((subjectPlayer == 0) == player) {
+            return toListMe(data.toJson());
+        } else {
+            return toListEnemy(data.toJson());
+        }
+    }
+
     public static List<Pair<String, String>> startBreach(final Scp scp, final boolean isMe) {
         Data data = new Data();
         data.Event = SELECT_BREACH.getEvent();
@@ -258,7 +270,7 @@ public class GameOperator {
         data.Zone = new String[]{before.toString(), after.toString()};
         if (before == DECOMMISSIONED) {
             Card c = subject.getMyPlayer().getDecommissionedTop();
-            data.CardName = new String[]{subject.getName(), c.getName()};
+            data.CardName = new String[]{subject.getName(), c == null ? null : c.getName()};
         } else {
             data.CardName = new String[]{subject.getName()};
         }
@@ -266,13 +278,14 @@ public class GameOperator {
     }
 
     public static List<Pair<String, String>> decommission(final boolean player, final String place, final int coordinate,
-                                                          final Card card) {
+                                                          final Card card, boolean cont) {
         Data data = new Data();
         data.Event = DECOMMISSION.getEvent();
         data.Player = player;
-        data.Zone[0] = place;
+        data.Zone = new String[]{place};
         data.Coordinate = new int[][]{{coordinate}};
         data.CardName = new String[]{card.getName()};
+        data.Continue = cont;
         return toListBoth(data.toJson());
     }
 

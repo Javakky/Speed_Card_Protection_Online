@@ -3,7 +3,7 @@ package scptcg.game;/*package scptcg.game;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import scptcg.game.card.Card;
-import scptcg.game.card.Scp;
+import scptcg.game.card.SCP;
 import scptcg.game.effect.Result;
 import scptcg.json.Data;
 import scptcg.json.Deck;
@@ -24,11 +24,11 @@ public final class GM {
     public Union MainProcess(Data data) throws IOException {
         switch (data.event) {
             case "selectPartner":
-                return new Union<Scp>();
+                return new Union<SCP>();
 
             case "crossTest":
             case "damage":
-                Pair<Integer, Scp> result;
+                Pair<Integer, SCP> result;
                 int player;
                 if (data.event.equals("damage")) {
                     result = game.damage(data.isFirst, data.place[0], Integer.parseInt(data.name[0]));
@@ -37,10 +37,10 @@ public final class GM {
                     result = game.crossTest(data.isFirst, data.place[0], data.place[1]);
                     player = data.isFirst == 0 ? 1 : 0;
                 }
-                return new Union<Triple<Integer, Integer, Scp>>(Triple.of(player, result.getKey(), result.getValue()));
+                return new Union<Triple<Integer, Integer, SCP>>(Triple.of(player, result.getKey(), result.getValue()));
 
             case "breach":
-                return new Union<Scp>(game.breach(data.isFirst, data.place[0]));
+                return new Union<SCP>(game.breach(data.isFirst, data.place[0]));
 
             case "turnEnd":
                 ;
@@ -62,7 +62,7 @@ public final class GM {
                 return new Union<Integer>();
 
             case "DamageSandBox":
-                return new Union<Pair<Integer, Scp>>();
+                return new Union<Pair<Integer, SCP>>();
 
             case "selectEffect":
                 ;
@@ -85,7 +85,7 @@ package scptcg.game;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import scptcg.game.card.Card;
-import scptcg.game.card.Scp;
+import scptcg.game.card.SCP;
 import scptcg.game.effect.Result;
 import scptcg.json.Data;
 import scptcg.json.Deck;
@@ -106,11 +106,11 @@ public final class GM {
     public Union MainProcess(Data data) throws IOException {
         switch (data.event) {
             case "selectPartner":
-                return new Union<Scp>(game.selectPartner(data.isFirst, data.name[0], data.place[0]));
+                return new Union<SCP>(game.selectPartner(data.isFirst, data.name[0], data.place[0]));
 
             case "crossTest":
             case "damage":
-                Pair<Integer, Scp> result;
+                Pair<Integer, SCP> result;
                 int player;
                 if (data.event.equals("damage")) {
                     result = game.damage(data.isFirst, data.place[1], Integer.parseInt(data.name[0]));
@@ -119,10 +119,10 @@ public final class GM {
                     result = game.crossTest(data.isFirst, data.place[0], data.place[1]);
                     player = data.isFirst == 0 ? 1 : 0;
                 }
-                return new Union<Triple<Integer, Integer, Scp>>(Triple.of(player, result.getKey(), result.getValue()));
+                return new Union<Triple<Integer, Integer, SCP>>(Triple.of(player, result.getKey(), result.getValue()));
 
             case "breach":
-                return new Union<Scp>(game.breach(data.isFirst, data.place[0]));
+                return new Union<SCP>(game.breach(data.isFirst, data.place[0]));
 
             case "turnEnd":
                 game.nextTurn();
@@ -154,7 +154,7 @@ public final class GM {
                 return new Union<Integer>(game.healSandBox(Integer.parseInt(data.name[1]), data.place[0], Integer.parseInt(data.name[2])));
 
             case "damageSandBox":
-                return new Union<Pair<Integer, Scp>>(game.damage(Integer.parseInt(data.name[1]) == 0 ? 1 : 0, data.place[0], Integer.parseInt(data.name[0])));
+                return new Union<Pair<Integer, SCP>>(game.damage(Integer.parseInt(data.name[1]) == 0 ? 1 : 0, data.place[0], Integer.parseInt(data.name[0])));
 
             case "selectEffect":
                 game.sortWaitingEffects(data.place);

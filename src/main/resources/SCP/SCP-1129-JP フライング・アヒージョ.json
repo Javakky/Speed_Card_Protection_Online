@@ -1,0 +1,55 @@
+{
+  "type": "SCP",
+  "name": "SCP-1129-JP フライング・アヒージョ",
+  "cost": 1,
+  "secure": 2,
+  "canAttack": true,
+  "canPartner": false,
+  "clazz": "Safe",
+  "tag": [
+    "デスコン17",
+    "scp-jp",
+    "乗り物",
+    "動物",
+    "生命"
+  ],
+  "effects": {
+    "effect": [
+      null,
+      null,
+      {
+        "effects": [
+          {
+            "number": 1,
+            "message": "このオブジェクトを終了して起動できる。自分のサンドボックス1つの保護力を5回復する。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "terms": [
+              {
+                "action": "notPartner"
+              }
+            ],
+            "action": [
+              {
+                "action": "Decommission",
+                "param": [
+                  "this"
+                ]
+              },
+              {
+                "action": "HealSandBox",
+                "param": [
+                  "me",
+                  "1",
+                  "false",
+                  "Point",
+                  "5"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

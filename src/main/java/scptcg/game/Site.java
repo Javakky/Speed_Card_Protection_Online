@@ -49,6 +49,9 @@ public class Site extends CardHolder {
             if (scp != null) {
                 if (scp.getType() == SCP) {
                     cost += scp.getCost();
+                } else {
+                    if (scp.getType() != null)
+                        System.out.println(scp.getType().toString());
                 }
             }
         }
@@ -133,10 +136,11 @@ public class Site extends CardHolder {
     }
 
     private boolean fullTerm(Scp card, String... param) {
-        if (param.length == 0 || param[0] == null) {
+        if (param.length == 0) {
             return true;
         }
         for (int i = 0; i < param.length; i++) {
+            if (param[i] == null) continue;
             switch (param[i]) {
                 case "notPartner":
                     if (card.isPartner()) {

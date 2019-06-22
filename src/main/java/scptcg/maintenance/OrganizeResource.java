@@ -40,7 +40,7 @@ public class OrganizeResource {
                     case "Anomalous":
                         deck.Anomalous = getFileNames(dir);
                         break;
-                    case "Scp":
+                    case "SCP":
                         List<String> keter = new LinkedList<>();
                         List<String> euclid = new LinkedList<>();
                         List<String> safe = new LinkedList<>();

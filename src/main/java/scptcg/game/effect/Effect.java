@@ -24,7 +24,7 @@ public class Effect implements Serializable {
     private boolean canActive = true;
     private int already = 0;
     private boolean isActive = false;
-    private String compel;
+    private boolean compel;
 
     private Effect(String[] action) {
         for (int i = 0; i < action.length; i++) {
@@ -32,7 +32,7 @@ public class Effect implements Serializable {
         }
     }
 
-    public Effect(String message, String compel, int activeNum, boolean canActive, String[] terms, Map<String, String[]> action) {
+    public Effect(String message, boolean compel, int activeNum, boolean canActive, String[] terms, Map<String, String[]> action) {
         this.message = message;
         this.activeNum = activeNum;
         this.canActive = canActive;
@@ -52,8 +52,8 @@ public class Effect implements Serializable {
         this.action = act.toArray(new Action[act.size()]);
     }
 
-    public EFFECT_COMPEL_LIST getCompel() {
-        return EFFECT_COMPEL_LIST.valueOf(compel);
+    public boolean getCompel() {
+        return compel;
     }
 
     public boolean isActive() {
@@ -99,7 +99,7 @@ public class Effect implements Serializable {
             canActive = false;
         }
 
-        if (!canActive()) {
+        if (point == 0 && !canActive()) {
             return Pair.of(null, true);
         }
 
@@ -113,16 +113,17 @@ public class Effect implements Serializable {
 
         int i = 0;
         for (; point < action.length; point++) {
+            System.out.println(point);
             Result res = action[point].active(param == null || i >= param.length ? null : param[i], this, before);
             li.add(res);
             before = res;
             if (res.getObject() == null && point != action.length - 1) {
                 point++;
-                return Pair.of(li.toArray(new Result[li.size()]), false);
+                return Pair.of(li.toArray(new Result[0]), false);
             }
             i++;
         }
-
+        before = null;
         Result r = new Result(
                 parent.getTurn(),
                 parent.getPlayerNumber(),
@@ -187,5 +188,9 @@ public class Effect implements Serializable {
 
     public boolean isMyTurn() {
         return parent.isMyTurn();
+    }
+
+    public void setBefore(Result res) {
+        before = res;
     }
 }

@@ -37,6 +37,7 @@ public class Game implements ICardSetHolder {
     private List<List<Effect>> waitingEffects;
 
     private Player[] player = new Player[2];
+    private boolean whether = false;
 
     Game(String[][][] deckList, final String name, String name2) {
         Log4j.getInstance().info("player1:" + name + "\nplayer2:" + name2);
@@ -252,8 +253,12 @@ public class Game implements ICardSetHolder {
         }
     }
 
-    private boolean isTurnPlayer(Player myPlayer) {
+    public boolean isTurnPlayer(Player myPlayer) {
         return myPlayer == player[turnPlayer];
+    }
+
+    public boolean isTurnPlayer(int subjectPlayer) {
+        return turnPlayer == subjectPlayer;
     }
 
     private void addAllEffects(List<Effect> e) {
@@ -391,7 +396,34 @@ public class Game implements ICardSetHolder {
         return num;
     }
 
+    public void interruptionEffect() {
+        ajustWaitEffects(true);
+        whether = false;
+    }
+
+    public void doEffect() {
+        whether = false;
+    }
+
+    public void setBefore(Result res) {
+        if (isOnActiveEffect()) {
+            this.waitingEffects.get(0).get(0).setBefore(res);
+        }
+    }
+
     public Result[] activeEffects(String[] param, Result result) {
+        if (!whether && isOnActiveEffect()) {
+            System.out.println(this.waitingEffects.get(0).get(0).getCard().getName());
+            Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
+            boolean isFinish = (res == null ? false : res.getValue());
+            ajustWaitEffects(isFinish);
+            if (!isFinish) {
+                Result[] r = res.getKey();
+                r[r.length - 1].setIsContinue(true);
+                return r;
+            }
+            return res.getKey();
+        }
         while (waitingEffects.size() > 0 && waitingEffects.get(0).size() <= 0) {
             waitingEffects.remove(0);
         }
@@ -399,10 +431,29 @@ public class Game implements ICardSetHolder {
             onActive = true;
             onActiveEffect = true;
             addEmptyWaitingEffects();
-            Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
-            boolean isFinish = (res == null ? true : res.getValue());
-            ajustWaitEffects(isFinish);
-            return res.getKey();
+            if (!whether && this.waitingEffects.get(0).get(0).getCompel()) {
+                whether = true;
+                Effect e = this.waitingEffects.get(0).get(0);
+                Result r = new Result(getTurn(),
+                        getPlayerNumber(e.getMyPlayer()),
+                        e.getParent().getPlace(),
+                        "RecieveEffect",
+                        e.getParent());
+                r.setParam(null, null, new String[]{e.getMessage()}, null);
+                return new Result[]{
+                        r
+                };
+            } else if (!whether) {
+                Pair<Result[], Boolean> res = this.waitingEffects.get(0).get(0).active(param, result);
+                boolean isFinish = (res == null ? true : res.getValue());
+                ajustWaitEffects(isFinish);
+                if (!isFinish) {
+                    Result[] r = res.getKey();
+                    r[r.length - 1].setIsContinue(true);
+                    return r;
+                }
+                return res.getKey();
+            }
         }
         return null;
     }
@@ -429,6 +480,8 @@ public class Game implements ICardSetHolder {
             addEmptyWaitingEffects();
             effectIsSorted = false;
             if (!hasWaitEffects()) onActive = false;
+        } else {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!fin");
         }
     }
 
@@ -479,4 +532,12 @@ public class Game implements ICardSetHolder {
     public boolean effectIsSorted() {
         return effectIsSorted;
     }
+
+    public boolean hasWaitEffectsAll() {
+        for (List<Effect> e : waitingEffects) {
+            if (e.size() > 0) return true;
+        }
+        return false;
+    }
+
 }

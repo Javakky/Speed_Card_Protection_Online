@@ -1,9 +1,7 @@
 package scptcg.game.card;
 
-import java.util.Arrays;
-
 public enum CardKind {
-    SCP("Scp"),
+    SCP("SCP"),
     TALE("Tale"),
     INCIDENT("Incident"),
     PERSONNEL("Personnel"),
@@ -17,11 +15,12 @@ public enum CardKind {
     }
 
     public static CardKind getByName(String name) {
-        return Arrays.stream(CardKind.values())
-                .filter(data -> data.getType().equals(name))
-                .findFirst()
-                .orElse(null);
-
+        for (CardKind k : values()) {
+            if (name.equals(k.type)) {
+                return k;
+            }
+        }
+        return null;
     }
 
     public String getType() {

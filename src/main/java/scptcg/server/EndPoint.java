@@ -196,6 +196,15 @@ public final class EndPoint {
                 list.addAll(checkK_Class(game));
                 break;
             }
+
+            case WHETHER:
+                if (data.BeAbleTo) {
+                    game.doEffect();
+                } else {
+                    game.interruptionEffect();
+                }
+                break;
+
             case DAMAGE: {
                 data.SandBox = data.Coordinate[0][0];
                 data.Point = new int[]{Integer.parseInt(data.CardName[0])};
@@ -221,6 +230,19 @@ public final class EndPoint {
 
             case BREACH: {
                 Scp scp = game.breach(data.Player ? 0 : 1, data.Coordinate[0][0]);
+                if (data.CardName.length > 2) {
+                    if (data.CardName[2].equals("True")) {
+                        Result r = new Result(
+                                game.getTurn(),
+                                -1,
+                                null,
+                                BREACH.getEvent(),
+                                null
+                        );
+                        r.setParam(new Card[]{scp}, new Place[]{SITE}, null, null);
+                        game.setBefore(r);
+                    }
+                }
                 list.addAll(breach(data.Player, data.Coordinate[0][0], scp));
                 list.addAll(getCardParam(data.Player, data.Coordinate[0][0], scp));
                 list.addAll(checkK_Class(game));
@@ -292,11 +314,25 @@ public final class EndPoint {
             }
             case DECOMMISSION: {
                 data.Zone = new String[]{data.CardName[0]};
-                if (data.CardName[1].equals("True")) {
-                    data.Player = !data.Player;
-                }
+                data.Player = data.CardName[1].equals("True");
                 Card card = game.decommission(data.Player ? 0 : 1, create(data.Zone[0]), data.Coordinate[0][0]);
-                list.addAll(decommission(data.Player, data.Zone[0], data.Coordinate[0][0], card));
+                if (data.CardName[2].equals("True")) {
+                    Result r = new Result(
+                            game.getTurn(),
+                            -1,
+                            null,
+                            BREACH.getEvent(),
+                            null
+                    );
+                    r.setParam(new Card[]{card}, new Place[]{SITE}, null, null);
+                    game.setBefore(r);
+                    System.out.println("onActive? " + game.isOnActiveEffect());
+                }
+                list.addAll(decommission(data.Player, data.Zone[0], data.Coordinate[0][0], card, false));
+                list.addAll(getCost(true, game));
+                list.addAll(getCosttoEnemy(true, game));
+                list.addAll(getCost(false, game));
+                list.addAll(getCosttoEnemy(false, game));
                 break;
             }
 
@@ -340,23 +376,32 @@ public final class EndPoint {
                 break;
         }
 
-        if (!game.effectIsSorted() && game.hasWaitEffects()) {
+        if (!game.effectIsSorted() && game.hasWaitEffectsAll()) {
             Card[] cards = game.getWaitingEffectsCard();
             if (cards.length > 1) {
                 list.addAll(selectingEffect(cards));
             }
         }
 
+        if (game.isOnActiveEffect()) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncontinue");
+            Result[] r = game.activeEffects(null, null);
+            if (r != null) {
+                list.addAll(
+                        sendEffectResult(game, data, r));
+            }
+        }
+
         do {
             Result[] r = null;
-            if (!game.isOnActiveEffect() && game.hasWaitEffects()) {
+            if (!game.isOnActiveEffect() && game.hasWaitEffectsAll()) {
                 r = game.activeEffects(null, null);
                 if (r != null) {
                     list.addAll(
                             sendEffectResult(game, data, r));
                 }
             }
-        } while (game.hasWaitEffects() && !game.isOnActiveEffect());
+        } while (game.hasWaitEffectsAll() && !game.isOnActiveEffect());
 
         String enemy = game.getEnemyName(data.PlayerName);
         String me = data.PlayerName;
@@ -391,8 +436,13 @@ public final class EndPoint {
                             r.getSubject().getPlayerNumber() == 0,
                             r.getObjectPlace()[0].toString(),
                             r.getResInt()[0],
-                            r.getObject()[0]
+                            r.getObject()[0],
+                            false
                     ));
+                    list.addAll(getCost(true, game));
+                    list.addAll(getCosttoEnemy(true, game));
+                    list.addAll(getCost(false, game));
+                    list.addAll(getCosttoEnemy(false, game));
                     break;
 
                 case "ReContainment":
@@ -403,11 +453,15 @@ public final class EndPoint {
                             r.getObjectPlace()[0],
                             r.getResInt()[0]
                     ));
+                    list.addAll(getCost(true, game));
+                    list.addAll(getCosttoEnemy(true, game));
+                    list.addAll(getCost(false, game));
+                    list.addAll(getCosttoEnemy(false, game));
                     break;
 
                 case "finish":
                     if (r.getSubjectPlace() == TALES) {
-                        list.addAll(decommission(r.getSubject().getPlayerNumber() == 0, TALES.toString(), r.getResInt()[0], r.getSubject()));
+                        list.addAll(decommission(r.getSubject().getPlayerNumber() == 0, TALES.toString(), r.getResInt()[0], r.getSubject(), false));
                     }
                     break;
 
@@ -419,11 +473,11 @@ public final class EndPoint {
                     list.addAll(selectBreach(r.getAction(), r.getResInt()[0] == 0));
                     break;
                 case "Select":
-                    int len = r.getResStr().length > 2 ? 2 : 1;
+                    int len = r.getResStr().length > 3 ? 2 : 1;
                     int[][] coordinate = new int[len][];
 
                     if (len == 2) {
-                        int plen = Integer.parseInt(r.getResStr()[2]);
+                        int plen = Integer.parseInt(r.getResStr()[3]);
 
                         coordinate[0] = new int[plen];
                         for (int i = 0; i < plen; i++) {
@@ -440,7 +494,8 @@ public final class EndPoint {
                         coordinate[0] = r.getResInt();
                     }
 
-                    list.addAll(select(Integer.parseInt(r.getResStr()[2]) == 0, r.getResStr()[0], r.getSubjectPlace().toString(), coordinate));
+                    boolean cont = r.getIsContinue();
+                    list.addAll(select(Integer.parseInt(r.getResStr()[2]) == 0, r.getResStr()[0], r.getResStr()[1], coordinate, cont));
                     break;
 
                 case "healSandBox":
@@ -453,6 +508,10 @@ public final class EndPoint {
                                     r.getResInt()[0],
                                     r.getResInt()[2],
                                     Boolean.valueOf(r.getResStr()[0])));
+                    break;
+
+                case "RecieveEffect":
+                    list.addAll(doActive(r.getSubject().getName(), r.getResStr()[0], data.Player, r.getSubjectPlayer()));
                     break;
 
                 default:

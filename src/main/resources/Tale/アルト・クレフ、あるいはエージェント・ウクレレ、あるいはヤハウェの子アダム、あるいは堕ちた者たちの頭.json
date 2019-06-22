@@ -25,7 +25,7 @@
                   "Decommissioned",
                   "force",
                   "このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する",
-                  "force",
+                  "false",
                   "2147483647",
                   "true",
                   "",

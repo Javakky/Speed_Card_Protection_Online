@@ -1,0 +1,57 @@
+{
+  "type": "SCP",
+  "name": "SCP-1198-JP　生乾きのタオル",
+  "cost": 1,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "clazz": "Safe",
+  "tag": [
+    "safe",
+    "scp-jp",
+    "人工",
+    "感覚",
+    "触覚",
+    "認識災害"
+  ],
+  "effects": {
+    "effect": [
+      null,
+      null,
+      null,
+      null,
+      {
+        "effects": [
+          {
+            "number": 1,
+            "message": "財団上の全てのオブジェクトは[液体]を得る。",
+            "activeNum": 2147483647,
+            "canActive": true,
+            "action": [
+              {
+                "action": "addTag",
+                "param": [
+                  "SCP",
+                  "me",
+                  "液体",
+                  "Site",
+                  "Full"
+                ]
+              },
+              {
+                "action": "addTag",
+                "param": [
+                  "SCP",
+                  "enemy",
+                  "液体",
+                  "Site",
+                  "Full"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

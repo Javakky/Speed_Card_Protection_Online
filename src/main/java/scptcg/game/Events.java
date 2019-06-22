@@ -37,7 +37,8 @@ public enum Events {
     IMPOSSIBLE("Impossible"),
     IS_FIRST("IsFirst"),
     GET_COST("GetCost"),
-    HEAL("Heal");
+    HEAL("Heal"),
+    WHETHER("WhetherActive");
 
     private String event;
 
