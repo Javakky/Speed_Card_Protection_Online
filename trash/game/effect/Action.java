@@ -48,7 +48,7 @@ public class Action extends AbstractAction {
             case DECOMMISSION: {
                 Card c = null;
                 switch (this.param[0]) {
-                    case "Personnel": {
+                    case "trash/Personnel": {
                         c = parent.getMyPlayer().getPersonnel();
                         break;
                     }
@@ -122,7 +122,7 @@ public class Action extends AbstractAction {
 
             case ADD_TAG: {
                 switch (this.param[0]) {
-                    case "SCP": {
+                    case "trash/SCP": {
                         Player player = ga.getPlayer(getPlayerNumber(parent, this.param[1]));
                         //////System.out.println(Arrays.toString(player.select(removeAll(this.param, 0, 1, 2))));
                         for (int i : player.select(removeAll(this.param, 0, 1, 2))) {
@@ -138,7 +138,7 @@ public class Action extends AbstractAction {
             case ADD_EFFECT: {
                 //System.out.println("addeffect");
                 switch (this.param[0]) {
-                    case "Personnel": {
+                    case "trash/Personnel": {
                         //System.out.println("personnel");
                         Map<String, String[]> act = new HashMap();
                         for (int i = 8; i < this.param.length; i++) {

@@ -428,8 +428,14 @@ public final class EndPoint {
 
         list.addAll(checkK_Class(game));
 
-        for (int i = 0; i < list.size(); i++) {
-            Pair<String, String> e = list.get(i);
+        for (Pair<String, String> e : list) {
+            try {
+                if((new Gson()).fromJson(e.getValue(), Data.class).Event.equals("ReContainment")) {
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
@@ -540,8 +546,29 @@ public final class EndPoint {
                     break;
 
                 case "ReContainment_All":
-                    break;
 
+                    len = r.getResStr().length > 3 ? 2 : 1;
+                    coordinate = new int[len][];
+
+                    if (len == 2) {
+                        int plen = Integer.parseInt(r.getResStr()[3]);
+
+                        coordinate[0] = new int[plen];
+                        for (int i = 0; i < plen; i++) {
+                            coordinate[0][i] = r.getResInt()[i];
+                        }
+
+                        int elen = r.getResInt().length - plen;
+                        coordinate[1] = new int[elen];
+
+                        for (int i = 0; i < elen; i++) {
+                            coordinate[1][i] = r.getResInt()[i + plen];
+                        }
+                    } else {
+                        coordinate[0] = r.getResInt();
+                    }
+
+                    break;
 
                 default:
                     break;

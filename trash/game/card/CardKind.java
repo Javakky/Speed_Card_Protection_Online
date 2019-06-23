@@ -1,10 +1,10 @@
 package scptcg.game.card;
 
 public enum CardKind {
-    SCP("SCP"),
-    TALE("Tale"),
+    SCP("trash/SCP"),
+    TALE("trash/Tale"),
     INCIDENT("Incident"),
-    PERSONNEL("Personnel"),
+    PERSONNEL("trash/Personnel"),
     CANON("Canon"),
     ANOMALOUS("Anomalous");
 

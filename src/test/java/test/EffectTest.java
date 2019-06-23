@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import static java.lang.Integer.*;
-import static java.util.Arrays.*;
-import static org.apache.commons.lang3.ArrayUtils.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static scptcg.game.Place.*;
