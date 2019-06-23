@@ -77,9 +77,7 @@ public class Action extends AbstractAction {
                         //////System.out.println("both");
                         Player e = p.getEnemy();
                         int[] ps = p.select(removeAll(this.param, 0, 1));
-                        System.out.println(Arrays.asList(ps).toString());
                         int[] es = e.select(removeAll(this.param, 0, 1));
-                        System.out.println(Arrays.asList(es).toString());
                         result.setParam(
                                 null,
                                 null,
@@ -94,6 +92,7 @@ public class Action extends AbstractAction {
                         p.select(removeAll(this.param, 0, 1)));
                 break;
             }
+
             case DAMAGE_SAND_BOX:
             case HEAL_SAND_BOX: {
                 int num = 0;
@@ -186,47 +185,6 @@ public class Action extends AbstractAction {
             }
 
             case BREACH: {
-                int i = -1;
-                switch (this.param[1]) {
-                    case "me":
-                        i = parent.getPlayerNumber();
-                        break;
-                    case "enemy":
-                        i = parent.getEnemyNumber();
-                        break;
-                }
-                result.setParam(null, null, new String[]{this.param[0], this.param[1]}, new int[]{i});
-                if (result.getResStr() != null && result.getResStr().length > 0 && result.getResStr()[0] != null) {
-                    String times = null;
-                    switch (result.getResStr()[0]) {
-                        case "once":
-                            break;
-                        case "twice":
-                            times = "once";
-                            break;
-                        case "notFullSite":
-                            times = "notFullSite";
-                            break;
-                    }
-                    if (times != null) {
-                        Map<String, String[]> map = new HashMap<>();
-                        map.put(result.getAction(), new String[]{
-                                result.getResStr()[0],
-                                result.getResStr()[1],
-                                "select"
-                        });
-                        ga.addEffects(
-                                new Effect(
-                                        "",
-                                        false,
-                                        1,
-                                        true,
-                                        null,
-                                        map
-                                )
-                        );
-                    }
-                }
             }
 
             case RECONTAINMENT: {

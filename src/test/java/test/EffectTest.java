@@ -5,7 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import scptcg.game.CreateGame;
-import scptcg.game.Game;
 import scptcg.game.Place;
 import scptcg.game.SandBox;
 import scptcg.game.card.CardFactory;
