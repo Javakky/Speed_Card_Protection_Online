@@ -66,6 +66,8 @@ public class CardFactory {
                                     "/" + path + "/" + name + ".json"
                             ).openStream());
         } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("/" + path + "/" + name);
         }
 
         while (s.hasNextLine()) {

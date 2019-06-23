@@ -3,6 +3,7 @@
   "name": "SCP-846 ロボ男",
   "cost": 1,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Safe",

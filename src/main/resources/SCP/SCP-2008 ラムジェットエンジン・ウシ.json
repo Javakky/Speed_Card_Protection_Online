@@ -3,6 +3,7 @@
   "name": "SCP-2008 ラムジェットエンジン・ウシ",
   "cost": 1,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Safe",

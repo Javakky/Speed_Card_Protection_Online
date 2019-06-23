@@ -206,7 +206,11 @@ public final class EndPoint {
                 break;
 
             case DAMAGE: {
-                data.SandBox = data.Coordinate[0][0];
+                if (data.Coordinate[0].length <= 0) {
+                    data.SandBox = data.Coordinate[1][0];
+                } else {
+                    data.SandBox = data.Coordinate[0][0];
+                }
                 data.Point = new int[]{Integer.parseInt(data.CardName[0])};
                 Pair<Integer, Scp> result = game.damage(data.Player ? 0 : 1, data.SandBox, data.Point[0]);
                 int damage = result.getLeft();
@@ -315,7 +319,17 @@ public final class EndPoint {
             case DECOMMISSION: {
                 data.Zone = new String[]{data.CardName[0]};
                 data.Player = data.CardName[1].equals("True");
-                Card card = game.decommission(data.Player ? 0 : 1, create(data.Zone[0]), data.Coordinate[0][0]);
+                Card card;
+                int[] coord;
+                int p;
+                if (data.Coordinate[0].length <= 0) {
+                    coord = data.Coordinate[1];
+                    p = data.Player ? 1 : 0;
+                } else {
+                    coord = data.Coordinate[0];
+                    p = data.Player ? 0 : 1;
+                }
+                card = game.decommission(p, create(data.Zone[0]), coord[0]);
                 if (data.CardName[2].equals("True")) {
                     Result r = new Result(
                             game.getTurn(),
@@ -328,7 +342,7 @@ public final class EndPoint {
                     game.setBefore(r);
                     System.out.println("onActive? " + game.isOnActiveEffect());
                 }
-                list.addAll(decommission(data.Player, data.Zone[0], data.Coordinate[0][0], card, false));
+                list.addAll(decommission(p == 0, data.Zone[0], coord[0], card, false));
                 list.addAll(getCost(true, game));
                 list.addAll(getCosttoEnemy(true, game));
                 list.addAll(getCost(false, game));
@@ -337,7 +351,11 @@ public final class EndPoint {
             }
 
             case HEAL_SANDBOX: {
-                data.SandBox = data.Coordinate[0][0];
+                if (data.Coordinate[0].length <= 0) {
+                    data.SandBox = data.Coordinate[1][0];
+                } else {
+                    data.SandBox = data.Coordinate[0][0];
+                }
                 boolean me = data.Player;
                 if (!data.CardName[0].equals("True")) {
                     data.Player = !data.Player;
@@ -376,6 +394,7 @@ public final class EndPoint {
                 break;
         }
 
+
         if (!game.effectIsSorted() && game.hasWaitEffectsAll()) {
             Card[] cards = game.getWaitingEffectsCard();
             if (cards.length > 1) {
@@ -403,12 +422,14 @@ public final class EndPoint {
             }
         } while (game.hasWaitEffectsAll() && !game.isOnActiveEffect());
 
+
         String enemy = game.getEnemyName(data.PlayerName);
         String me = data.PlayerName;
 
         list.addAll(checkK_Class(game));
 
-        for (Pair<String, String> e : list) {
+        for (int i = 0; i < list.size(); i++) {
+            Pair<String, String> e = list.get(i);
             switch (e.getKey()) {
                 case "me":
                     send(me, e.getValue());
@@ -517,6 +538,10 @@ public final class EndPoint {
                 case "MinusSecure":
                     list.addAll(getCardParam(r.getSubjectPlayer() == 0, game.find(r.getSubjectPlayer(), SITE, r.getSubject()), (Scp) r.getSubject()));
                     break;
+
+                case "ReContainment_All":
+                    break;
+
 
                 default:
                     break;

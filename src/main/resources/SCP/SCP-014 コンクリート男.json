@@ -3,6 +3,7 @@
   "name": "SCP-014 コンクリート男",
   "cost": 1,
   "secure": 9,
+  "canAttackNumber": 1,
   "clazz": "Safe",
   "canAttack": false,
   "canPartner": false,

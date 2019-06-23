@@ -209,7 +209,7 @@ public class GameOperator {
         data.Event = HEAL.getEvent();
         data.Player = player;
         data.Point = new int[]{point};
-        data.Coordinate = new int[][]{{coordinate}};
+        data.SandBox = coordinate;
         return toListBoth(data.toJson());
     }
 

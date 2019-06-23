@@ -5,6 +5,7 @@
   "secure": 12,
   "canAttack": true,
   "canPartner": true,
+  "canAttackNumber": 1,
   "clazz": "Unclassed",
   "containmentClass": "Safe",
   "tag": [

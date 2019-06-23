@@ -2,6 +2,7 @@
   "type": "SCP",
   "name": "SCP-240-JP 0匹のイナゴ",
   "cost": 2,
+  "canAttackNumber": 1,
   "secure": 3,
   "canAttack": true,
   "canPartner": true,

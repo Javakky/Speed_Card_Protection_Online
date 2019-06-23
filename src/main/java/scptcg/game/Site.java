@@ -160,10 +160,7 @@ public class Site extends CardHolder {
                     }
                     break;
                 case "crossTested":
-                    if (!card.isCrossTested()) {
-                        return false;
-                    }
-                    break;
+                    return card.isCrossTested();
             }
         }
         return true;
@@ -279,7 +276,7 @@ public class Site extends CardHolder {
         }
 
         if (place < size) {
-            if (card.getAttackNumber() <= 0) {
+            if (card.getCanAttackNumber() <= 0) {
                 card.setCanAttackNumber(1);
             }
             site.set(place, card);

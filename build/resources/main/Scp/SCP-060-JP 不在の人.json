@@ -3,6 +3,7 @@
   "name": "SCP-060-JP 不在の人",
   "cost": 0,
   "secure": 0,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": false,
   "clazz": "Safe",

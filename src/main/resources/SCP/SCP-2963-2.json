@@ -3,6 +3,7 @@
   "name": "SCP-2963-2",
   "cost": 2,
   "secure": 1,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Euclid",

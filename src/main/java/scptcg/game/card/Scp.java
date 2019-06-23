@@ -18,7 +18,7 @@ public class Scp extends Card {
     protected String clazz;
     protected boolean canAttack = true;
     protected int attackNumber = 0;
-    protected int canAttackNumber = 1;
+    protected int canAttackNumber;
     protected List<String> subClazz = new ArrayList<>();
     protected List<String> tag = new ArrayList<String>();
     protected boolean canPartner = true;
@@ -113,7 +113,7 @@ public class Scp extends Card {
     }
 
     public boolean canAttack() {
-        return isCanAttack() && attackNumber > 0;
+        return isCanAttack() && canAttackNumber > 0;
     }
 
     public void setCanAttackNumber(int canAttackNumber) {
@@ -125,6 +125,7 @@ public class Scp extends Card {
     }
 
     public int crossTest() {
+        System.out.println(attackNumber + " " + getCanAttackNumber());
         if (attackNumber < getCanAttackNumber() && isCanAttack()) {
             attackNumber++;
             return getSecure();

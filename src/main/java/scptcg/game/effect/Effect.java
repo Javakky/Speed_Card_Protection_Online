@@ -117,7 +117,7 @@ public class Effect implements Serializable {
             Result res = action[point].active(param == null || i >= param.length ? null : param[i], this, before);
             li.add(res);
             before = res;
-            if (res.getObject() == null && point != action.length - 1) {
+            if (res.getObject() == null && point < action.length - 1) {
                 point++;
                 return Pair.of(li.toArray(new Result[0]), false);
             }

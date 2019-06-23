@@ -3,6 +3,7 @@
   "name": "SCP-1129-JP フライング・アヒージョ",
   "cost": 1,
   "secure": 2,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": false,
   "clazz": "Safe",

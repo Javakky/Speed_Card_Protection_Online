@@ -3,6 +3,7 @@
   "name": "SCP-541-JP-GOI 暴走取締車",
   "cost": 2,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Euclid",
@@ -41,18 +42,7 @@
                 "action": "Select",
                 "param": [
                   "Decommission",
-                  "me",
-                  "Site",
-                  "Full",
-                  "notPartner",
-                  "crossTested"
-                ]
-              },
-              {
-                "action": "Select",
-                "param": [
-                  "Decommission",
-                  "enemy",
+                  "both",
                   "Site",
                   "Full",
                   "notPartner",

@@ -38,7 +38,8 @@ public enum Events {
     IS_FIRST("IsFirst"),
     GET_COST("GetCost"),
     HEAL("Heal"),
-    WHETHER("WhetherActive");
+    WHETHER("WhetherActive"),
+    ACTIVE("Active");
 
     private String event;
 

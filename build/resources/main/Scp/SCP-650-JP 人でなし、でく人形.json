@@ -3,6 +3,7 @@
   "name": "SCP-650-JP 人でなし、でく人形",
   "cost": 2,
   "secure": 6,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Euclid",

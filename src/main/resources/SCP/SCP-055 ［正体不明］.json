@@ -3,6 +3,7 @@
   "name": "SCP-055 ［正体不明］",
   "cost": 3,
   "secure": 6,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Keter",

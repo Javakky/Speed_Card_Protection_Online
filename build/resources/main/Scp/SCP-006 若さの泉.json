@@ -5,6 +5,7 @@
   "secure": 1,
   "canAttack": true,
   "canPartner": true,
+  "canAttackNumber": 1,
   "clazz": "Safe",
   "tag": [
     "scp",

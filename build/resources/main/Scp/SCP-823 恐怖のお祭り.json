@@ -3,6 +3,7 @@
   "name": "SCP-823 恐怖のお祭り",
   "cost": 2,
   "secure": 6,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Euclid",

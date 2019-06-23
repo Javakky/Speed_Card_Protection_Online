@@ -3,6 +3,7 @@
   "name": "SCP-682 不死身の爬虫類",
   "cost": 3,
   "secure": 7,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Keter",

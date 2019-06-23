@@ -3,6 +3,7 @@
   "name": "SCP-1198-JP　生乾きのタオル",
   "cost": 1,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Safe",

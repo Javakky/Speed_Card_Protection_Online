@@ -104,6 +104,10 @@ public class Action extends AbstractAction {
                         Scp tmp = (Scp) before.getObject()[0];
                         num = tmp.getCost();
                         break;
+                    case "Secure":
+                        tmp = (Scp) before.getObject()[0];
+                        num = tmp.getSecure();
+                        break;
                     case "Point":
                         num = Integer.parseInt(this.param[4]);
                         break;
@@ -153,6 +157,14 @@ public class Action extends AbstractAction {
                                 this.param[1],
                                 this.param[2]
                         );
+                        //System.out.println(p.getPersonnel().getEffect(DECOMMISSIONED, 0).getMessage());
+                        break;
+                    }
+
+                    case "Site": {
+                        //System.out.println("personnel");
+                        Map<String, String[]> act = new HashMap();
+
                         //System.out.println(p.getPersonnel().getEffect(DECOMMISSIONED, 0).getMessage());
                         break;
                     }
@@ -227,23 +239,35 @@ public class Action extends AbstractAction {
                 Player player = parent.getMyPlayer();
                 Player enemy = parent.getMyPlayer().getEnemy();
                 int[] array = new int[0];
+                Card[] cards = new Card[0];
                 int index = -1;
+                Map<Card, Integer> map = null;
                 switch (this.param[1]) {
                     case "me":
-                        array = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        map = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        array = ArrayUtils.toPrimitive(map.values().toArray(new Integer[0]));
+                        cards = map.keySet().toArray(new Card[0]);
                         break;
                     case "enemy":
-                        array = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        map = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        array = ArrayUtils.toPrimitive(map.values().toArray(new Integer[0]));
+                        cards = map.keySet().toArray(new Card[0]);
                         break;
                     case "both":
                         int[] a, b;
-                        a = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        Card[] c, d;
+                        map = player.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        a = ArrayUtils.toPrimitive(map.values().toArray(new Integer[0]));
+                        c = map.keySet().toArray(new Card[0]);
                         index = a.length;
-                        b = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        map = enemy.reContainmentAll(Place.create(this.param[0]), parent.getType());
+                        b = ArrayUtils.toPrimitive(map.values().toArray(new Integer[0]));
+                        d = map.keySet().toArray(new Card[0]);
                         array = ArrayUtils.addAll(a, b);
+                        cards = ArrayUtils.addAll(c, d);
                         break;
                 }
-                result.setParam(new Card[]{parent}, new Place[]{parent.getPlace()}, index > 0 ? new String[]{String.valueOf(index)} : null, array);
+                result.setParam(cards, new Place[]{Place.create(this.param[0])}, index > 0 ? new String[]{String.valueOf(index)} : null, array);
                 break;
             }
         }

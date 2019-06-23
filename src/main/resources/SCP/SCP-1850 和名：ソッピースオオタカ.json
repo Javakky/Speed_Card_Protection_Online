@@ -3,6 +3,7 @@
   "name": "SCP-1850 和名：ソッピースオオタカ",
   "cost": 1,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Safe",

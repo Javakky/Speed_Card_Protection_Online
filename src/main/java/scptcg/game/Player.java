@@ -421,7 +421,7 @@ public class Player implements ICardSetHolder {
         return parent.getTurnPlayer() == parent.getMyTurn(this);
     }
 
-    public int[] reContainmentAll(Place place, CardKind k) {
+    public Map<Card, Integer> reContainmentAll(Place place, CardKind k) {
         CardHolder before = null;
         CardHolder after = null;
 
@@ -460,6 +460,6 @@ public class Player implements ICardSetHolder {
                 }
                 break;
         }
-        return ArrayUtils.toPrimitive(deletes.values().toArray(new Integer[0]));
+        return deletes;
     }
 }

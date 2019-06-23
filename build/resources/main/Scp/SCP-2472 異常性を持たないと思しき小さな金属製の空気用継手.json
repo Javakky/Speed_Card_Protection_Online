@@ -2,6 +2,7 @@
   "type": "SCP",
   "name": "SCP-2472 異常性を持たないと思しき小さな金属製の空気用継手",
   "cost": 1,
+  "canAttackNumber": 1,
   "secure": 1,
   "canAttack": true,
   "canPartner": true,

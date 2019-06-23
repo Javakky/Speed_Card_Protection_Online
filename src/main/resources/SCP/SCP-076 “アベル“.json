@@ -3,6 +3,7 @@
   "name": "SCP-076 “アベル“",
   "cost": 3,
   "secure": 8,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Keter",

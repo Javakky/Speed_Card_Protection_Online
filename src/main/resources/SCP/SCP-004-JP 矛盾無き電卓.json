@@ -3,6 +3,7 @@
   "name": "SCP-004-JP 矛盾無き電卓",
   "cost": 1,
   "secure": 3,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": true,
   "clazz": "Safe",

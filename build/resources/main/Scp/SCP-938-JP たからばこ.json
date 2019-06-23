@@ -3,6 +3,7 @@
   "name": "SCP-938-JP たからばこ",
   "cost": 1,
   "secure": 0,
+  "canAttackNumber": 1,
   "canAttack": true,
   "canPartner": false,
   "clazz": "Safe",

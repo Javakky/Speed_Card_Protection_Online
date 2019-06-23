@@ -1,6 +1,6 @@
 {
   "type": "Tale",
-  "name": "アルト・クレフ、あるいはエージェント・ウクレレ、あるいはヤハウェの子アダム、あるいは堕ちた者たちの頭",
+  "name": "夏休みふしぎ発見ノート 2年3組 ██ 優希",
   "effects": {
     "effect": [
       null,
@@ -21,7 +21,7 @@
               {
                 "action": "AddEffect",
                 "param": [
-                  "Personnel",
+                  "Scp",
                   "Decommissioned",
                   "force",
                   "このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する",
