@@ -90,7 +90,7 @@ public class Action extends AbstractAction {
     }
 
     private void reContainment() {
-        int index = getPlayer().reContainment(getCard());
+        int index = getPlayer().reContainment(getCard(), getParameter().getTargetClazz());
         tmpResult.objectEqualSubject();
     }
 
@@ -126,7 +126,7 @@ public class Action extends AbstractAction {
                                 result.getResStr()[1],
                                 "select"
                         });
-                        ga.addEffects(
+                        ga.addEffect(
                                 new Effect(
                                         "",
                                         false,
@@ -162,14 +162,14 @@ public class Action extends AbstractAction {
                 int[][] coordinate = null;
                 Function<Player, Function<Integer, Object>> adder = func.apply(elements).apply(Zone.Site);
                 if (isTargetPlayerOne()) {
-                    for (int index : player.get(0).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference())) {
+                    for (int index : player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
                         adder.apply(player.get(0)).apply(index);
                     }
                 } else {
-                    for (int index : player.get(0).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference())) {
+                    for (int index : player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
                         adder.apply(player.get(0)).apply(index);
                     }
-                    for (int index : player.get(1).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference())) {
+                    for (int index : player.get(1).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
                         adder.apply(player.get(1)).apply(index);
                     }
                 }
@@ -187,10 +187,12 @@ public class Action extends AbstractAction {
     }
 
     private void addEffect() {
-        add((Effect[] effects) -> zone -> player -> index -> {
-            player.addEffect(zone, index, effects);
+        add((Object[] effect_trigger) -> zone -> player -> index -> {
+            Effect effect = (Effect) effect_trigger[0];
+            Trigger trigger = (Trigger) effect_trigger[1];
+            player.addEffect(zone, index, effect, trigger);
             return null;
-        }, new Effect[]{getParameter().getSubEffect()});
+        }, new Object[]{getParameter().getSubEffect(), getParameter().getTrigger()});
     }
 
     private void changeProtectionSandBox() {
@@ -223,11 +225,11 @@ public class Action extends AbstractAction {
         List<Player> player = new ArrayList<>();
         Parameter p = getParameter();
         if (isTargetPlayerOne()) {
-            tmpResult.setCoordinate(player.get(0).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference()));
+            tmpResult.setCoordinate(player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition()));
         } else {
             tmpResult.setCoordinate(new int[][]{
-                    player.get(0).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference()),
-                    player.get(1).getSelectableCoordinate(p.getTargetZone(), p.isThere(), p.getReference())
+                    player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition()),
+                    player.get(1).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())
             });
         }
         tmpResult.setIsComplete(false);

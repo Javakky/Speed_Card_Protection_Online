@@ -96,7 +96,7 @@ public class HeadCanon implements CardHolder {
     }
 
     @Override
-    public int getCoordinate(Card card) {
+    public int indexOf(Card card) {
         if (canon == card) {
             return 0;
         }

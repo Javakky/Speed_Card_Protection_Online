@@ -3,10 +3,14 @@ package scptcg.game;
 import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
+import scptcg.game.card.Scp;
+import scptcg.game.effect.Effect;
+import scptcg.game.effect.Trigger;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public interface CardHolder {
 
@@ -25,32 +29,55 @@ public interface CardHolder {
         return null;
     }
 
+    static int indexOf(final Card card, final List<? extends Card> list) {
+        return list.indexOf(card);
+    }
+
+    static boolean hasCard(CardCategory category, ConditionParameter[] condition, List<? extends Card> list) {
+        for (Card card : list) {
+            if (Objects.nonNull(card) && card.getCategory() == category) {
+                boolean flag = true;
+                for (ConditionParameter c : condition) {
+                    switch (SelectCondition.valueOf(c.getName())) {
+                        case Cost:
+                            if (((Scp) card).getCost() != c.getPoint()) flag = false;
+                            break;
+                        case Secure:
+                            if (((Scp) card).getSecure() != c.getPoint()) flag = false;
+                            break;
+                        case NotPartner:
+                            if (((Scp) card).isPartner()) flag = false;
+                            break;
+                        case CrossTested:
+                            if (((Scp) card).getCrossTestCount() <= 0) flag = false;
+                            break;
+                    }
+                }
+                if (flag) return true;
+            }
+        }
+        return false;
+    }
+
     static Card getCard(int index, List<? extends Card> list) {
         return list.get(index);
     }
 
-    static Map<Card, Integer> deleteCardAll(CardCategory category, List<? extends Card> list) {
-        Map<Card, Integer> map = new HashMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            Card c = list.get(i);
-            if (c != null) {
-                if (category == null || category == c.getCategory())
-                    map.put(c, i);
+    static List<Effect> getEffects(Trigger trigger, List<? extends Card> list) {
+        List<Effect> tmp = new ArrayList<>();
+        for (Card c : list) {
+            if (Objects.nonNull(c)) {
+                tmp.addAll(c.getEffects(trigger));
             }
         }
-        for (Card c : map.keySet()) {
-            deleteCard(c, list);
-        }
-        return map;
-    }
-
-    static int getCoordinate(final Card card, final List<? extends Card> list) {
-        return list.indexOf(card);
+        return tmp;
     }
 
     Player getPlayer();
 
-    Game getGame();
+    default Effect getEffect(int cardIndex, Trigger trigger, int effectIndex) {
+        return getCard(cardIndex).getEffect(trigger, effectIndex);
+    }
 
     default int getTurn() {
         try {
@@ -68,13 +95,21 @@ public interface CardHolder {
 
     void nextTurn();
 
-    void deleteCard(final Card card);
+    default int effectSize(int cardIndex, Trigger trigger) {
+        return getCard(cardIndex).effectSize(trigger);
+    }
 
-    Card find(final String cardName);
+    default Game getGame() {
+        Player player = getPlayer();
+        if (Objects.nonNull(player)) {
+            return player.getGame();
+        }
+        throw new NotImplementedException("getGameがオーバーライドされていない、かつ、getPlayerがnullです");
+    }
 
-    int addCard(final Card c);
+    void deleteCard(Card card);
 
-    Card getCard(final int index);
+    Card find(String cardName);
 
     default Player getEnemy() {
         return getPlayer().getEnemy();
@@ -92,5 +127,19 @@ public interface CardHolder {
         }
     }
 
-    int getCoordinate(Card card);
+    int addCard(Card c);
+
+    Card getCard(int index);
+
+    int indexOf(Card card);
+
+    void addTag(int index, String[] tags);
+
+    void addEffect(int index, Effect effect, Trigger trigger);
+
+    boolean hasCard(CardCategory category, ConditionParameter[] condition);
+
+    int getCardCount();
+
+    List<Effect> getEffects(Trigger trigger);
 }

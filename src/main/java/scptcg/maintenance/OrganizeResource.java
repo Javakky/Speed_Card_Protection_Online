@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import static scptcg.game.card.ObjectClassKind.*;
+import static scptcg.game.card.Clazz.*;
 
 public class OrganizeResource {
 
@@ -65,31 +65,31 @@ public class OrganizeResource {
                                             field.setAccessible(true);
 
                                             try {
-                                                field.set(tmp, UNCLASSED.getClazz());
+                                                field.set(tmp, Unclassed.name());
                                             } catch (IllegalArgumentException | IllegalAccessException e) {
                                                 e.printStackTrace();
                                             }
 
                                         }
                                         switch (tmp.getContainmentClass()) {
-                                            case SAFE:
+                                            case Safe:
                                                 safe.add(tmp.getName());
                                                 break;
-                                            case EUCLID:
+                                            case Euclid:
                                                 euclid.add(tmp.getName());
                                                 break;
-                                            case KETER:
+                                            case Keter:
                                                 keter.add(tmp.getName());
                                                 break;
                                             default:
                                                 switch (tmp.getClazz()) {
-                                                    case SAFE:
+                                                    case Safe:
                                                         safe.add(tmp.getName());
                                                         break;
-                                                    case EUCLID:
+                                                    case Euclid:
                                                         euclid.add(tmp.getName());
                                                         break;
-                                                    case KETER:
+                                                    case Keter:
                                                         keter.add(tmp.getName());
                                                         break;
                                                 }

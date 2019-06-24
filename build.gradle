@@ -124,7 +124,7 @@ jooq {
             name = 'org.jooq.codegen.DefaultGenerator'
             database {
                 name = 'org.jooq.meta.mysql.MySQLDatabase'
-                inputSchema = ''
+                inputSchema = 'scp_tcg'
                 includes = '.*'
                 excludes = ''
             }

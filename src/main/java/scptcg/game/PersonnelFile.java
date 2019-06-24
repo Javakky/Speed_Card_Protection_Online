@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class PersonnelFile implements CardHolder {
+public class PersonnelFile implements CardHolder, Area {
     private Personnel personnel;
 
     private Player parent;
@@ -22,11 +22,6 @@ public class PersonnelFile implements CardHolder {
     @Override
     public Player getPlayer() {
         return parent;
-    }
-
-    @Override
-    public Game getGame() {
-        return parent.getGame();
     }
 
     @Override
@@ -80,7 +75,7 @@ public class PersonnelFile implements CardHolder {
     }
 
     @Override
-    public int getCoordinate(Card card) {
+    public int indexOf(Card card) {
         if (personnel == card) {
             return 0;
         }
@@ -97,7 +92,7 @@ public class PersonnelFile implements CardHolder {
         return personnel != null;
     }
 
-    public Personnel getPersonnel() {
+    private Personnel getPersonnel() {
         return personnel;
     }
 
@@ -109,6 +104,7 @@ public class PersonnelFile implements CardHolder {
         this.parent = parent;
     }
 
+    @Override
     public void nextTurn() {
         if (personnel != null) {
             personnel.refresh();

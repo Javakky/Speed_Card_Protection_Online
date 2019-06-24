@@ -4,14 +4,6 @@
 package jooq;
 
 
-import jooq.black_poker.BlackPoker;
-import jooq.information_schema.InformationSchema;
-import jooq.mysql.Mysql;
-import jooq.performance_schema.PerformanceSchema;
-import jooq.sakila.Sakila;
-import jooq.scp_tcg.ScpTcg;
-import jooq.sys.Sys;
-import jooq.world.World;
 import org.jooq.Schema;
 import org.jooq.impl.CatalogImpl;
 
@@ -34,7 +26,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultCatalog extends CatalogImpl {
 
-    private static final long serialVersionUID = 610387225;
+    private static final long serialVersionUID = -1175036348;
 
     /**
      * The reference instance of <code></code>
@@ -42,44 +34,9 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
-     * The schema <code>information_schema</code>.
-     */
-    public final InformationSchema INFORMATION_SCHEMA = jooq.information_schema.InformationSchema.INFORMATION_SCHEMA;
-
-    /**
-     * The schema <code>black_poker</code>.
-     */
-    public final BlackPoker BLACK_POKER = jooq.black_poker.BlackPoker.BLACK_POKER;
-
-    /**
-     * The schema <code>mysql</code>.
-     */
-    public final Mysql MYSQL = jooq.mysql.Mysql.MYSQL;
-
-    /**
-     * The schema <code>performance_schema</code>.
-     */
-    public final PerformanceSchema PERFORMANCE_SCHEMA = jooq.performance_schema.PerformanceSchema.PERFORMANCE_SCHEMA;
-
-    /**
-     * The schema <code>sakila</code>.
-     */
-    public final Sakila SAKILA = jooq.sakila.Sakila.SAKILA;
-
-    /**
      * The schema <code>scp_tcg</code>.
      */
-    public final ScpTcg SCP_TCG = jooq.scp_tcg.ScpTcg.SCP_TCG;
-
-    /**
-     * The schema <code>sys</code>.
-     */
-    public final Sys SYS = jooq.sys.Sys.SYS;
-
-    /**
-     * The schema <code>world</code>.
-     */
-    public final World WORLD = jooq.world.World.WORLD;
+    public final ScpTcg SCP_TCG = jooq.ScpTcg.SCP_TCG;
 
     /**
      * No further instances allowed
@@ -97,13 +54,6 @@ public class DefaultCatalog extends CatalogImpl {
 
     private final List<Schema> getSchemas0() {
         return Arrays.<Schema>asList(
-            InformationSchema.INFORMATION_SCHEMA,
-            BlackPoker.BLACK_POKER,
-            Mysql.MYSQL,
-            PerformanceSchema.PERFORMANCE_SCHEMA,
-            Sakila.SAKILA,
-            ScpTcg.SCP_TCG,
-            Sys.SYS,
-            World.WORLD);
+                ScpTcg.SCP_TCG);
     }
 }

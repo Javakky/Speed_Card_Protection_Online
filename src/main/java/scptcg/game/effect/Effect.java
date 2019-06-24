@@ -208,4 +208,8 @@ public class Effect {
     public boolean firstTime() {
         return activationCount == 0;
     }
+
+    public void refresh() {
+        activationsCount = 0;
+    }
 }

@@ -1,5 +1,7 @@
 package scptcg.game.effect;
 
+import scptcg.game.card.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,19 @@ public class Effects {
             }
         }
         return e;
+    }
+
+    public int size() {
+        int sum = 0;
+        for (List<Effect> list : effects.values()) {
+            sum += list.size();
+        }
+        return sum;
+    }
+
+
+    public int size(final Trigger trigger) {
+        return effects.get(trigger.name()).size();
     }
 
     public void addEffect(final Effect effect, final Trigger trigger) {
@@ -39,5 +54,21 @@ public class Effects {
 
     public List<Effect> getEffects(final Trigger trigger) {
         return effects.get(trigger.name());
+    }
+
+    public void refresh() {
+        for (List<Effect> list : effects.values()) {
+            for (Effect effect : list) {
+                effect.refresh();
+            }
+        }
+    }
+
+    public void setParent(Card parent) {
+        for (List<Effect> list : effects.values()) {
+            for (Effect effect : list) {
+                effect.setParent(parent);
+            }
+        }
     }
 }

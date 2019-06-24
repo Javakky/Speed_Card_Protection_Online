@@ -4,7 +4,11 @@ import scptcg.game.CardHolder;
 import scptcg.game.Game;
 import scptcg.game.Player;
 import scptcg.game.Zone;
+import scptcg.game.effect.Effect;
 import scptcg.game.effect.Effects;
+import scptcg.game.effect.Trigger;
+
+import java.util.List;
 
 public abstract class Card implements Cloneable {
 
@@ -54,8 +58,16 @@ public abstract class Card implements Cloneable {
         this.canDecommission = canDecommission;
     }
 
-    public Effects getEffects() {
+    protected Effects getEffects() {
         return effects;
+    }
+
+    public int effectSize(final Trigger trigger) {
+        return effects.size(trigger);
+    }
+
+    public Effect getEffect(final Trigger trigger, final int index) {
+        return effects.getEffect(trigger, index);
     }
 
     protected void setEffects(Effects effects) {
@@ -68,6 +80,7 @@ public abstract class Card implements Cloneable {
 
     public void setParent(final CardHolder parent) {
         this.parent = parent;
+        effects.setParent(this);
     }
 
     @Override
@@ -90,8 +103,26 @@ public abstract class Card implements Cloneable {
     }
 
     public int getCoordinate() {
-        return parent.getCoordinate(this);
+        return parent.indexOf(this);
     }
 
-    public abstract void refresh();
+    public void refresh() {
+        effects.refresh();
+    }
+
+    private boolean fullCondition(String... condition) {
+        if (condition.length <= 0) {
+            return true;
+        }
+        return true;
+    }
+
+    public List<Effect> getEffects(Trigger trigger) {
+        return effects.getEffects(trigger);
+    }
+
+    public void addEffect(Effect effects, Trigger trigger) {
+        this.effects.addEffect(effects, trigger);
+    }
+
 }

@@ -72,7 +72,7 @@ public class Condition extends AbstractAction {
 
     private boolean hasSCP(final Player player) {
         Parameter p = getParameter();
-        return player.hasSCP(p.getTargetZone(), p.isThere(), p.getCondition());
+        return player.hasSCP(p.getTargetZone(), p.getCondition());
     }
 
     private boolean secureIsZero() {
@@ -87,7 +87,7 @@ public class Condition extends AbstractAction {
     }
 
     private boolean hasPersonnel(final Player player) {
-        return player.HasPersonnel();
+        return player.hasPersonnel();
     }
 
     private boolean isMyTurn(final Player player) {

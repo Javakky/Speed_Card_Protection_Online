@@ -16,11 +16,11 @@ public class Scp extends Card {
     private String containmentClass;
     private Set<String> tag = new HashSet<>();
     private boolean canPartner = true;
-    private boolean canAttack = true;
-    private int attacksCount;
-    private int attackCount = 0;
+    private boolean crossTestable = true;
+    private int crossTestsCount;
+    private int crossTestCount = 0;
 
-    protected Scp(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects, final boolean isPartner, final int cost, final int secure, final String clazz, final Set<String> subClazz, final String containmentClass, final Set<String> tag, final boolean canPartner, final boolean canAttack, final int attacksCount, final int attackCount) {
+    protected Scp(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects, final boolean isPartner, final int cost, final int secure, final String clazz, final Set<String> subClazz, final String containmentClass, final Set<String> tag, final boolean canPartner, final boolean crossTestable, final int crossTestsCount, final int crossTestCount) {
         super(parent, category, name, canDecommission, effects);
         this.isPartner = isPartner;
         this.cost = cost;
@@ -30,9 +30,9 @@ public class Scp extends Card {
         this.containmentClass = containmentClass;
         this.tag = tag;
         this.canPartner = canPartner;
-        this.canAttack = canAttack;
-        this.attacksCount = attacksCount;
-        this.attackCount = attackCount;
+        this.crossTestable = crossTestable;
+        this.crossTestsCount = crossTestsCount;
+        this.crossTestCount = crossTestCount;
     }
 
     public boolean isPartner() {
@@ -126,44 +126,44 @@ public class Scp extends Card {
         this.canPartner = false;
     }
 
-    public boolean canAttack() {
-        return canAttack;
+    public boolean canCrossTest() {
+        return crossTestable;
     }
 
-    public void enableCanAttack(final boolean canAttack) {
-        this.canAttack = canAttack;
+    public void enableCanCrossTest(final boolean canCrossTest) {
+        this.crossTestable = canCrossTest;
     }
 
-    public void enableCanAttack() {
-        this.canAttack = true;
+    public void enableCanCrossTest() {
+        this.crossTestable = true;
     }
 
-    public void disableCanAttack() {
-        this.canAttack = false;
+    public void disableCanCrossTest() {
+        this.crossTestable = false;
     }
 
-    public int getAttacksCount() {
-        return attacksCount;
+    public int getCrossTestsCount() {
+        return crossTestsCount;
     }
 
-    public void setAttacksCount(final int attacksCount) {
-        this.attacksCount = attacksCount;
+    public void setCrossTestsCount(final int crossTestsCount) {
+        this.crossTestsCount = crossTestsCount;
     }
 
-    public int getAttackCount() {
-        return attackCount;
+    public int getCrossTestCount() {
+        return crossTestCount;
     }
 
-    protected void addAttackCount(final int attackCount) {
-        this.attackCount += attackCount;
+    protected void addCrossTestCount(final int crossTestCount) {
+        this.crossTestCount += crossTestCount;
     }
 
-    protected void resetAttackCount() {
-        this.attackCount = 0;
+    protected void resetCrossTestCount() {
+        this.crossTestCount = 0;
     }
 
-    protected void addAttackCount() {
-        this.attackCount++;
+    protected void addCrossTestCount() {
+        this.crossTestCount++;
     }
 
     public void minusSecure(final int point) {
@@ -176,6 +176,26 @@ public class Scp extends Card {
 
     @Override
     public Scp clone() {
-        return new Scp(getParent(), getCategory().name(), getName(), canDecommission(), getEffects(), isPartner, cost, secure, clazz, subClazz, containmentClass, tag, canPartner, canAttack, attacksCount, attackCount);
+        return new Scp(getParent(), getCategory().name(), getName(), canDecommission(), getEffects(), isPartner, cost, secure, clazz, subClazz, containmentClass, tag, canPartner, crossTestable, crossTestsCount, crossTestCount);
+    }
+
+    @Override
+    public void refresh() {
+        crossTestCount = 0;
+        super.refresh();
+    }
+
+    public int crossTest() {
+        if (canCrossTest() && crossTestCount < crossTestsCount) {
+            addCrossTestCount();
+            return getSecure();
+        }
+        return -1;
+    }
+
+    public void addTags(String[] tags) {
+        for (String tag : tags) {
+            addTag(tag);
+        }
     }
 }

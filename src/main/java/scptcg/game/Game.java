@@ -6,4 +6,13 @@ public class Game {
 
     public int getTurn() {
     }
+
+    public boolean isFirst(Player player) {
+    }
+
+    public boolean isTurnPlayer(Player player) {
+    }
+
+    public Player getEnemy(Player player) {
+    }
 }

@@ -175,14 +175,11 @@ public class SandBox extends CardHolder {
     }
 
     public Scp drawSandBox() {
-
         if (sandBox.size() <= 0) {
             ((Player) this.parent).parent.ignitionK(ZK, (Player) this.parent);
             return null;
         }
-
         Scp tmp = sandBox.get(0);
-
         sandBox.remove(tmp);
         return tmp;
     }

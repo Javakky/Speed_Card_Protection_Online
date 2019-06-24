@@ -13,4 +13,9 @@ public class Canon extends Card {
     public Canon clone() {
         return new Canon(getParent(), getCategory().name(), getName(), canDecommission(), getEffects());
     }
+
+    @Override
+    public void refresh() {
+
+    }
 }
