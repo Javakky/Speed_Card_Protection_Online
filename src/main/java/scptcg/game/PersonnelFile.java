@@ -1,15 +1,19 @@
 package scptcg.game;
 
+import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Canon;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Personnel;
+import scptcg.game.effect.Effect;
+import scptcg.game.effect.Trigger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class PersonnelFile implements CardHolder, Area {
+public class PersonnelFile implements CardHolder {
     private Personnel personnel;
 
     private Player parent;
@@ -110,4 +114,31 @@ public class PersonnelFile implements CardHolder, Area {
             personnel.refresh();
         }
     }
+
+
+    @Override
+    public void addTag(int index, String[] tags) {
+        throw new NotImplementedException("人事ファイルはタグを持ちません");
+    }
+
+    @Override
+    public void addEffect(int index, Effect effect, Trigger trigger) {
+        personnel.addEffect(effect, trigger);
+    }
+
+    @Override
+    public boolean hasCard(CardCategory category, ConditionParameter[] condition) {
+        return Objects.isNull(personnel) && category == CardCategory.Personnel;
+    }
+
+    @Override
+    public int getCardCount() {
+        return Objects.isNull(personnel) ? 0 : 1;
+    }
+
+    @Override
+    public List<Effect> getEffects(Trigger trigger) {
+        return personnel.getEffects(trigger);
+    }
+
 }

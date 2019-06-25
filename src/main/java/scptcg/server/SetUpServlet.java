@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-import static jooq.scp_tcg.tables.Deck.*;
-import static jooq.scp_tcg.tables.Id.*;
+import static jooq.tables.Deck.*;
+import static jooq.tables.Id.*;
 import static org.jooq.impl.DSL.*;
 import static scptcg.server.DeckMakeServlet.*;
 

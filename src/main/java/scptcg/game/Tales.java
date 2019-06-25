@@ -1,15 +1,16 @@
 package scptcg.game;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Tale;
 import scptcg.game.effect.Effect;
-import scptcg.game.effect.Parameter;
 import scptcg.game.effect.Trigger;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Tales implements CardHolder {
     private Player parent;
@@ -95,17 +96,6 @@ public class Tales implements CardHolder {
     }
 
     @Override
-    public int[] getSelectables(Parameter parameter) {
-        List<Integer> indexes = new ArrayList<>();
-        for (int i = 0; i < tales.length; i++) {
-            if (parameter.isThere() == Objects.nonNull(tales[i])) {
-                indexes.add(i);
-            }
-        }
-        return ArrayUtils.toPrimitive(indexes.toArray(new Integer[0]));
-    }
-
-    @Override
     public void addTag(int index, String[] tags) {
         throw new NotImplementedException("Taleはタグを持ちません");
     }
@@ -116,7 +106,11 @@ public class Tales implements CardHolder {
     }
 
     @Override
-    public boolean hasCard(CardCategory category, Parameter parameter) {
+    public boolean hasCard(CardCategory category, ConditionParameter[] condition) {
+        for (Card c : tales) {
+            if (Objects.nonNull(c) && c.getCategory() == category)
+                return true;
+        }
         return false;
     }
 

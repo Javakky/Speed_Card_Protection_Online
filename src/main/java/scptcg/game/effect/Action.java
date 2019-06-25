@@ -162,14 +162,14 @@ public class Action extends AbstractAction {
                 int[][] coordinate = null;
                 Function<Player, Function<Integer, Object>> adder = func.apply(elements).apply(Zone.Site);
                 if (isTargetPlayerOne()) {
-                    for (int index : player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
+                    for (int index : player.get(0).getSelectables(p.isThere(), p.getCondition())) {
                         adder.apply(player.get(0)).apply(index);
                     }
                 } else {
-                    for (int index : player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
+                    for (int index : player.get(0).getSelectables(p.isThere(), p.getCondition())) {
                         adder.apply(player.get(0)).apply(index);
                     }
-                    for (int index : player.get(1).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())) {
+                    for (int index : player.get(1).getSelectables(p.isThere(), p.getCondition())) {
                         adder.apply(player.get(1)).apply(index);
                     }
                 }
@@ -225,11 +225,11 @@ public class Action extends AbstractAction {
         List<Player> player = new ArrayList<>();
         Parameter p = getParameter();
         if (isTargetPlayerOne()) {
-            tmpResult.setCoordinate(player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition()));
+            tmpResult.setCoordinate(player.get(0).getSelectables(p.isThere(), p.getCondition()));
         } else {
             tmpResult.setCoordinate(new int[][]{
-                    player.get(0).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition()),
-                    player.get(1).getSelectables(p.getTargetZone(), p.isThere(), p.getCondition())
+                    player.get(0).getSelectables(p.isThere(), p.getCondition()),
+                    player.get(1).getSelectables(p.isThere(), p.getCondition())
             });
         }
         tmpResult.setIsComplete(false);

@@ -1,11 +1,12 @@
 package test;
-
+/*
 import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import scptcg.game.CreateGame;
-import scptcg.game.Place;
+import scptcg.game.Game;
+import scptcg.game.Zone;
 import scptcg.game.SandBox;
 import scptcg.game.card.CardFactory;
 import scptcg.game.card.Scp;
@@ -18,8 +19,8 @@ import java.util.Scanner;
 import static java.lang.Integer.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static scptcg.game.Place.*;
-import static scptcg.game.card.ObjectClassKind.*;
+import static scptcg.game.Zone.*;
+import static scptcg.game.card.Clazz.*;
 
 public class EffectTest {
 
@@ -226,3 +227,4 @@ public class EffectTest {
         return new Deck();
     }
 }
+*/

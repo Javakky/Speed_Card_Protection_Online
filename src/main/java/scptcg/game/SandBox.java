@@ -5,6 +5,8 @@ import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Clazz;
 import scptcg.game.card.Scp;
+import scptcg.game.effect.Effect;
+import scptcg.game.effect.Trigger;
 
 import java.util.*;
 
@@ -23,6 +25,7 @@ public class SandBox implements CardHolder {
     private int protectionForce;
     private int size;
     private Player parent;
+    private Zone zone;
 
     public SandBox(Player parent, Clazz clazz, int maxProtectionForce, int size, Scp... sandBox) {
         if (size != sandBox.length) throw new IllegalArgumentException("カードの枚数が適切ではありません");
@@ -75,7 +78,7 @@ public class SandBox implements CardHolder {
 
     @Override
     public Zone getZone() {
-        return Zone.Sandbox;
+        return zone;
     }
 
     @Override
@@ -158,6 +161,35 @@ public class SandBox implements CardHolder {
         return CardHolder.indexOf(card, sandBox);
     }
 
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
+    @Override
+    public void addTag(int index, String[] tags) {
+        sandBox.get(index).addTags(tags);
+    }
+
+    @Override
+    public void addEffect(int index, Effect effect, Trigger trigger) {
+        sandBox.get(index).addEffect(effect, trigger);
+    }
+
+    @Override
+    public boolean hasCard(CardCategory category, ConditionParameter[] condition) {
+        for (Card card : sandBox) {
+            if (Objects.nonNull(card) && card.getCategory() == category) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getCardCount() {
+        return sandBox.size();
+    }
+
     public void setParent(Player parent) {
         this.parent = parent;
     }
@@ -188,5 +220,10 @@ public class SandBox implements CardHolder {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    @Override
+    public List<Effect> getEffects(Trigger trigger) {
+        return CardHolder.getEffects(trigger, sandBox);
     }
 }

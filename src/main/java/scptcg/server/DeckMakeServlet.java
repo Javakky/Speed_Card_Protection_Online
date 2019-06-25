@@ -22,8 +22,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import static jooq.scp_tcg.tables.Deck.*;
-import static jooq.scp_tcg.tables.Id.*;
+import static jooq.tables.Deck.*;
+import static jooq.tables.Id.*;
 import static org.jooq.impl.DSL.*;
 
 @WebServlet(

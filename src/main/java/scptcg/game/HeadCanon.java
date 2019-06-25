@@ -4,8 +4,11 @@ import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Canon;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
+import scptcg.game.effect.Effect;
+import scptcg.game.effect.Trigger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -101,6 +104,31 @@ public class HeadCanon implements CardHolder {
             return 0;
         }
         return -1;
+    }
+
+    @Override
+    public void addTag(int index, String[] tags) {
+        throw new NotImplementedException("カノンはタグを持ちません");
+    }
+
+    @Override
+    public void addEffect(int index, Effect effect, Trigger trigger) {
+        canon.addEffect(effect, trigger);
+    }
+
+    @Override
+    public boolean hasCard(CardCategory category, ConditionParameter[] condition) {
+        return category == CardCategory.Canon && Objects.isNull(canon);
+    }
+
+    @Override
+    public int getCardCount() {
+        return Objects.isNull(canon) ? 0 : 1;
+    }
+
+    @Override
+    public List<Effect> getEffects(Trigger trigger) {
+        return canon.getEffects(trigger);
     }
 
     @Override
