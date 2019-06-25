@@ -125,4 +125,7 @@ public abstract class Card implements Cloneable {
         this.effects.addEffect(effects, trigger);
     }
 
+    public boolean ownerIsFirst() {
+        return getPlayer().isFirst();
+    }
 }

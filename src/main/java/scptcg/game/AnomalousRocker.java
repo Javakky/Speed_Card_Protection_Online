@@ -106,6 +106,11 @@ public class AnomalousRocker implements CardHolder {
         return CardHolder.getEffects(trigger, rocker);
     }
 
+    @Override
+    public Card[] getCards() {
+        return rocker.toArray(new Card[0]);
+    }
+
     private List<Anomalous> getRocker() {
         return rocker;
     }

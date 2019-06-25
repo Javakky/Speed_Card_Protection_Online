@@ -14,7 +14,6 @@ public class Effect {
     private String message;
     private long activationsCount;
     private boolean canActive;
-    private boolean optional;
 
     private int activationCount = 0;
     private int index = 0;
@@ -74,22 +73,6 @@ public class Effect {
         this.canActive = false;
     }
 
-    public boolean isOptional() {
-        return optional;
-    }
-
-    public void enableOptional(final boolean optional) {
-        this.optional = optional;
-    }
-
-    public void enableOptional() {
-        this.optional = true;
-    }
-
-    public void disableOptional() {
-        this.optional = false;
-    }
-
     public int getActivationCount() {
         return activationCount;
     }
@@ -122,8 +105,8 @@ public class Effect {
         return before;
     }
 
-    private void addBefore(final Result before) {
-        this.before.add(before);
+    public void addBefore(final Result before) {
+        if (Objects.nonNull(before)) this.before.add(before);
     }
 
     public boolean isActive() {
@@ -144,8 +127,7 @@ public class Effect {
         this.index = 0;
     }
 
-
-    public boolean active(final List<Result> result, final Result before) throws NotActivableException {
+    public boolean active(final List<Result> result) throws NotActivableException {
 
         if (isHead()) {
             if (getActivationCount() >= getActivationsCount()) {
@@ -157,12 +139,8 @@ public class Effect {
             activate();
         }
 
-        if (Objects.nonNull(before)) {
-            addBefore(before);
-        }
-
         for (; index < action.size(); ) {
-            Result r = action.get(index).active(before);
+            Result r = action.get(index).active(this.before.get(this.before.size() - 1));
             result.add(r);
             addBefore(r);
             index++;
@@ -211,5 +189,9 @@ public class Effect {
 
     public void refresh() {
         activationsCount = 0;
+    }
+
+    public boolean ownerIsFirst() {
+        return getParent().ownerIsFirst();
     }
 }

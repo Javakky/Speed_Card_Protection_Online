@@ -7,6 +7,7 @@ import scptcg.game.card.Scp;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +43,7 @@ public class Player {
         }
     }
 
-    private void createTmpAleas() {
+    private CardHolder[] getTmpAleas() {
         if (Objects.isNull(areas)) {
             areas = new CardHolder[]{
                     site,
@@ -56,6 +57,7 @@ public class Player {
                     exclusion
             };
         }
+        return areas;
     }
 
     private SandBox createSafe(Scp... scp) {
@@ -146,6 +148,14 @@ public class Player {
         return getArea(zone).getEffects(trigger);
     }
 
+    public List<Effect> getEffects(Trigger trigger) {
+        List<Effect> result = new ArrayList<>();
+        for (CardHolder area : getTmpAleas()) {
+            result.addAll(area.getEffects(trigger));
+        }
+        return result;
+    }
+
     public int getRemainSandBox(Zone zone) {
         return getArea(zone).getCardCount();
     }
@@ -162,15 +172,6 @@ public class Player {
         return getArea(zone).indexOf(card);
     }
 
-    public Card find(String name) {
-        createTmpAleas();
-        for (CardHolder area : areas) {
-            Card target = area.find(name);
-            if (Objects.nonNull(target)) return target;
-        }
-        return null;
-    }
-
     public void addTag(Zone zone, int index, String[] tags) {
         getArea(zone).addTag(index, tags);
     }
@@ -184,6 +185,107 @@ public class Player {
 
     public int getTurn() {
         return getGame().getTurn();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Effect getEffect(Zone zone, int index, Trigger trigger, int effectIndex) {
+        return getArea(zone).getEffect(index, trigger, effectIndex);
+    }
+
+    public List<Effect> getEffects(Zone zone, int index, Trigger trigger) {
+        return getArea(zone).getEffects(index, trigger);
+    }
+
+    public int effectSize(Zone zone, Trigger trigger, int index) {
+        return getArea(zone).effectSize(index, trigger);
+    }
+
+    public void nextTurn() {
+        for (CardHolder area : getTmpAleas()) {
+            area.nextTurn();
+        }
+    }
+
+    public Card[] getPartnerables() {
+        return safe.getPartnerables();
+    }
+
+    public Card find(CardHolder area, String name) {
+        return area.find(name);
+    }
+
+    public Card find(Zone zone, String name) {
+        return getArea(zone).find(name);
+    }
+
+    public Card find(String name) {
+        for (CardHolder area : getTmpAleas()) {
+            Card result = find(area, name);
+            if (Objects.nonNull(result)) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    public void breach(String name, Clazz clazz, int index) {
+        Scp card = (Scp) getSandBox(clazz).pick(name);
+        card.toPartner(false);
+        site.breach(index, card);
+        shuffle(clazz);
+    }
+
+    public void breachPartner(String name, int index) {
+        Scp card = (Scp) safe.pick(name);
+        card.toPartner(true);
+        site.breach(index, card);
+        shuffle(Clazz.Safe);
+    }
+
+    private void shuffle(Clazz clazz) {
+        getSandBox(clazz).shuffle();
+    }
+
+    private void shuffle() {
+        safe.shuffle();
+        euclid.shuffle();
+        keter.shuffle();
+    }
+
+
+    public int crossTest(int place) {
+        return site.crossTest(place);
+    }
+
+
+    public Card decommission(Zone zone, int index) {
+        Card c = getArea(zone).pick(index);
+        this.decommissioned.addCard(c);
+        return c;
+    }
+
+
+    public boolean canCrossTest(int index) {
+        return site.canCrossTest(index);
+    }
+
+    public void damage(Clazz clazz, int point, List<Scp> breached) {
+        breached.add(getSandBox(clazz).damage(point));
+    }
+
+    public void heal(Clazz clazz, int point) {
+        getSandBox(clazz).heal(point);
+    }
+
+    public Card[] getCards(Zone zone) {
+        return getArea(zone).getCards();
     }
 
 }

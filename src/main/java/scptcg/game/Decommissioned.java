@@ -10,7 +10,6 @@ import java.util.*;
 
 public class Decommissioned implements CardHolder {
 
-
     private Player parent;
     private List<Card> decommissioned = new Stack<>();
 
@@ -98,6 +97,11 @@ public class Decommissioned implements CardHolder {
     @Override
     public List<Effect> getEffects(Trigger trigger) {
         return CardHolder.getEffects(trigger, decommissioned);
+    }
+
+    @Override
+    public Card[] getCards() {
+        return decommissioned.toArray(new Card[0]);
     }
 
     public void setParent(Player parent) {

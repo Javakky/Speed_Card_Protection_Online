@@ -81,6 +81,9 @@ public class Action extends AbstractAction {
                 reContainment();
                 break;
 
+            case Optional:
+                optionalActive();
+
             default:
                 throw new IllegalArgumentException("存在しないアクションです。：" + getActionMessage());
         }
@@ -89,9 +92,15 @@ public class Action extends AbstractAction {
         return tmpResult.createResult();
     }
 
+    private void optionalActive() {
+        tmpResult.setIsComplete(false);
+    }
+
     private void reContainment() {
         int index = getPlayer().reContainment(getCard(), getParameter().getTargetClazz());
+        tmpResult.setCoordinate(index);
         tmpResult.objectEqualSubject();
+        tmpResult.setIsComplete(false);
     }
 
     private void breach() {

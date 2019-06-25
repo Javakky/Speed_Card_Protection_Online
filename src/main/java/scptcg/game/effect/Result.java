@@ -4,6 +4,7 @@ import scptcg.game.Zone;
 import scptcg.game.card.Card;
 
 public class Result {
+    private final String action;
     private final boolean subjectPlayer;
     private final Zone subjectZone;
     private final Card subject;
@@ -24,7 +25,7 @@ public class Result {
     private final boolean targetPlayer;
     private int[][] coordinate;
 
-    public Result(final boolean subjectPlayer, final Zone subjectZone, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer) {
+    public Result(final Zone subjectZone, final boolean subjectPlayer, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer, String action) {
         this.subjectPlayer = subjectPlayer;
         this.subjectZone = subjectZone;
         this.subject = subject;
@@ -44,6 +45,7 @@ public class Result {
         this.isComplete = isComplete;
         this.coordinate = coordinate;
         this.targetPlayer = targetPlayer;
+        this.action = action;
     }
 
     public boolean getSubjectPlayer() {
@@ -120,5 +122,9 @@ public class Result {
 
     public boolean isTargetPlayer() {
         return targetPlayer;
+    }
+
+    public boolean isObjectPlayerIsOne() {
+        return objectPlayerIsOne;
     }
 }

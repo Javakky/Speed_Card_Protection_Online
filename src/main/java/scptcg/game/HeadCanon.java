@@ -132,6 +132,11 @@ public class HeadCanon implements CardHolder {
     }
 
     @Override
+    public Card[] getCards() {
+        return new Card[]{canon};
+    }
+
+    @Override
     public void addCardAll(Card... cards) {
         if (cards.length > 1 || canon != null) throw new IllegalArgumentException("ヘッドカノンに追加できるカードは1枚です");
         else if (cards.length == 1) addCard(cards[0]);

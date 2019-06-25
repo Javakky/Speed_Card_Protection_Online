@@ -10,5 +10,7 @@ public enum ActionMethod implements IActionMethod {
     ReContainment,
     DamageSandBox,
     HealSandBox,
-    MinusSecure
+    MinusSecure,
+    Fail,
+    Optional
 }

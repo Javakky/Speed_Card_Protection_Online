@@ -142,4 +142,22 @@ public interface CardHolder {
     int getCardCount();
 
     List<Effect> getEffects(Trigger trigger);
+
+    default Card pick(int index) {
+        Card c = getCard(index);
+        deleteCard(c);
+        return c;
+    }
+
+    default Card pick(String name) {
+        Card c = find(name);
+        deleteCard(c);
+        return c;
+    }
+
+    default List<Effect> getEffects(int index, Trigger trigger) {
+        return getCard(index).getEffects(trigger);
+    }
+
+    Card[] getCards();
 }

@@ -226,4 +226,9 @@ public class SandBox implements CardHolder {
     public List<Effect> getEffects(Trigger trigger) {
         return CardHolder.getEffects(trigger, sandBox);
     }
+
+    @Override
+    public Card[] getCards() {
+        return sandBox.toArray(new Card[0]);
+    }
 }

@@ -141,4 +141,9 @@ public class PersonnelFile implements CardHolder {
         return personnel.getEffects(trigger);
     }
 
+    @Override
+    public Card[] getCards() {
+        return new Card[]{personnel};
+    }
+
 }

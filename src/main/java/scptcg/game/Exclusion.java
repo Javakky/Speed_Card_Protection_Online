@@ -99,6 +99,11 @@ public class Exclusion implements CardHolder {
         return CardHolder.getEffects(trigger, exclusion);
     }
 
+    @Override
+    public Card[] getCards() {
+        return exclusion.toArray(new Card[0]);
+    }
+
     public void setParent(Player parent) {
         this.parent = parent;
     }

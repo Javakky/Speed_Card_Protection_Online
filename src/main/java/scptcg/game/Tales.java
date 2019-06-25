@@ -1,5 +1,6 @@
 package scptcg.game;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
@@ -122,6 +123,11 @@ public class Tales implements CardHolder {
     @Override
     public List<Effect> getEffects(Trigger trigger) {
         return null;
+    }
+
+    @Override
+    public Card[] getCards() {
+        return ArrayUtils.clone(tales);
     }
 
     private Tale[] getTales() {

@@ -208,6 +208,13 @@ public class Site implements CardHolder {
         return tmp;
     }
 
+    @Override
+    public Card[] getCards() {
+        List<Card> list = Arrays.asList(site);
+        list.removeAll(Collections.singleton(null));
+        return list.toArray(new Card[0]);
+    }
+
     private Scp[] getSite() {
         return site;
     }
