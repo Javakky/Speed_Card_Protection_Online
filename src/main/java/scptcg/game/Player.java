@@ -1,11 +1,9 @@
 package scptcg.game;
 
-import scptcg.game.card.Card;
-import scptcg.game.card.CardCategory;
-import scptcg.game.card.Clazz;
-import scptcg.game.card.Scp;
+import scptcg.game.card.*;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
+import scptcg.json.Deck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +27,30 @@ public class Player {
     private SandBox keter;
 
     private CardHolder[] areas = null;
+
+    public Player(Game parent, String name, Deck deck, int xk, int nk) {
+        this.name = name;
+        this.parent = parent;
+        tales = new Tales(this, createCard(CardCategory.Tale, deck.Tale));
+        personnelFile = new PersonnelFile(this, createCard(CardCategory.Personnel, deck.Personnel));
+        rocker = new AnomalousRocker(this, createCard(CardCategory.Anomalous, deck.Anomalous));
+        site = new Site(this, xk - 1, nk - 1);
+        decommissioned = new Decommissioned(this);
+        exclusion = new Exclusion(this);
+        safe = createSafe((Scp[]) createCard(CardCategory.SCP, deck.Safe));
+        euclid = createEuclid((Scp[]) createCard(CardCategory.SCP, deck.Euclid));
+        keter = createKeter((Scp[]) createCard(CardCategory.SCP, deck.Safe));
+        getTmpAleas();
+    }
+
+    private Card[] createCard(CardCategory category, String[] names) {
+        Card[] result = new Card[names.length];
+        for (int i = 0; i < names.length; i++) {
+            result[i] = CardFactory.create(names[i], category);
+        }
+        return result;
+    }
+
 
     private static int classToNumber(Clazz clazz) {
         switch (clazz) {
@@ -235,18 +257,20 @@ public class Player {
         return null;
     }
 
-    public void breach(String name, Clazz clazz, int index) {
+    public Scp breach(String name, Clazz clazz, int index) {
         Scp card = (Scp) getSandBox(clazz).pick(name);
         card.toPartner(false);
         site.breach(index, card);
         shuffle(clazz);
+        return card;
     }
 
-    public void breachPartner(String name, int index) {
+    public Scp breachPartner(String name, int index) {
         Scp card = (Scp) safe.pick(name);
         card.toPartner(true);
         site.breach(index, card);
         shuffle(Clazz.Safe);
+        return card;
     }
 
     private void shuffle(Clazz clazz) {
@@ -288,4 +312,23 @@ public class Player {
         return getArea(zone).getCards();
     }
 
+    public int getSumSiteCost() {
+        return site.getCost();
+    }
+
+    public int getSCPCount() {
+        return site.getScpCount();
+    }
+
+    public int[] getSandBoxProtection() {
+        return new int[]{
+                safe.getProtection(),
+                euclid.getProtection(),
+                keter.getProtection()
+        };
+    }
+
+    public Card getTop(Zone zone) {
+        return getArea(zone).getTop();
+    }
 }

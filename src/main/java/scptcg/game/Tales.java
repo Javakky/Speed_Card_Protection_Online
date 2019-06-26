@@ -17,10 +17,10 @@ public class Tales implements CardHolder {
     private Player parent;
     private Tale[] tales = new Tale[2];
 
-    public Tales(Player parent, Tale... tales) {
-        this.parent = parent;
-        if (tales.length != 2) throw new IllegalArgumentException("テイルズに格納できるのは2枚です");
-        this.tales = tales;
+    public Tales(Player player, Card[] card) {
+        for (Card c : card) c.setParent(this);
+        parent = player;
+        tales = (Tale[]) card;
     }
 
     @Override

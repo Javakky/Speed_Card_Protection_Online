@@ -8,7 +8,7 @@ public class Data {
     public String DeckName;
     public String[] CardName;
     public int[][] Coordinate;
-    public int SandBox;
+    public String SandBox;
     public String[] Zone;
     public boolean Player;
     public int Index;
@@ -23,6 +23,7 @@ public class Data {
     public String After;
     public String Text;
     public boolean Continue;
+    public String Status;
 
     public String toJson() {
         return new Gson().toJson(this);

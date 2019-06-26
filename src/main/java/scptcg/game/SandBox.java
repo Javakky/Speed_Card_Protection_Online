@@ -35,6 +35,7 @@ public class SandBox implements CardHolder {
         this.protectionForce = maxProtectionForce;
         this.size = size;
         this.parent = parent;
+        for (Card c : sandBox) c.setParent(this);
     }
 
     public int getProtection() {
@@ -131,7 +132,7 @@ public class SandBox implements CardHolder {
         this.protectionForce--;
         if (!remainProtection()) {
             refreshProtection();
-            return draw();
+            return getTop();
         }
         return null;
     }

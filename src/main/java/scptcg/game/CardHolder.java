@@ -160,4 +160,8 @@ public interface CardHolder {
     }
 
     Card[] getCards();
+
+    default Card getTop() {
+        return getCard(0);
+    }
 }

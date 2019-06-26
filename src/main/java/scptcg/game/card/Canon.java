@@ -5,7 +5,7 @@ import scptcg.game.effect.Effects;
 
 public class Canon extends Card {
 
-    protected Canon(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects) {
+    public Canon(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects) {
         super(parent, category, name, canDecommission, effects);
     }
 

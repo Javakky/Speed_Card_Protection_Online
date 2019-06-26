@@ -18,9 +18,10 @@ public class PersonnelFile implements CardHolder {
 
     private Player parent;
 
-    public PersonnelFile(Personnel personnel, Player parent) {
-        this.personnel = personnel;
-        this.parent = parent;
+    public PersonnelFile(Player player, Card[] card) {
+        for (Card c : card) c.setParent(this);
+        parent = player;
+        personnel = (Personnel) card[0];
     }
 
     @Override

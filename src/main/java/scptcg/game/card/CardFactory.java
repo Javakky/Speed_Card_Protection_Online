@@ -1,14 +1,13 @@
 package scptcg.game.card;
 
 import com.google.gson.Gson;
-import scptcg.game.CardHolder;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class CardFactory {
 
-    public static Card create(CardHolder parent, String name, CardCategory category)
+    public static Card create(String name, CardCategory category)
             throws NullPointerException {
         Card tmp = null;
         Class clazz;
@@ -44,8 +43,6 @@ public class CardFactory {
         if (tmp == null) {
             throw new NullPointerException(name + " is null");
         }
-
-        tmp.setParent(parent);
 
         return tmp;
     }

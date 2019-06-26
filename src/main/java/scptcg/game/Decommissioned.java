@@ -13,6 +13,10 @@ public class Decommissioned implements CardHolder {
     private Player parent;
     private List<Card> decommissioned = new Stack<>();
 
+    public Decommissioned(Player player) {
+        parent = player;
+    }
+
     @Override
     public Player getPlayer() {
         return parent;

@@ -36,6 +36,7 @@ public class Action extends AbstractAction {
         tmpBefore = before;
         Card card = getCard();
         tmpResult = new ResultBuilder(
+                getAction().name(),
                 getPlayer().isFirst(),
                 card.whereZone(),
                 card,
@@ -233,6 +234,8 @@ public class Action extends AbstractAction {
     private void select() {
         List<Player> player = new ArrayList<>();
         Parameter p = getParameter();
+        getTargetPlayer(player);
+        tmpResult.setTargetPlayer(player.get(0).isFirst());
         if (isTargetPlayerOne()) {
             tmpResult.setCoordinate(player.get(0).getSelectables(p.isThere(), p.getCondition()));
         } else {
@@ -241,6 +244,7 @@ public class Action extends AbstractAction {
                     player.get(1).getSelectables(p.isThere(), p.getCondition())
             });
         }
+        tmpResult.setObjects(new Zone[][]{{p.getTargetZone()}}, null, null, null);
         tmpResult.setIsComplete(false);
     }
 

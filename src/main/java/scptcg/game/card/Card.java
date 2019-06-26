@@ -128,4 +128,5 @@ public abstract class Card implements Cloneable {
     public boolean ownerIsFirst() {
         return getPlayer().isFirst();
     }
+
 }

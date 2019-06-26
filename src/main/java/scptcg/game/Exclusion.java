@@ -13,6 +13,10 @@ public class Exclusion implements CardHolder {
     private Player parent;
     private List<Card> exclusion = new ArrayList<>();
 
+    public Exclusion(Player player) {
+        parent = player;
+    }
+
     @Override
     public Player getPlayer() {
         return parent;

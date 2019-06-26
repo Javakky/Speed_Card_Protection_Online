@@ -13,6 +13,12 @@ public class AnomalousRocker implements CardHolder {
     private List<Anomalous> rocker = new ArrayList<>();
     private Player parent;
 
+    public AnomalousRocker(Player player, Card[] card) {
+        for (Card c : card) c.setParent(this);
+        parent = player;
+        rocker.addAll(Arrays.asList((Anomalous[]) card));
+    }
+
     @Override
     public Player getPlayer() {
         return parent;

@@ -12,5 +12,6 @@ public enum ActionMethod implements IActionMethod {
     HealSandBox,
     MinusSecure,
     Fail,
-    Optional
+    Optional,
+    ActiveTale
 }

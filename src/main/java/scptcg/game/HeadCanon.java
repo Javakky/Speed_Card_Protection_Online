@@ -17,7 +17,7 @@ public class HeadCanon implements CardHolder {
     private Canon canon;
     private Game parent;
 
-    public HeadCanon(Canon canon, Game parent) {
+    public HeadCanon(Game parent, Canon canon) {
         this.canon = canon;
         this.parent = parent;
     }

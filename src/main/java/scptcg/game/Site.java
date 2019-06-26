@@ -14,11 +14,18 @@ import static scptcg.game.K_Class.*;
 
 public class Site implements CardHolder {
 
-    private int size = 6;
-    private Scp[] site = new Scp[size];
+    private int size;
+    private Scp[] site;
     private int anomalousCost = 0;
     private Player parent;
     private int maxCost;
+
+    public Site(Player player, int maxCost, int size) {
+        parent = player;
+        this.maxCost = maxCost;
+        this.size = size;
+        this.site = new Scp[size];
+    }
 
     @Override
     public Player getPlayer() {
@@ -391,4 +398,21 @@ public class Site implements CardHolder {
     public void setMaxCost(int maxCost) {
         this.maxCost = maxCost;
     }
+
+    public int getCost() {
+        int cost = 0;
+        boolean anomalous = false;
+        for (Scp s : site) {
+            if (s != null) {
+                if (!anomalous && (s instanceof Anomalous)) {
+                    anomalous = true;
+                    cost += this.anomalousCost;
+                } else {
+                    cost += s.getCost();
+                }
+            }
+        }
+        return cost;
+    }
+
 }

@@ -25,12 +25,13 @@ public class ResultBuilder {
     private boolean targetPlayer;
     private String action;
 
-    public ResultBuilder(final boolean subjectPlayer, final Zone subjectZone, final Card subject, final String subjectName, final int subjectCoordinate) {
+    public ResultBuilder(final String action, final boolean subjectPlayer, final Zone subjectZone, final Card subject, final String subjectName, final int subjectCoordinate) {
         this.subjectPlayer = subjectPlayer;
         this.subjectZone = subjectZone;
         this.subject = subject;
         this.subjectName = subjectName;
         this.subjectCoordinate = subjectCoordinate;
+        this.action = action;
     }
 
     public ResultBuilder setObjects(final boolean objectPlayer, final Zone objectZone, final Card object, final String objectName, final int objectCoordinate) {

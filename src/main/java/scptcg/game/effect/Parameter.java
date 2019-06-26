@@ -78,4 +78,5 @@ public class Parameter {
     public void setTrigger(Trigger trigger) {
         this.trigger = trigger;
     }
+
 }

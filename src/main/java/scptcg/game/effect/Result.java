@@ -120,11 +120,16 @@ public class Result {
         return coordinate;
     }
 
-    public boolean isTargetPlayer() {
+    public boolean getTargetPlayer() {
         return targetPlayer;
     }
 
     public boolean isObjectPlayerIsOne() {
         return objectPlayerIsOne;
     }
+
+    public String getAction() {
+        return action;
+    }
+
 }
