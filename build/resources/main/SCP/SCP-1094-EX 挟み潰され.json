@@ -1,0 +1,19 @@
+{
+  "type": "SCP",
+  "name": "SCP-1094-EX 挟み潰され",
+  "cost": 2,
+  "secure": 5,
+  "canAttack": true,
+  "canPartner": true,
+  "canAttackNumber": 1,
+  "clazz": "Explained",
+  "containmentClass": "Euclid",
+  "subClazz": [
+    "Unclassed"
+  ],
+  "tag": [
+    "scp",
+    "地球外",
+    "惑星"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "SCP",
+  "name": "SCP-1522 夜の海ゆく船たちは",
+  "cost": 2,
+  "secure": 3,
+  "canAttack": true,
+  "canPartner": true,
+  "canAttackNumber": 2,
+  "clazz": "Neutralized",
+  "containmentClass": "Euclid",
+  "tag": [
+    "scp",
+    "パングロス",
+    "世界オカルト連合",
+    "乗り物",
+    "水棲",
+    "知性",
+    "自律",
+    "自我"
+  ]
+}

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "CardMaker", "CardMaker.njsproj", "{8DF80C07-6464-4A70-BB74-92EB819FD88D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Node.js = Debug|Node.js
+		Electron|Any CPU = Electron|Any CPU
+		Electron|Node.js = Electron|Node.js
+		Release|Any CPU = Release|Any CPU
+		Release|Node.js = Release|Node.js
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Debug|Node.js.ActiveCfg = Debug|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Debug|Node.js.Build.0 = Debug|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Electron|Any CPU.ActiveCfg = Electron|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Electron|Any CPU.Build.0 = Electron|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Electron|Node.js.ActiveCfg = Electron|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Electron|Node.js.Build.0 = Electron|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Release|Node.js.ActiveCfg = Release|Any CPU
+		{8DF80C07-6464-4A70-BB74-92EB819FD88D}.Release|Node.js.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC4F13F4-0313-47FA-A9F7-094381BC34BA}
+	EndGlobalSection
+EndGlobal

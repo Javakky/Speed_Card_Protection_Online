@@ -1,0 +1,17 @@
+{
+  "name": "card-maker",
+  "version": "0.0.0",
+  "description": "CardMaker",
+  "main": "main.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "app": "^0.1.0",
+    "electron": "^5.0.6",
+    "util": "^0.12.0"
+  }
+}

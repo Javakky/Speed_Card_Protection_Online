@@ -1,0 +1,155 @@
+場所：サイトとかTalesとかの大まかな分類
+座標：具体的な番号
+
+Login
+	name[0]:デッキ名 DeckName
+getMyDeck GetMyDeck
+	ObjectClass:取得するデッキのクラス
+selectPertner SelectPertner
+	name[0]:カード名 CardName
+	place[0]:パートナーをだす座標 Coordinate
+crossTest CrossTest
+	place[0]:攻撃するSCPの座標 Coordinate
+	place[1]:ダメージを与えるサンドボックス SandBox
+damage Damage
+	place[0]:ダメージを与えるサンドボックス SandBox
+	name[0]:ダメージの点数 Point
+canAttack CanAttack
+	place[0]:攻撃可能か調べたいSCPの座標 Coordinate
+breach Breach
+	place[0]:SCPを収容違反する座標 Coordinate
+getEffect GetEffect
+	name[0]:効果を発動する場所 Zone
+	place[0]:効果を発動する座標 Coordinate
+getDecommissioned GetDecommissioned
+getCanPartners GetCanPartners
+getEmptySite GetEmptySite
+turnEnd TurnEnd
+getPersonnel GetPersonnel
+	new!:Personnelを知りたいプレイヤー Player
+getTale GetTale
+getCost GetSumSiteCost
+	new!:サイトの合計コストをしりたいプレイヤー Player
+getSandBoxNumber GetSandBoxProtection
+activeEffect ActiveEffect
+	place[0]:発動したい効果のカード内の番号 Index
+decommission Decommission
+	name[0]:破壊するカードの場所 Zone
+	place[0]:破壊するカードの座標 Coordinate
+HealSandBox
+	name[1]:回復するプレイヤー Player
+	place[0]:回復するサンドボックス SandBox
+	name[2]:回復する点数 Point
+DamageSandBox
+	name[1]:ダメージを受けるプレイヤー Player
+	place[0]:ダメージを受けるサンドボックス SandBox
+	name[2]:ダメージを受ける点数 Point
+getCardParam GetCardParameter
+	name[0]:カードの場所 Zone
+	place[0]:カードの座標 Coordinate
+selectEffect SelectEffect
+	place:効果の発動順(配列で) Order
+
+GetSCPCount
+	Player
+	Zone
+
+
+
+
+
+
+
+Breach 
+	召喚先を選ぶプレイヤー番号 Player
+
+breachWait Wait
+breaching SelectBreach
+	カード名 CardName
+breach ViewBreach
+	カード名 CardName
+	座標 Coordinate
+	プレイヤー番号 Player
+selectEffect SelectEffect
+	順序待ちカードの名前(カンマ区切りで複数) CardName
+	順序待ちカードの場所(カンマ区切りで複数) Zone
+healSandBox
+HealSandBox
+DamageSandBox
+	ライフが変動するプレイヤー Player
+	打点 Point
+	回数 Count
+	同じサンドボックスを選択できるかどうか BeAbleTo
+damage Damage
+	プレイヤー番号 Player
+	打点 Point
+	攻撃したSCPの座標 Coordinate
+	サンドボックス SandBox
+activeTale ActiveTale
+	プレイヤー番号 Player
+	カード名 CardName
+	座標 Coordinate
+Select
+	選択したいカードを持っているプレイヤー Player
+	選択するカードのある場所 Zone
+	選択できる座標(カンマ区切りで複数) Coordinate
+ReContainment
+	再収容するカードのプレイヤー Player
+	再収容するカードの場所 Zone[0]
+	再収容するカードの座標 Coordinate[0]
+	再収容するカードの行先(場所) Zone[1]
+	再収容するカードの行先(座標) Coordinate[1]
+	再収容するカード名 CardName
+Decommission
+	プレイヤー Player
+	場所 Zone
+	座標 Coordinate
+	カード名 CardName
+K-Class-Scenario
+	シナリオ Scenario
+	プレイヤー Player
+getCardParam GetCardParameter
+	プレイヤー Player
+	座標 Coordinate
+	コスト Cost
+	確保力 Secure
+getMyDeck GetMyDeck
+	カード名(改行区切りで複数) CardName
+getDecommissioned GetDecommissioned
+	カード名(改行区切りで複数) CardName
+getCanPartners GetCanPartners
+	カード名(改行区切りで複数) CardName
+selectPartner BreachPartner
+	カード名 CardName
+	座標 Coordinate
+	出した人かどうか Player
+getEmptySite GetEmptySite
+	空いてる座標の数 いらない
+	空いてる座標(改行区切りで複数) Coordinate
+canAttack CanAttack
+	殴れるかどうか BeAbleTo
+turnEnd TurnEnd
+	ターンプレイヤー(int) Player
+getPersonnel GetPersonnel
+	自分の人事ファイル いらない
+	相手の人事ファイル いらない
+	new! 人事ファイル CardName
+getTale GetTale
+	カード名(改行区切りで複数) CardName
+getCost GetSumSiteCost
+	自分の合計コスト いらない
+	相手の合計コスト いらない
+	new! 合計コスト Cost
+getSiteNumber GetSCPCount
+	サイトのSCPの数 Count
+	対象の場所 Zone
+getSandBoxNumber GetSandBoxProtection
+	プレイヤー番号 Player
+	Safeのライフ Point[0]
+	Euclidのライフ Point[1]
+	Keterのライフ Point[2]
+getEffect GetEffectCount
+	カード内の効果の数 Count
+failEffect Impossible
+isFirst IsFirst
+	先攻かどうか BeAbleTo
