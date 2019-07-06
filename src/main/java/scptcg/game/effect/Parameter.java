@@ -1,6 +1,5 @@
 package scptcg.game.effect;
 
-import scptcg.game.ConditionParameter;
 import scptcg.game.Zone;
 import scptcg.game.card.Clazz;
 
@@ -16,8 +15,9 @@ public class Parameter {
     private ConditionParameter[] condition;
     private String[] subTags;
     private Effect subEffect;
-    private Clazz targetClazz;
-    private Trigger trigger;
+    private String targetClazz;
+    private String trigger;
+    private boolean isThis;
 
     public String getTargetPlayer() {
         return targetPlayer;
@@ -64,19 +64,22 @@ public class Parameter {
     }
 
     public Clazz getTargetClazz() {
-        return targetClazz;
+        return Clazz.valueOf(targetClazz);
     }
 
     public void setTargetClazz(Clazz targetClazz) {
-        this.targetClazz = targetClazz;
+        this.targetClazz = targetClazz.name();
     }
 
     public Trigger getTrigger() {
-        return trigger;
+        return Trigger.valueOf(trigger);
     }
 
     public void setTrigger(Trigger trigger) {
-        this.trigger = trigger;
+        this.trigger = trigger.name();
     }
 
+    public boolean isThis() {
+        return isThis;
+    }
 }

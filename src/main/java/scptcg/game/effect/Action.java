@@ -95,6 +95,7 @@ public class Action extends AbstractAction {
 
     private void optionalActive() {
         tmpResult.setIsComplete(false);
+        tmpResult.setMessage(getParent().getMessage());
     }
 
     private void reContainment() {
@@ -200,7 +201,7 @@ public class Action extends AbstractAction {
         add((Object[] effect_trigger) -> zone -> player -> index -> {
             Effect effect = (Effect) effect_trigger[0];
             Trigger trigger = (Trigger) effect_trigger[1];
-            player.addEffect(zone, index, effect, trigger);
+            player.addEffect(getParameter().getTargetZone(), index, effect, trigger);
             return null;
         }, new Object[]{getParameter().getSubEffect(), getParameter().getTrigger()});
     }
@@ -229,6 +230,7 @@ public class Action extends AbstractAction {
         getTargetPlayer(player);
         tmpResult.setTargetPlayer(player.get(0).isFirst());
         tmpResult.setIsComplete(false);
+        tmpResult.setCount(p.getCount());
     }
 
     private void select() {
@@ -249,7 +251,15 @@ public class Action extends AbstractAction {
     }
 
     private void decommission() {
-        getPlayer().decommission(getParameter().getTargetZone(), getCard());
+        if (getParameter().isThis()) {
+            getPlayer().decommission(getCard().whereZone(), getCard());
+        } else {
+            switch (getParameter().getTargetZone()) {
+                case PersonnelFile:
+                    getPlayer().decommission(Zone.PersonnelFile, null);
+                    break;
+            }
+        }
         tmpResult.objectEqualSubject();
         tmpResult.setIsComplete(true);
     }

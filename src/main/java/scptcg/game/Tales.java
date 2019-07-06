@@ -5,6 +5,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Tale;
+import scptcg.game.effect.ConditionParameter;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
 

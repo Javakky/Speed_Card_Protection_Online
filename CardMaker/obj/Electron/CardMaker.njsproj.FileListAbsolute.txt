@@ -1,2 +1,0 @@
-C:\Users\mi161303\Documents\JetBrains\SCP\CardMaker\obj\Electron\CardMaker.njsprojAssemblyReference.cache
-C:\Users\mi161303\Documents\JetBrains\SCP\CardMaker\obj\Electron\CardMaker.njsproj.CoreCompileInputs.cache

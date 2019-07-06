@@ -1,0 +1,62 @@
+{
+  "category": "",
+  "name": "",
+  "canDecommission": true,
+  "cost": 0,
+  "secure": 0,
+  "clazz": "",
+  "subClazz": [],
+  "containmentClass": "Safe",
+  "tag": [],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "CrossTest": [
+        {
+          "message": "",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "",
+                "nextAction": "",
+                "overlap": true,
+                "count": 0,
+                "point": 0,
+                "isThere": true,
+                "reference": "Point",
+                "condition": [
+                  {
+                    "name": "",
+                    "point": 0
+                  }
+                ],
+                "subTags": [],
+                "subEffect": {},
+                "targetClazz": "",
+                "trigger": ""
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "",
+              "parameter": {
+              }
+            }
+          ]
+        }
+      ],
+      "Sometime": [],
+      "Decommissioned": [],
+      "Breached": [],
+      "TurnStart": [],
+      "TurnEnd": []
+    }
+  }
+}

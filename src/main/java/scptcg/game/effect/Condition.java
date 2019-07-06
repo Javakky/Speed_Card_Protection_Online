@@ -83,7 +83,7 @@ public class Condition extends AbstractAction {
 
     private boolean secureNonZero() {
         if (!(getCard() instanceof Scp)) return false;
-        return ((Scp) getCard()).getSecure() == 0;
+        return ((Scp) getCard()).getSecure() != 0;
     }
 
     private boolean hasPersonnel(final Player player) {

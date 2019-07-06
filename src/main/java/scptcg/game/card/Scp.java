@@ -81,7 +81,7 @@ public class Scp extends Card {
     public Clazz getContainmentClass() {
         try {
             return Clazz.valueOf(containmentClass);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return getClazz();
         }
     }

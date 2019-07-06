@@ -25,10 +25,10 @@ public class OrganizeResource {
         for (File dir : abs.listFiles()) {
             if (dir.isDirectory()) {
                 switch (dir.getName()) {
-                    case "trash/Personnel":
+                    case "Personnel":
                         deck.Personnel = getFileNames(dir);
                         break;
-                    case "trash/Tale":
+                    case "Tale":
                         deck.Tale = getFileNames(dir);
                         break;
                     case "Exclusion":
@@ -40,7 +40,7 @@ public class OrganizeResource {
                     case "Anomalous":
                         deck.Anomalous = getFileNames(dir);
                         break;
-                    case "trash/SCP":
+                    case "SCP":
                         List<String> keter = new LinkedList<>();
                         List<String> euclid = new LinkedList<>();
                         List<String> safe = new LinkedList<>();

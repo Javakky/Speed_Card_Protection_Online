@@ -5,6 +5,7 @@ import scptcg.game.card.Canon;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Personnel;
+import scptcg.game.effect.ConditionParameter;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
 
@@ -36,9 +37,7 @@ public class PersonnelFile implements CardHolder {
 
     @Override
     public void deleteCard(Card card) {
-        if (card == personnel) {
-            deleteCard();
-        }
+        deleteCard();
     }
 
     @Override

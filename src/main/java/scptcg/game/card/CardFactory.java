@@ -3,6 +3,7 @@ package scptcg.game.card;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CardFactory {
@@ -51,17 +52,16 @@ public class CardFactory {
         StringBuilder sb = new StringBuilder();
         Scanner s = null;
         try {
-            s =
-                    new Scanner(
-                            CardFactory.class.getResource(
-                                    "/" + path + "/" + name + ".json"
-                            ).openStream());
+            s = new Scanner(
+                    CardFactory.class.getResource(
+                            "/" + path + "/" + name + ".json"
+                    ).openStream());
         } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println("/" + path + "/" + name);
         }
 
-        while (s.hasNextLine()) {
+        while (Objects.requireNonNull(s).hasNextLine()) {
             sb.append(s.nextLine());
         }
         s.close();

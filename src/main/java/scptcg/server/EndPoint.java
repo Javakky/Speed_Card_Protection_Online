@@ -21,7 +21,6 @@ import java.util.*;
 
 import static jooq.tables.Deck.*;
 import static scptcg.server.DeckMakeServlet.*;
-import static scptcg.server.SendFormatter.*;
 
 @ServerEndpoint("/ws")
 public final class EndPoint {
@@ -142,230 +141,318 @@ public final class EndPoint {
         String[] name = new String[]{data.PlayerName, game.getEnemyName(data.PlayerName)};
         switch (Events.valueOf(event)) {
             case IsFirst:
-                send(name, isFirst(data.PlayerName, game.isFirst(data.PlayerName)));
+                isFirst(data, game, name);
                 break;
 
             case GetPartnerables:
-                send(name, getPartnerables(data.Player, game.getPartnerables(data.Player)));
+                getPartnerable(data, game, name);
                 break;
 
-            case SelectPartner: {
-                Scp scp = game.breachPartner(data.Player, data.CardName[0], data.Coordinate[0][0]);
-                send(name, selectPartner(data.Coordinate[0][0], scp));
-                send(name, getCardParameter(data.Player, data.Coordinate[0][0], scp));
+            case SelectPartner:
+                selectPartner(data, game, name);
                 break;
-            }
 
             case GetEmptySite:
-                send(name, getEmptysite(data.Player, game.getEmptySite(data.Player)));
+                getEmptySite(data, game, name);
                 break;
 
-            case CrossTest: {
-                List<Scp> breach = new ArrayList<>();
-                int point = game.crossTest(data.Player, data.Coordinate[0][0], Clazz.valueOf(data.SandBox), breach);
-                Scp wait = breach.get(0);
-                send(name, damage(!data.Player,
-                        data.SandBox,
-                        point,
-                        data.Coordinate[0][0]));
-
-                if (wait != null) {
-                    send(name, startBreach(wait, false));
-                }
-
-                if (game.isK()) {
-                    send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-                }
+            case GetRemainSandBox:
+                getRemainSandBox(data, game, name);
                 break;
-            }
+
+            case CrossTest:
+                crossTest(data, game, name);
+                break;
 
             case WhetherActive:
-                if (data.BeAbleTo) {
-                    List<Result> result = new ArrayList<>();
-                    game.activeEffect(null, result);
-                    sendEffectResult(game, data, result.toArray(new Result[0]));
-                } else {
-                    game.cancelEffect();
-                }
+                whetherActive(data, game);
                 break;
 
-            case Damage: {
-                if (data.Coordinate[0].length <= 0) {
-                    data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
-                } else {
-                    data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-                }
-                data.Point = new int[]{Integer.parseInt(data.CardName[0])};
-                List<Scp> scp = new ArrayList<>();
-                int damage = data.Point[0];
-                game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
-                Scp wait = scp.get(0);
-                send(name, damage(data.Player,
-                        data.SandBox,
-                        damage,
-                        -1));
-
-                if (wait != null) {
-                    send(name, startBreach(wait, true));
-                }
-
-                if (game.isK()) {
-                    send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-                }
-
+            case Damage:
+                damage(data, game, name);
                 break;
-            }
 
             case CanCrossTest:
-                send(name, canCrossTest(data.Player, data.Coordinate[0][0], game.canCrossTest(data.Player, data.Coordinate[0][0])));
+                canCrossTest(data, game, name);
                 break;
 
             case Breach: {
-                Scp scp = game.breach(data.Player, data.CardName[0], Clazz.valueOf(data.SandBox), data.Coordinate[0][0]);
-
-                send(name, breach(data.Player, data.Coordinate[0][0], scp));
-
-                if (game.isK()) {
-                    send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-                }
-
-                send(name, getCardParameter(data.Player, data.Coordinate[0][0], scp));
-
-                int me = game.getSumSiteCost(data.Player);
-                send(name, getSumSiteCost(data.Player, me));
-                int enemy = game.getSumSiteCost(!data.Player);
-                send(name, getSumSiteCost(!data.Player, enemy));
+                breach(data, game, name);
                 break;
             }
 
             case TurnEnd:
-                game.nextTurn();
-                send(name, turnEnd(data.Player));
+                turnEnd(data, game, name);
                 break;
 
             case GetPersonnel:
-                send(name, getPersonnel(data.Player, data.BeAbleTo, (Personnel) game.getCards(data.Player, Zone.PersonnelFile)[0]));
+                getPersonnel(data, game, name);
                 break;
 
             case GetTale:
-                send(name, getTale(data.Player, (Tale[]) game.getCards(data.Player, Zone.Tales)));
+                getTale(data, game, name);
                 break;
 
             case GetSumSiteCost:
-                send(name, getSumSiteCost(data.Player, game.getSumSiteCost(data.Player)));
+                getSumSiteCost(name, data.Player, game.getSumSiteCost(data.Player));
                 break;
 
             case GetSCPCount:
-                switch (Zone.valueOf(data.Zone[0])) {
-                    case Site:
-                        send(name, getSiteNumber(data.Player, game.getSCPCount(data.Player)));
-                        break;
-                }
+                getSCPCount(data, game, name);
                 break;
 
             case GetSandBoxProtection:
-                send(name, getSandBoxNumber(data.Player, game.getSandBoxProtection(data.Player)));
+                getSandBoxProtection(data, game, name);
                 break;
 /*
             case GET_COST:
                 send(name, getCost(data.Player, game));
                 break;*/
 
-            case GetEffect: {
-                int len = game.effectSize(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
-                send(name, getEffect(len));
+            case GetEffect:
+                getEffect(data, game, name);
                 break;
-            }
 
-            case ActiveEffect: {
-
-                if (Zone.valueOf(data.SandBox) == Zone.Tales) {
-                    send(name, activeTale(data.Player, game.getCard(data.Player, Zone.valueOf(data.SandBox), data.Coordinate[0][0]).getName(), data.Coordinate[0][0]));
-                }
-
-                List<Result> result = new ArrayList<>();
-                game.selectEffect(data.Player, Zone.valueOf(data.SandBox), data.Coordinate[0][0], data.Coordinate[0][1], result);
-                sendEffectResult(game, data, result.toArray(new Result[0]));
+            case ActiveEffect:
+                activeEffect(data, game, name);
                 break;
-            }
-            case Decommission: {
-                data.Zone = new String[]{data.CardName[0]};
-                data.Player = data.CardName[1].equals("True");
-                Card card;
-                int[] coord;
-                boolean p;
-                if (data.Coordinate[0].length <= 0) {
-                    coord = data.Coordinate[1];
-                    p = data.Player;
-                } else {
-                    coord = data.Coordinate[0];
-                    p = !data.Player;
-                }
-                card = game.decommission(p, Zone.valueOf(data.Zone[0]), coord[0]);
-                send(name, decommission(p, data.Zone[0], coord[0], card, false));
-                int me = game.getSumSiteCost(data.Player);
-                send(name, getSumSiteCost(data.Player, me));
-                int enemy = game.getSumSiteCost(!data.Player);
-                send(name, getSumSiteCost(!data.Player, enemy));
+
+            case Decommission:
+                decommission(data, game, name);
                 break;
-            }
 
-            case HealSandBox: {
-                if (data.Coordinate[0].length <= 0) {
-                    data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
-                } else {
-                    data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-                }
-                boolean me = data.Player;
-                if (!data.CardName[0].equals("True")) {
-                    data.Player = !data.Player;
-                }
-                data.Point = new int[]{Integer.parseInt(data.CardName[1])};
-                int point = data.Point[0];
-                game.healSandBox(data.Player, Clazz.valueOf(data.SandBox), data.Point[0]);
-                send(name, heal(data.Player, data.SandBox, point));
+            case HealSandBox:
+                healSandBox(data, game, name);
                 break;
-            }
 
-            case DamageSandBox: {
-                data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-                boolean me = data.Player;
-                if (!data.CardName[0].equals("True")) {
-                    data.Player = !data.Player;
-                }
-                data.Point = new int[]{Integer.parseInt(data.CardName[1])};
-                List<Scp> scp = new ArrayList<>();
-                int point = data.Point[0];
-                game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
-                send(name, damage(data.Player, data.SandBox, data.Point[0], -1));
-
-                if (scp.get(0) != null) {
-                    send(name, startBreach(scp.get(0), data.Player == me));
-                }
-
-                if (game.isK()) {
-                    send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-                }
+            case DamageSandBox:
+                damageSandBox(data, game, name);
 
                 break;
-            }
 
-            case GetCardParameters: {
-                Scp scp = (Scp) game.getCard(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
-                send(name, getCardParameter(data.Player, data.Coordinate[0][0], scp));
+            case GetCardParameters:
+                getCardParameters(data, game, name);
                 break;
-            }
 
             case SelectEffect:
-                game.sortEffect(data.Order);
+                selectEffect(data, game);
                 break;
 
         }
 
         if (game.isK()) {
-            send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
         }
 
+    }
+
+    private void isFirst(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.isFirst(data.PlayerName, game.isFirst(data.PlayerName)));
+    }
+
+    private void getPartnerable(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getPartnerables(data.Player, game.getPartnerables(data.Player)));
+    }
+
+    private void selectPartner(Data data, Game game, String[] name) throws IOException {
+        Scp scp = game.breachPartner(data.Player, data.CardName[0], data.Coordinate[0][0]);
+        send(name, SendFormatter.selectPartner(data.Coordinate[0][0], scp));
+        send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
+    }
+
+    private void getEmptySite(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getEmptysite(data.Player, game.getEmptySite(data.Player)));
+    }
+
+    private void getRemainSandBox(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getSandBoxNumber(data.Player, game.getRemainSandBox(data.Player, Clazz.Safe),
+                game.getRemainSandBox(data.Player, Clazz.Euclid),
+                game.getRemainSandBox(data.Player, Clazz.Keter)));
+    }
+
+    private void crossTest(Data data, Game game, String[] name) throws IOException {
+        List<Scp> breach = new ArrayList<>();
+        int point = game.crossTest(data.Player, data.Coordinate[0][0], Clazz.valueOf(data.SandBox), breach);
+        Scp wait = breach.get(0);
+        send(name, SendFormatter.damage(!data.Player,
+                data.SandBox,
+                point,
+                data.Coordinate[0][0]));
+
+        if (wait != null) {
+            send(name, SendFormatter.startBreach(wait, false));
+        }
+
+        if (game.isK()) {
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+        }
+    }
+
+    private void whetherActive(Data data, Game game) throws IOException {
+        if (data.BeAbleTo) {
+            List<Result> result = new ArrayList<>();
+            game.activeEffect(null, result);
+            sendEffectResult(game, data, result.toArray(new Result[0]));
+        } else {
+            game.cancelEffect();
+        }
+    }
+
+    private void damage(Data data, Game game, String[] name) throws IOException {
+        if (data.Coordinate[0].length <= 0) {
+            data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
+        } else {
+            data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
+        }
+        data.Point = new int[]{Integer.parseInt(data.CardName[0])};
+        List<Scp> scp = new ArrayList<>();
+        int damage = data.Point[0];
+        game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
+        Scp wait = scp.get(0);
+        send(name, SendFormatter.damage(data.Player,
+                data.SandBox,
+                damage,
+                -1));
+
+        if (wait != null) {
+            send(name, SendFormatter.startBreach(wait, true));
+        }
+
+        if (game.isK()) {
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+        }
+    }
+
+    private void canCrossTest(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.canCrossTest(data.Player, data.Coordinate[0][0], game.canCrossTest(data.Player, data.Coordinate[0][0])));
+    }
+
+    private void breach(Data data, Game game, String[] name) throws IOException {
+        Scp scp = game.breach(data.Player, data.CardName[0], Clazz.valueOf(data.SandBox), data.Coordinate[0][0]);
+
+        send(name, SendFormatter.breach(data.Player, data.Coordinate[0][0], scp));
+
+        if (game.isK()) {
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+        }
+
+        send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
+
+        int me = game.getSumSiteCost(data.Player);
+        getSumSiteCost(name, data.Player, me);
+        int enemy = game.getSumSiteCost(!data.Player);
+        getSumSiteCost(name, !data.Player, enemy);
+    }
+
+    private void turnEnd(Data data, Game game, String[] name) throws IOException {
+        game.nextTurn();
+        send(name, SendFormatter.turnEnd(data.Player));
+    }
+
+    private void getPersonnel(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getPersonnel(data.Player, data.BeAbleTo, (Personnel) game.getCards(data.Player, Zone.PersonnelFile)[0]));
+    }
+
+    private void getTale(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getTale(data.Player, (Tale[]) game.getCards(data.Player, Zone.Tales)));
+    }
+
+    private void getSumSiteCost(String[] name, boolean player, int sumSiteCost) throws IOException {
+        send(name, SendFormatter.getSumSiteCost(player, sumSiteCost));
+    }
+
+    private void getSCPCount(Data data, Game game, String[] name) throws IOException {
+        switch (Zone.valueOf(data.Zone[0])) {
+            case Site:
+                send(name, SendFormatter.getSiteNumber(data.Player, game.getSCPCount(data.Player)));
+                break;
+        }
+    }
+
+    private void getSandBoxProtection(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getSandBoxNumber(data.Player, game.getSandBoxProtection(data.Player)));
+    }
+
+    private void getEffect(Data data, Game game, String[] name) throws IOException {
+        int len = game.effectSize(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
+        send(name, SendFormatter.getEffect(data.Zone[0], data.Coordinate[0][0], len));
+    }
+
+    private void activeEffect(Data data, Game game, String[] name) throws IOException {
+        if (Zone.valueOf(data.Zone[0]) == Zone.Tales) {
+            send(name, SendFormatter.activeTale(data.Player, game.getCard(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]).getName(), data.Coordinate[0][0]));
+        }
+
+        List<Result> result = new ArrayList<>();
+        game.selectEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0], data.Coordinate[0][1], result);
+        sendEffectResult(game, data, result.toArray(new Result[0]));
+    }
+
+    private void decommission(Data data, Game game, String[] name) throws IOException {
+        data.Zone = new String[]{data.CardName[0]};
+        data.Player = data.CardName[1].equals("True");
+        Card card;
+        int[] coord;
+        boolean p;
+        if (data.Coordinate[0].length <= 0) {
+            coord = data.Coordinate[1];
+            p = data.Player;
+        } else {
+            coord = data.Coordinate[0];
+            p = !data.Player;
+        }
+        card = game.decommission(p, Zone.valueOf(data.Zone[0]), coord[0]);
+        send(name, SendFormatter.decommission(p, data.Zone[0], coord[0], card, false));
+        int me = game.getSumSiteCost(data.Player);
+        getSumSiteCost(name, data.Player, me);
+        int enemy = game.getSumSiteCost(!data.Player);
+        getSumSiteCost(name, !data.Player, enemy);
+    }
+
+    private void healSandBox(Data data, Game game, String[] name) throws IOException {
+        if (data.Coordinate[0].length <= 0) {
+            data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
+        } else {
+            data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
+        }
+        boolean me = data.Player;
+        if (!data.CardName[0].equals("True")) {
+            data.Player = !data.Player;
+        }
+        data.Point = new int[]{Integer.parseInt(data.CardName[1])};
+        int point = data.Point[0];
+        game.healSandBox(data.Player, Clazz.valueOf(data.SandBox), data.Point[0]);
+        send(name, SendFormatter.heal(data.Player, data.SandBox, point));
+    }
+
+    private void damageSandBox(Data data, Game game, String[] name) throws IOException {
+        data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
+        boolean me = data.Player;
+        if (!data.CardName[0].equals("True")) {
+            data.Player = !data.Player;
+        }
+        data.Point = new int[]{Integer.parseInt(data.CardName[1])};
+        List<Scp> scp = new ArrayList<>();
+        int point = data.Point[0];
+        game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
+        send(name, SendFormatter.damage(data.Player, data.SandBox, data.Point[0], -1));
+
+        if (scp.get(0) != null) {
+            send(name, SendFormatter.startBreach(scp.get(0), data.Player == me));
+        }
+
+        if (game.isK()) {
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+        }
+    }
+
+    private void getCardParameters(Data data, Game game, String[] name) throws IOException {
+        Scp scp = (Scp) game.getCard(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
+        send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
+    }
+
+    private void selectEffect(Data data, Game game) {
+        game.sortEffect(data.Order);
     }
 
     private void send(String[] name, List<Pair<String, String>> list) throws IOException {
@@ -421,12 +508,12 @@ public final class EndPoint {
         String[] name = new String[]{data.PlayerName, game.getEnemyName(data.PlayerName)};
         for (Result r : st) {
             if (r == null) {
-                send(name, failEffect());
+                send(name, SendFormatter.failEffect());
                 continue;
             }
             switch (ActionMethod.valueOf(r.getAction())) {
                 case Decommission:
-                    send(name, decommission(
+                    send(name, SendFormatter.decommission(
                             r.getSubjectPlayer(),
                             r.getObjectZone()[0][0].name(),
                             r.getCoordinate()[0][0],
@@ -434,13 +521,13 @@ public final class EndPoint {
                             false
                     ));
                     int me = game.getSumSiteCost(data.Player);
-                    send(name, getSumSiteCost(data.Player, me));
+                    getSumSiteCost(name, data.Player, me);
                     int enemy = game.getSumSiteCost(!data.Player);
-                    send(name, getSumSiteCost(!data.Player, enemy));
+                    getSumSiteCost(name, !data.Player, enemy);
                     break;
 
                 case ReContainment:
-                    send(name, reContainment(
+                    send(name, SendFormatter.reContainment(
                             r.getSubjectPlayer(),
                             r.getSubject(),
                             r.getSubjectZone(),
@@ -449,25 +536,25 @@ public final class EndPoint {
                             r.getCoordinate()[0][0]
                     ));
                     me = game.getSumSiteCost(data.Player);
-                    send(name, getSumSiteCost(data.Player, me));
+                    getSumSiteCost(name, data.Player, me);
                     enemy = game.getSumSiteCost(!data.Player);
-                    send(name, getSumSiteCost(!data.Player, enemy));
+                    getSumSiteCost(name, !data.Player, enemy);
                     break;
 
                 case K_Class:
                     if (game.isK()) {
-                        send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+                        send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
                     }
                     break;
 
                 case Select:
-                    send(name, select(r.getTargetPlayer(), r.getNextAction(), r.getObjectZone()[0][0].name(), r.getCoordinate(), r.isComplete()));
+                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getObjectZone()[0][0].name(), r.getCoordinate(), r.isComplete()));
                     break;
 
                 case HealSandBox:
                 case DamageSandBox:
                     send(name,
-                            changeProtectionEffect(
+                            SendFormatter.changeProtectionEffect(
                                     r.getTargetPlayer(),
                                     r.getAction(),
                                     r.getPoint(),
@@ -476,8 +563,11 @@ public final class EndPoint {
                     break;
 
                 case MinusSecure:
-                    send(name, getCardParameter(r.getSubjectPlayer(), r.getSubjectCoordinate(), (Scp) r.getSubject()));
+                    send(name, SendFormatter.getCardParameter(r.getSubjectPlayer(), r.getSubjectCoordinate(), (Scp) r.getSubject()));
                     break;
+
+                case Optional:
+                    send(name, SendFormatter.optional(r.getSubjectPlayer(), r.getSubjectName(), r.getMessage()));
 
                 default:
                     break;
@@ -485,7 +575,7 @@ public final class EndPoint {
         }
 
         if (game.isK()) {
-            send(name, K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
         }
 
         return list;

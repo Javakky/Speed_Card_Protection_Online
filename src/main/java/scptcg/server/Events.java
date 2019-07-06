@@ -39,5 +39,7 @@ public enum Events {
     Heal,
     WhetherActive,
     Active,
-    SortEffect
+    SortEffect,
+    GetRemainSandBox,
+    Optional
 }

@@ -78,6 +78,10 @@ public class Game {
         return turn;
     }
 
+    public int getRemainSandBox(boolean isFirst, Clazz clazz) {
+        return getPlayer(isFirst).getRemainSandBox(clazz);
+    }
+
     public void selectEffect(boolean isFirst, Zone zone, int index, int effectIndex, List<Result> result) {
         if (isFirst == turnPlayer) {
             Effect effect = getPlayer(isFirst).getEffect(zone, index, Trigger.Sometime, effectIndex);
@@ -225,7 +229,7 @@ public class Game {
     public int crossTest(boolean isFirst, int testerIndex, Clazz sandBox, List<Scp> breached) {
         Player p = getPlayer(isFirst);
         int point = p.crossTest(testerIndex);
-        p.getEffects(Zone.Site, testerIndex, Trigger.CrossTest);
+        addWaitEffects(p.getEffects(Zone.Site, testerIndex, Trigger.CrossTest));
         damage(!isFirst, sandBox, point, breached);
 
         return point;
@@ -291,7 +295,21 @@ public class Game {
     }
 
     public Scp breach(boolean player, String name, Clazz clazz, int index) {
+        addWaitEffects(getPlayer(player).getCard(clazzToZone(clazz), index).getEffects(Trigger.Breached));
         return getPlayer(player).breach(name, clazz, index);
+    }
+
+    private Zone clazzToZone(Clazz clazz) {
+        switch (clazz) {
+            case Safe:
+                return Zone.SafeSandbox;
+            case Euclid:
+                return Zone.EuclidSandbox;
+            case Keter:
+                return Zone.KeterSandbox;
+            default:
+                return null;
+        }
     }
 
     public int getSCPCount(boolean player) {

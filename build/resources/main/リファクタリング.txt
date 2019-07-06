@@ -14,7 +14,7 @@ crossTest CrossTest
 damage Damage
 	place[0]:ダメージを与えるサンドボックス SandBox
 	name[0]:ダメージの点数 Point
-canAttack CanAttack
+crossTestable CanAttack
 	place[0]:攻撃可能か調べたいSCPの座標 Coordinate
 breach Breach
 	place[0]:SCPを収容違反する座標 Coordinate
@@ -126,7 +126,7 @@ selectPartner BreachPartner
 getEmptySite GetEmptySite
 	空いてる座標の数 いらない
 	空いてる座標(改行区切りで複数) Coordinate
-canAttack CanAttack
+crossTestable CanAttack
 	殴れるかどうか BeAbleTo
 turnEnd TurnEnd
 	ターンプレイヤー(int) Player

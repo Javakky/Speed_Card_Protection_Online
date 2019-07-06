@@ -222,10 +222,25 @@ public class SendFormatter {
         return getSandBoxNumber(player, sandbox[0], sandbox[1], sandbox[2], ME);
     }
 
-    public static List<Pair<String, String>> getEffect(final int length) {
+
+    public static List<Pair<String, String>> getRemainSandBox(final boolean player, final int safe, int euclid, int keter, int recieve) {
+        Data data = new Data();
+        data.Event = GetRemainSandBox.name();
+        data.Player = player;
+        data.Point = new int[]{safe, euclid, keter};
+        return toList(recieve, data.toJson());
+    }
+
+    public static List<Pair<String, String>> getRemainSandBox(final boolean player, final int... sandbox) {
+        return getSandBoxNumber(player, sandbox[0], sandbox[1], sandbox[2], ME);
+    }
+
+    public static List<Pair<String, String>> getEffect(final String zone, final int index, final int length) {
         Data data = new Data();
         data.Event = GetEffectCount.name();
         data.Count = length;
+        data.Zone = new String[]{zone};
+        data.Coordinate = new int[][]{{index}};
         return toListMe(data.toJson());
     }
 
@@ -309,6 +324,16 @@ public class SendFormatter {
             data.CardName = new String[]{subject.getName()};
         }
         return toListBoth(data.toJson());
+    }
+
+
+    public static List<Pair<String, String>> optional(boolean player, String cardName, String message) {
+        Data data = new Data();
+        data.Event = Optional.name();
+        data.Player = player;
+        data.CardName = new String[]{cardName};
+        data.Text = message;
+        return toListMe(data.toJson());
     }
 
     public static List<Pair<String, String>> decommission(final boolean player, final String place,

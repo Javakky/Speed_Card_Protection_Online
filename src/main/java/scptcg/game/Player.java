@@ -1,6 +1,7 @@
 package scptcg.game;
 
 import scptcg.game.card.*;
+import scptcg.game.effect.ConditionParameter;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
 import scptcg.json.Deck;
@@ -178,8 +179,8 @@ public class Player {
         return result;
     }
 
-    public int getRemainSandBox(Zone zone) {
-        return getArea(zone).getCardCount();
+    public int getRemainSandBox(Clazz clazz) {
+        return getSandBox(clazz).getCardCount();
     }
 
     public Card getCard(Zone zone, int index) {
@@ -200,9 +201,6 @@ public class Player {
 
     public void addEffect(Zone zone, int index, Effect effects, Trigger trigger) {
         getArea(zone).addEffect(index, effects, trigger);
-    }
-
-    public void decommission(Zone targetZone, Card card) {
     }
 
     public int getTurn() {
@@ -293,6 +291,12 @@ public class Player {
         Card c = getArea(zone).pick(index);
         this.decommissioned.addCard(c);
         return c;
+    }
+
+    public Card decommission(Zone zone, Card card) {
+        getArea(zone).deleteCard(card);
+        this.decommissioned.addCard(card);
+        return card;
     }
 
 
