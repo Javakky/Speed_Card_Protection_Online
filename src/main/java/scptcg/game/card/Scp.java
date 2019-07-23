@@ -1,18 +1,19 @@
 package scptcg.game.card;
 
+import scptcg.exception.UnsupportedAnnotationException;
 import scptcg.game.CardHolder;
-import scptcg.game.effect.Effects;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class Scp extends Card {
+public abstract class Scp extends Card {
     private boolean isPartner;
     private int cost;
     private int secure;
     private String clazz;
-    private Set<String> subClazz = new HashSet<>();
+    private Set<Clazz> subClazz = new HashSet<>();
     private String containmentClass;
     private Set<String> tag = new HashSet<>();
     private boolean canPartner = true;
@@ -20,19 +21,69 @@ public class Scp extends Card {
     private int crossTestsCount;
     private int crossTestCount = 0;
 
-    protected Scp(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects, final boolean isPartner, final int cost, final int secure, final String clazz, final Set<String> subClazz, final String containmentClass, final Set<String> tag, final boolean canPartner, final boolean crossTestable, final int crossTestsCount, final int crossTestCount) {
-        super(parent, category, name, canDecommission, effects);
-        this.isPartner = isPartner;
-        this.cost = cost;
-        this.secure = secure;
-        this.clazz = clazz;
-        this.subClazz = subClazz;
-        this.containmentClass = containmentClass;
+    protected Scp(CardHolder parent) {
+        this();
+        setParent(parent);
+    }
+
+    protected Scp() {
+        super(CardCategory.SCP);
+        scptcg.annotation.Scp scp = getClass().getAnnotation(scptcg.annotation.Scp.class);
+        if (Objects.isNull(scp)) {
+            throw new UnsupportedAnnotationException(scptcg.annotation.Scp.class.getName() + "アノテーションのないクラス:" + getClass().getName());
+        }
+        setCost(scp.cost());
+        setSecure(scp.secure());
+        setClazz(scp.clazz());
+        setTags(new HashSet<>(Arrays.asList(scp.tag())));
+
+        scptcg.annotation.SubClazz subClazz = getClass().getAnnotation(scptcg.annotation.SubClazz.class);
+        if (Objects.nonNull(subClazz)) {
+            setSubClazz(new HashSet<>(Arrays.asList(subClazz.value())));
+        } else {
+            setSubClazz(new HashSet<>());
+        }
+
+        scptcg.annotation.ContainmentClass containmentClass = getClass().getAnnotation(scptcg.annotation.ContainmentClass.class);
+        if (Objects.nonNull(containmentClass)) {
+            setContainmentClass(containmentClass.value());
+        } else {
+            setContainmentClass(getClazz());
+        }
+
+        scptcg.annotation.DisablePartner disablePartner = getClass().getAnnotation(scptcg.annotation.DisablePartner.class);
+        if (Objects.nonNull(disablePartner)) {
+            disablePartner();
+        } else {
+            enablePartner();
+        }
+
+        scptcg.annotation.DisableCrossTest disableCrossTest = getClass().getAnnotation(scptcg.annotation.DisableCrossTest.class);
+        if (Objects.nonNull(disableCrossTest)) {
+            disableCrossTest();
+        } else {
+            enableCrossTest();
+        }
+
+        scptcg.annotation.MultiCrossTest multiCrossTest = getClass().getAnnotation(scptcg.annotation.MultiCrossTest.class);
+        if (Objects.nonNull(multiCrossTest)) {
+            if (multiCrossTest.value() < 0) {
+                throw new IllegalArgumentException(scptcg.annotation.MultiCrossTest.class.getName() + "アノテーションのvalueが負数です:" + getClass().getName());
+            }
+            setCrossTestsCount(multiCrossTest.value());
+        } else {
+            setCrossTestsCount(1);
+        }
+
+        resetCrossTestCount();
+    }
+
+    private void setTags(Set<String> tag) {
         this.tag = tag;
-        this.canPartner = canPartner;
-        this.crossTestable = crossTestable;
-        this.crossTestsCount = crossTestsCount;
-        this.crossTestCount = crossTestCount;
+    }
+
+    public Set<Clazz> getSubClazz() {
+        return subClazz;
     }
 
     public boolean isPartner() {
@@ -68,14 +119,12 @@ public class Scp extends Card {
         this.clazz = clazz.name();
     }
 
-    public Set<Clazz> getSubClazz() {
-        return subClazz.stream()
-                .map(Clazz::valueOf)
-                .collect(Collectors.toSet());
+    private void setSubClazz(Set<Clazz> subClazz) {
+        this.subClazz = subClazz;
     }
 
     public void addSubClazz(final Clazz subClazz) {
-        this.subClazz.add(subClazz.toString());
+        this.subClazz.add(subClazz);
     }
 
     public Clazz getContainmentClass() {
@@ -114,15 +163,15 @@ public class Scp extends Card {
         return canPartner;
     }
 
-    public void enableCanPartner(final boolean canPartner) {
+    public void enablePartner(final boolean canPartner) {
         this.canPartner = canPartner;
     }
 
-    public void enableCanPartner() {
+    public void enablePartner() {
         this.canPartner = true;
     }
 
-    public void disableCanPartner() {
+    public void disablePartner() {
         this.canPartner = false;
     }
 
@@ -130,15 +179,15 @@ public class Scp extends Card {
         return crossTestable;
     }
 
-    public void enableCanCrossTest(final boolean canCrossTest) {
+    public void enableCrossTest(final boolean canCrossTest) {
         this.crossTestable = canCrossTest;
     }
 
-    public void enableCanCrossTest() {
+    public void enableCrossTest() {
         this.crossTestable = true;
     }
 
-    public void disableCanCrossTest() {
+    public void disableCrossTest() {
         this.crossTestable = false;
     }
 
@@ -176,7 +225,23 @@ public class Scp extends Card {
 
     @Override
     public Scp clone() {
-        return new Scp(getParent(), getCategory().name(), getName(), canDecommission(), getEffects(), isPartner, cost, secure, clazz, subClazz, containmentClass, tag, canPartner, crossTestable, crossTestsCount, crossTestCount);
+        Scp card = (Scp) super.clone();
+        card.setCost(getCost());
+        card.setSecure(getSecure());
+        card.setClazz(getClazz());
+        card.addAllSubClazz(getSubClazz());
+        card.setContainmentClass(getContainmentClass());
+        card.addTags(tag.toArray(new String[0]));
+        card.enablePartner(canPartner());
+        card.enableCrossTest(canCrossTest());
+        card.setCrossTestsCount(getCrossTestsCount());
+        return card;
+    }
+
+    protected void addAllSubClazz(Set<Clazz> subClazz) {
+        for (Clazz clazz : subClazz) {
+            addSubClazz(clazz);
+        }
     }
 
     @Override

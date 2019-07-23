@@ -1,8 +1,8 @@
 package scptcg.game.effect;
 
+import scptcg.exception.NotActivableException;
 import scptcg.game.card.Card;
 import scptcg.game.card.Tale;
-import scptcg.game.exception.NotActivableException;
 import scptcg.server.Events;
 
 import java.util.ArrayList;

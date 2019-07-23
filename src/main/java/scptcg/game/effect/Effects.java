@@ -2,14 +2,19 @@ package scptcg.game.effect;
 
 import scptcg.game.card.Card;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Effects {
 
     private Map<String, List<Effect>> effects;
+
+    public Effects() {
+        effects = new HashMap<>();
+    }
+
+    public Effects(Map<String, List<Effect>> effects) {
+        this.effects = effects;
+    }
 
     public List<Effect> getEffects() {
         List<Effect> e = new ArrayList<>();

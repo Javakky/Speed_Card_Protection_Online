@@ -41,6 +41,7 @@ dependencies {
     compile group: 'org.jooq', name: 'jooq-codegen', version: '3.11.10'
     compile group: 'org.jooq', name: 'jooq-meta', version: '3.11.10'
     compile group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: 'latest.integration'
+    compile group: 'io.github.classgraph', name: 'classgraph', version: 'latest.integration'
 }
 
 

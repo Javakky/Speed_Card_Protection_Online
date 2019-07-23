@@ -1,5 +1,6 @@
 package scptcg.game.card;
 
+import scptcg.exception.UnsupportedAnnotationException;
 import scptcg.game.CardHolder;
 import scptcg.game.Game;
 import scptcg.game.Player;
@@ -15,25 +16,53 @@ import java.util.Objects;
 public abstract class Card implements Cloneable {
 
     private CardHolder parent;
-    private String category;
+    private CardCategory category;
     private String name;
     private boolean canDecommission;
+
     private Effects effects;
 
-    protected Card(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects) {
-        this.parent = parent;
-        this.category = category;
-        this.name = name;
-        this.canDecommission = canDecommission;
+    protected Card(final CardHolder parent, final CardCategory category) {
+        this(category);
+        setParent(parent);
+    }
+
+    protected Card(final CardCategory category) {
+        setParent(null);
+        scptcg.annotation.Card card = getClass().getAnnotation(scptcg.annotation.Card.class);
+        if (Objects.isNull(card)) {
+            throw new UnsupportedAnnotationException(scptcg.annotation.Card.class.getName() + "アノテーションのないクラス:" + getClass().getName());
+        }
+        setName(card.value());
+
+        scptcg.annotation.DisableDecommission disablePartner = getClass().getAnnotation(scptcg.annotation.DisableDecommission.class);
+        if (Objects.nonNull(disablePartner)) {
+            disableDecommission();
+        } else {
+            enableDecommission();
+        }
+
+        setParent(parent);
+        setCategory(category);
+        initializeEffects();
+    }
+
+    protected Effects getEffects() {
+        return effects;
+    }
+
+    protected void setEffects(Effects effects) {
         this.effects = effects;
     }
 
+    protected abstract void initializeEffects();
+
     public CardCategory getCategory() {
-        return CardCategory.valueOf(category);
+        return category;
     }
 
     public void setCategory(final CardCategory category) {
-        this.category = category.toString();
+        this.category = category;
     }
 
     public String getName() {
@@ -60,21 +89,9 @@ public abstract class Card implements Cloneable {
         this.canDecommission = canDecommission;
     }
 
-    protected Effects getEffects() {
-        return effects;
-    }
-
     public int effectSize(final Trigger trigger) {
-        if (Objects.isNull(effects)) return 0;
-        return effects.size(trigger);
-    }
-
-    public Effect getEffect(final Trigger trigger, final int index) {
-        return effects.getEffect(trigger, index);
-    }
-
-    protected void setEffects(Effects effects) {
-        this.effects = effects;
+        if (Objects.isNull(getEffects())) return 0;
+        return getEffects().size(trigger);
     }
 
     public CardHolder getParent() {
@@ -83,13 +100,25 @@ public abstract class Card implements Cloneable {
 
     public void setParent(final CardHolder parent) {
         this.parent = parent;
-        if (Objects.nonNull(effects)) {
-            effects.setParent(this);
+        if (Objects.nonNull(getEffects())) {
+            getEffects().setParent(this);
         }
     }
 
     @Override
-    public abstract Card clone();
+    public Card clone() {
+        Card card = null;
+        try {
+            card = (Card) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        card.setCategory(getCategory());
+        card.setName(getName());
+        card.enableDecommission(canDecommission());
+        card.setEffects(getEffects());
+        return card;
+    }
 
     public Player getEnemy() {
         return getPlayer().getEnemy();
@@ -112,8 +141,8 @@ public abstract class Card implements Cloneable {
     }
 
     public void refresh() {
-        if (Objects.nonNull(effects))
-            effects.refresh();
+        if (Objects.nonNull(getEffects()))
+            getEffects().refresh();
     }
 
     private boolean fullCondition(String... condition) {
@@ -124,16 +153,20 @@ public abstract class Card implements Cloneable {
     }
 
     public List<Effect> getEffects(Trigger trigger) {
-        if (Objects.nonNull(effects)) return effects.getEffects(trigger);
+        if (Objects.nonNull(getEffects())) return getEffects().getEffects(trigger);
         else return new ArrayList<>();
     }
 
     public void addEffect(Effect effects, Trigger trigger) {
-        this.effects.addEffect(effects, trigger);
+        this.getEffects().addEffect(effects, trigger);
     }
 
     public boolean ownerIsFirst() {
         return getPlayer().isFirst();
+    }
+
+    public Effect getEffect(Trigger trigger, int index) {
+        return getEffects().getEffect(trigger, index);
     }
 
 }

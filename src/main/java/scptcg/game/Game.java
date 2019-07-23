@@ -1,9 +1,9 @@
 package scptcg.game;
 
+import scptcg.exception.NotActivableException;
+import scptcg.exception.NotFillConditionException;
 import scptcg.game.card.*;
 import scptcg.game.effect.*;
-import scptcg.game.exception.NotActivableException;
-import scptcg.game.exception.NotFillConditionException;
 import scptcg.json.Deck;
 import scptcg.server.Events;
 
