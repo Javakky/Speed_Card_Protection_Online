@@ -1,7 +1,6 @@
 package scptcg.game;
 
 import org.apache.commons.lang3.NotImplementedException;
-import scptcg.game.card.Canon;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
 import scptcg.game.card.Personnel;
@@ -47,8 +46,9 @@ public class PersonnelFile implements CardHolder {
 
     @Override
     public int addCard(Card card) {
-        if (Objects.isNull(personnel) && card instanceof Canon) {
+        if (Objects.isNull(personnel) && card instanceof Personnel) {
             personnel = (Personnel) card;
+            card.setParent(this);
             return 0;
         }
         return -1;
@@ -57,7 +57,7 @@ public class PersonnelFile implements CardHolder {
     @Override
     public Card getCard(int index) {
         if (index != 0) {
-            throw new IllegalArgumentException("ヘッドカノン存在するカードは1枚のみです");
+            throw new IllegalArgumentException("人事ファイル存在するカードは1枚のみです");
         }
         return personnel;
     }

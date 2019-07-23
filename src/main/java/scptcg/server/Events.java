@@ -5,6 +5,7 @@ public enum Events {
     GetMyDeck,
     SelectPartner,
     CrossTest,
+    Can_tCrossTest,
     Damage,
     CanCrossTest,
     Breach,

@@ -1,0 +1,19 @@
+{
+  "category": "SCP",
+  "name": "SCP-250 アロサウルスの大部分",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Euclid",
+  "tag": [
+    "scp",
+    "捕食",
+    "自律",
+    "自我",
+    "蘇生",
+    "骨格"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

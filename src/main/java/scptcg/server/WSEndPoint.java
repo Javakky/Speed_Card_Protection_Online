@@ -18,7 +18,7 @@ public final class WSEndPoint {
     @OnOpen
     public void onOpen(final Session client, final EndpointConfig config) {
         String log = client.getId() + " was connected.";
-        ////System.out.println(log);
+        System.out.println(log);
     }
 
     // 切断時に呼ばれるメソッド
@@ -26,13 +26,12 @@ public final class WSEndPoint {
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by "
                 + reason.getCloseCode() + "[" + reason.getCloseCode().getCode() + "]";
-        ////System.out.println(log);
+        System.out.println(log);
     }
 
     // エラー時に呼ばれるメソッド
     @OnError
     public void onError(final Session client, final Throwable error) {
-        String log = client.getId() + " was error. [" + error.getMessage() + "]";
         error.printStackTrace();
     }
 

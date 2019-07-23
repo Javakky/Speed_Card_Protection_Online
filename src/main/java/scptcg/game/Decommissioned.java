@@ -25,13 +25,14 @@ public class Decommissioned implements CardHolder {
 
     @Override
     public Zone getZone() {
-        return Zone.Exclusion;
+        return Zone.Decommissioned;
     }
 
     @Override
     public void nextTurn() {
         for (Card card : decommissioned) {
-            card.refresh();
+            if (Objects.nonNull(card))
+                card.refresh();
         }
     }
 
@@ -48,6 +49,7 @@ public class Decommissioned implements CardHolder {
     @Override
     public int addCard(final Card card) {
         decommissioned.add(card);
+        card.setParent(this);
         return decommissioned.size() - 1;
     }
 

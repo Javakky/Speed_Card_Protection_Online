@@ -9,6 +9,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static scptcg.game.card.Clazz.*;
@@ -22,7 +23,7 @@ public class OrganizeResource {
 
         File abs = new File("./src/main/resources");
         Deck deck = new Deck();
-        for (File dir : abs.listFiles()) {
+        for (File dir : Objects.requireNonNull(abs.listFiles())) {
             if (dir.isDirectory()) {
                 switch (dir.getName()) {
                     case "Personnel":
@@ -45,7 +46,7 @@ public class OrganizeResource {
                         List<String> euclid = new LinkedList<>();
                         List<String> safe = new LinkedList<>();
                         StringBuilder sb = new StringBuilder();
-                        for (File f : dir.listFiles()) {
+                        for (File f : Objects.requireNonNull(dir.listFiles())) {
                             if (f.isFile()) {
                                 try (Scanner s = new Scanner(f)) {
                                     sb.setLength(0);
@@ -54,23 +55,22 @@ public class OrganizeResource {
                                     }
                                     try {
                                         Scp tmp = (new Gson()).fromJson(sb.toString(), Scp.class);
-                                        if (tmp.getContainmentClass() == null) {
-                                            Field field = null;
-                                            try {
-                                                field = Scp.class.getDeclaredField("containmentClass");
-                                            } catch (NoSuchFieldException | SecurityException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            field.setAccessible(true);
-
-                                            try {
-                                                field.set(tmp, Unclassed.name());
-                                            } catch (IllegalArgumentException | IllegalAccessException e) {
-                                                e.printStackTrace();
-                                            }
-
+                                        Field field = null;
+                                        try {
+                                            field = Scp.class.getDeclaredField("containmentClass");
+                                        } catch (NoSuchFieldException | SecurityException e) {
+                                            e.printStackTrace();
                                         }
+
+                                        field.setAccessible(true);
+
+                                        try {
+                                            field.set(tmp, Unclassed.name());
+                                        } catch (IllegalArgumentException | IllegalAccessException e) {
+                                            e.printStackTrace();
+                                        }
+
+
                                         switch (tmp.getContainmentClass()) {
                                             case Safe:
                                                 safe.add(tmp.getName());
@@ -120,10 +120,10 @@ public class OrganizeResource {
 
     private static String[] getFileNames(final File dir) {
         List<String> list = new LinkedList<>();
-        for (File f : dir.listFiles()) {
+        for (File f : Objects.requireNonNull(dir.listFiles())) {
             if (f.isFile()) list.add(getNameWithoutExtension(f));
         }
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     private static String getNameWithoutExtension(File file) {

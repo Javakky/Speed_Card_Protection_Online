@@ -13,6 +13,7 @@ public class Result {
     private final boolean objectPlayer;
     private final boolean objectPlayerIsOne;
     private final Zone[][] objectZone;
+    private final Zone targetZone;
     private final Card[][] object;
     private final String[][] objectName;
     private final int[][] objectCoordinate;
@@ -25,7 +26,7 @@ public class Result {
     private final boolean targetPlayer;
     private int[][] coordinate;
 
-    public Result(final Zone subjectZone, final boolean subjectPlayer, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer, String action) {
+    public Result(final Zone subjectZone, final boolean subjectPlayer, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer, String action, Zone targetZone) {
         this.subjectPlayer = subjectPlayer;
         this.subjectZone = subjectZone;
         this.subject = subject;
@@ -46,6 +47,7 @@ public class Result {
         this.coordinate = coordinate;
         this.targetPlayer = targetPlayer;
         this.action = action;
+        this.targetZone = targetZone;
     }
 
     public boolean getSubjectPlayer() {
@@ -72,7 +74,7 @@ public class Result {
         return objectPlayer;
     }
 
-    public boolean ObjectPlayerIsOne() {
+    public boolean objectPlayerIsOne() {
         return objectPlayerIsOne;
     }
 
@@ -130,6 +132,10 @@ public class Result {
 
     public String getAction() {
         return action;
+    }
+
+    public String getTargetZone() {
+        return targetZone.name();
     }
 
 }

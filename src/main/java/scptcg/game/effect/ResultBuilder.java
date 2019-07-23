@@ -24,6 +24,7 @@ public class ResultBuilder {
     private boolean isComplete;
     private boolean targetPlayer;
     private String action;
+    private Zone targetZone;
 
     public ResultBuilder(final String action, final boolean subjectPlayer, final Zone subjectZone, final Card subject, final String subjectName, final int subjectCoordinate) {
         this.subjectPlayer = subjectPlayer;
@@ -104,7 +105,7 @@ public class ResultBuilder {
     }
 
     public Result createResult() {
-        return new Result(subjectZone, subjectPlayer, subject, subjectName, subjectCoordinate, objectPlayer, objectPlayerIsOne, objectZone, object, objectName, objectCoordinate, coordinate, nextAction, point, count, overlap, message, isComplete, targetPlayer, action);
+        return new Result(subjectZone, subjectPlayer, subject, subjectName, subjectCoordinate, objectPlayer, objectPlayerIsOne, objectZone, object, objectName, objectCoordinate, coordinate, nextAction, point, count, overlap, message, isComplete, targetPlayer, action, targetZone);
     }
 
     public void setCoordinate(final int[][] coordinate) {
@@ -125,5 +126,13 @@ public class ResultBuilder {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public void setSubjectZone(Zone decommissioned) {
+        this.subjectZone = decommissioned;
+    }
+
+    public void setTargetZone(Zone whereZone) {
+        this.targetZone = whereZone;
     }
 }

@@ -1,0 +1,17 @@
+{
+  "category": "SCP",
+  "name": "SCP-014 コンクリート男",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 9,
+  "clazz": "Safe",
+  "tag": [
+    "scp",
+    "人間型",
+    "知性",
+    "自我"
+  ],
+  "canPartner": false,
+  "crossTestable": false,
+  "crossTestsCount": 1
+}

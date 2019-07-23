@@ -8,7 +8,9 @@ import scptcg.game.effect.Effect;
 import scptcg.game.effect.Effects;
 import scptcg.game.effect.Trigger;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Card implements Cloneable {
 
@@ -63,6 +65,7 @@ public abstract class Card implements Cloneable {
     }
 
     public int effectSize(final Trigger trigger) {
+        if (Objects.isNull(effects)) return 0;
         return effects.size(trigger);
     }
 
@@ -80,7 +83,9 @@ public abstract class Card implements Cloneable {
 
     public void setParent(final CardHolder parent) {
         this.parent = parent;
-        effects.setParent(this);
+        if (Objects.nonNull(effects)) {
+            effects.setParent(this);
+        }
     }
 
     @Override
@@ -107,7 +112,8 @@ public abstract class Card implements Cloneable {
     }
 
     public void refresh() {
-        effects.refresh();
+        if (Objects.nonNull(effects))
+            effects.refresh();
     }
 
     private boolean fullCondition(String... condition) {
@@ -118,7 +124,8 @@ public abstract class Card implements Cloneable {
     }
 
     public List<Effect> getEffects(Trigger trigger) {
-        return effects.getEffects(trigger);
+        if (Objects.nonNull(effects)) return effects.getEffects(trigger);
+        else return new ArrayList<>();
     }
 
     public void addEffect(Effect effects, Trigger trigger) {

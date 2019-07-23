@@ -1,0 +1,43 @@
+{
+  "category": "SCP",
+  "name": "SCP-1690-JP 犭貪あるいはウロボロス",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 2147483647,
+  "clazz": "Unclassed",
+  "containmentClass": "Keter",
+  "tag": [
+    "k-クラスシナリオ",
+    "scp-jp",
+    "場所",
+    "外宇宙",
+    "数学",
+    "時空間",
+    "未収容"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "TurnEnd": [
+        {
+          "number": 1,
+          "message": "このカードがdecommissionedに送られた時、送ったプレイヤーにK-クラスシナリオが発生する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+          ],
+          "action": [
+            {
+              "action": "K_Class",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

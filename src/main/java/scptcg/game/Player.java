@@ -35,21 +35,23 @@ public class Player {
         tales = new Tales(this, createCard(CardCategory.Tale, deck.Tale));
         personnelFile = new PersonnelFile(this, createCard(CardCategory.Personnel, deck.Personnel));
         rocker = new AnomalousRocker(this, createCard(CardCategory.Anomalous, deck.Anomalous));
-        site = new Site(this, xk - 1, nk - 1);
+        site = new Site(this, xk, nk - 1);
         decommissioned = new Decommissioned(this);
         exclusion = new Exclusion(this);
-        safe = createSafe((Scp[]) createCard(CardCategory.SCP, deck.Safe));
-        euclid = createEuclid((Scp[]) createCard(CardCategory.SCP, deck.Euclid));
-        keter = createKeter((Scp[]) createCard(CardCategory.SCP, deck.Safe));
+        safe = createSafe(createCard(CardCategory.SCP, deck.Safe));
+        euclid = createEuclid(createCard(CardCategory.SCP, deck.Euclid));
+        keter = createKeter(createCard(CardCategory.SCP, deck.Keter));
         getTmpAleas();
     }
 
     private Card[] createCard(CardCategory category, String[] names) {
-        Card[] result = new Card[names.length];
-        for (int i = 0; i < names.length; i++) {
-            result[i] = CardFactory.create(names[i], category);
-        }
-        return result;
+        if (names != null) {
+            Card[] result = new Card[names.length];
+            for (int i = 0; i < names.length; i++) {
+                result[i] = CardFactory.create(names[i], category);
+            }
+            return result;
+        } else return new Card[0];
     }
 
 
@@ -83,11 +85,11 @@ public class Player {
         return areas;
     }
 
-    private SandBox createSafe(Scp... scp) {
+    private SandBox createSafe(Card... scp) {
         return new SandBox(this, Clazz.Safe, SAFE_PROTECTION_FORCE, SAFE_CARD_NUMBER, scp);
     }
 
-    private SandBox createEuclid(Scp... scp) {
+    private SandBox createEuclid(Card... scp) {
         return new SandBox(this, Clazz.Euclid, EUCLID_PROTECTION_FORCE, EUCLID_CARD_NUMBER, scp);
     }
 
@@ -96,7 +98,7 @@ public class Player {
         return parent.isFirst(this);
     }
 
-    private SandBox createKeter(Scp... scp) {
+    private SandBox createKeter(Card... scp) {
         return new SandBox(this, Clazz.Keter, KETER_PROTECTION_FORCE, KETER_CARD_NUMBER, scp);
     }
 
@@ -144,12 +146,15 @@ public class Player {
         throw new IllegalArgumentException("Playerはそのエリアを保持していません：" + targetZone.name());
     }
 
-    public int reContainment(Card card, Clazz clazz) {
+    public int reContainment(Scp card, Clazz clazz) {
+        if (Objects.isNull(clazz)) clazz = card.getContainmentClass();
         CardHolder before = getArea(card.whereZone());
         CardHolder after = getSandBox(clazz);
         before.deleteCard(card);
-        return after.addCard(card);
+        int index = after.addCard(card);
+        return index;
     }
+
 
     private SandBox getSandBox(Clazz clazz) {
         switch (clazz) {
@@ -174,7 +179,27 @@ public class Player {
     public List<Effect> getEffects(Trigger trigger) {
         List<Effect> result = new ArrayList<>();
         for (CardHolder area : getTmpAleas()) {
-            result.addAll(area.getEffects(trigger));
+            result.addAll(getEffects(trigger, area));
+        }
+        return result;
+    }
+
+    public List<Effect> getEffects(Trigger trigger, CardHolder area) {
+        List<Effect> result = new ArrayList<>();
+        List<Effect> arr = area.getEffects(trigger);
+        if (Objects.nonNull(arr)) result.addAll(arr);
+        return result;
+    }
+
+
+    public List<Effect> getEffects(Trigger trigger, Zone zone) {
+        return getEffects(trigger, getArea(zone));
+    }
+
+    public List<Effect> getEffects(Trigger trigger, Zone... zone) {
+        List<Effect> result = new ArrayList<>();
+        for (Zone tmp : zone) {
+            result.addAll(getEffects(trigger, getArea(tmp)));
         }
         return result;
     }
@@ -185,6 +210,11 @@ public class Player {
 
     public Card getCard(Zone zone, int index) {
         return getArea(zone).getCard(index);
+    }
+
+    public Card getCard(Zone zone, String name) {
+        System.out.println(zone.name());
+        return getArea(zone).find(name);
     }
 
     public int getProtection(Clazz clazz) {
@@ -288,12 +318,15 @@ public class Player {
 
 
     public Card decommission(Zone zone, int index) {
+        System.out.println("Zone : " + zone.name());
         Card c = getArea(zone).pick(index);
+        if (Objects.isNull(c)) throw new NullPointerException();
         this.decommissioned.addCard(c);
         return c;
     }
 
     public Card decommission(Zone zone, Card card) {
+        if (Objects.isNull(card)) throw new NullPointerException();
         getArea(zone).deleteCard(card);
         this.decommissioned.addCard(card);
         return card;
@@ -305,11 +338,12 @@ public class Player {
     }
 
     public void damage(Clazz clazz, int point, List<Scp> breached) {
-        breached.add(getSandBox(clazz).damage(point));
+        Scp tmp = getSandBox(clazz).damage(point);
+        breached.add(tmp);
     }
 
-    public void heal(Clazz clazz, int point) {
-        getSandBox(clazz).heal(point);
+    public int heal(Clazz clazz, int point) {
+        return getSandBox(clazz).heal(point);
     }
 
     public Card[] getCards(Zone zone) {
@@ -335,4 +369,5 @@ public class Player {
     public Card getTop(Zone zone) {
         return getArea(zone).getTop();
     }
+
 }

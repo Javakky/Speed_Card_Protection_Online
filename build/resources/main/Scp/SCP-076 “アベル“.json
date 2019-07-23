@@ -29,7 +29,8 @@
             {
               "action": "ReContainment",
               "parameter": {
-                "targetZone": "Keter"
+                "targetZone": "Keter",
+                "targetClazz": "Keter"
               }
             }
           ]
@@ -44,11 +45,11 @@
             {
               "action": "HasSCP",
               "parameter": {
-                "targetPlayer": "Me",
+                "targetPlayer": "Any",
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
                 ]
               }
@@ -58,14 +59,15 @@
             {
               "action": "Select",
               "parameter": {
-                "targetPlayer": "Both",
+                "targetPlayer": "Any",
                 "isThere": true,
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
-                ]
+                ],
+                "nextAction": "Decommission"
               }
             }
           ]

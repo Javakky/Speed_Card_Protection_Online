@@ -112,16 +112,13 @@ public class SendFormatter {
         return getPartnerables(player, cards, ME);
     }
 
-    public static List<Pair<String, String>> selectPartner(final int coordinate, final Scp scp) {
+    public static List<Pair<String, String>> selectPartner(final boolean player, final int coordinate, final Scp scp) {
         Data data = new Data();
-        data.Event = SelectPartner.name();
+        data.Event = BreachPartner.name();
         data.CardName = new String[]{scp.getName()};
         data.Coordinate = new int[][]{{coordinate}};
-        data.Player = true;
-        List<Pair<String, String>> m = toListMe(data.toJson());
-        data.Player = false;
-        m.addAll(toListEnemy(data.toJson()));
-        return m;
+        data.Player = player;
+        return toListBoth(data.toJson());
     }
 
     public static List<Pair<String, String>> getEmptysite(final boolean player, final int[] indexes, int receiver) {
@@ -159,7 +156,7 @@ public class SendFormatter {
     public static List<Pair<String, String>> turnEnd(final boolean turnPlayer) {
         Data data = new Data();
         data.Event = TurnEnd.name();
-        data.Player = turnPlayer;
+        data.Player = !turnPlayer;
         return toListBoth(data.toJson());
     }
 
@@ -260,7 +257,7 @@ public class SendFormatter {
         return toListMe(data.toJson());
     }
 
-    public static List<Pair<String, String>> heal(final boolean player, final String coordinate, final int point) {
+    public static List<Pair<String, String>> heal(final boolean player, final int coordinate, final int point) {
         Data data = new Data();
         data.Event = Heal.name();
         data.Player = player;
@@ -269,7 +266,7 @@ public class SendFormatter {
         return toListBoth(data.toJson());
     }
 
-    public static List<Pair<String, String>> damage(final boolean player, final String coordinate, final int point,
+    public static List<Pair<String, String>> damage(final boolean player, final int coordinate, final int point,
                                                     final int atkCoordinate) {
         Data data = new Data();
         data.Event = Damage.name();
@@ -280,10 +277,11 @@ public class SendFormatter {
         return toListBoth(data.toJson());
     }
 
-    public static List<Pair<String, String>> startBreach(final Scp scp, final boolean isMe) {
+    public static List<Pair<String, String>> startBreach(final Scp scp, final boolean isMe, int sandBox) {
         Data data = new Data();
         data.Event = SelectBreach.name();
         data.CardName = new String[]{scp.getName()};
+        data.SandBox = sandBox;
         Data data2 = new Data();
         List<Pair<String, String>> m;
         if (!isMe) {
@@ -316,24 +314,26 @@ public class SendFormatter {
         Data data = new Data();
         data.Event = ReContainment.name();
         data.Player = player;
-        data.Coordinate = new int[][]{{0, coordinate}};
+        data.Coordinate = new int[][]{{0}};
+        data.SandBox = coordinate;
         data.Zone = new String[]{before.toString(), after.toString()};
-        if (before == Zone.Decommissioned) {
-            data.CardName = new String[]{subject.getName(), under == null ? null : under.getName()};
-        } else {
-            data.CardName = new String[]{subject.getName()};
-        }
+        data.CardName = new String[]{subject.getName(), under == null ? null : under.getName()};
+
         return toListBoth(data.toJson());
     }
 
 
     public static List<Pair<String, String>> optional(boolean player, String cardName, String message) {
+        return optional(player, cardName, message, ME);
+    }
+
+    public static List<Pair<String, String>> optional(boolean player, String cardName, String message, int sender) {
         Data data = new Data();
         data.Event = Optional.name();
         data.Player = player;
         data.CardName = new String[]{cardName};
         data.Text = message;
-        return toListMe(data.toJson());
+        return toList(sender, data.toJson());
     }
 
     public static List<Pair<String, String>> decommission(final boolean player, final String place,
@@ -432,6 +432,33 @@ public class SendFormatter {
         list.add(Pair.of("me", str));
         list.add(Pair.of("enemy", str));
         return list;
+    }
+
+    public static List<Pair<String, String>> can_tCross(boolean player) {
+        Data data = new Data();
+        data.Event = Can_tCrossTest.name();
+        data.Player = player;
+        return toListMe(data.toJson());
+    }
+
+    public static List<Pair<String, String>> impossible(boolean player, int target) {
+        Data data = new Data();
+        data.Event = Impossible.name();
+        data.Player = player;
+        return toList(target, data.toJson());
+    }
+
+
+    public static List<Pair<String, String>> impossible(boolean player) {
+        return impossible(player, ME);
+    }
+
+    public static List<Pair<String, String>> getSandBoxProtection(boolean player, int[] sandBoxProtection) {
+        Data data = new Data();
+        data.Event = GetSandBoxProtection.name();
+        data.Player = player;
+        data.Point = sandBoxProtection;
+        return toListMe(data.toJson());
     }
 
 }

@@ -1,0 +1,19 @@
+{
+  "category": "SCP",
+  "name": "SCP-055 ［正体不明］",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 6,
+  "clazz": "Keter",
+  "tag": [
+    "メタ",
+    "scp",
+    "反ミーム",
+    "情報災害",
+    "殿堂入り",
+    "記憶影響"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

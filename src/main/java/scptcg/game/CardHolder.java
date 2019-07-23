@@ -16,12 +16,13 @@ import java.util.Objects;
 public interface CardHolder {
 
     static void deleteCard(final Card card, final List<? extends Card> list) {
-        list.set(list.indexOf(card), null);
+        list.remove(card);
     }
 
     static Card find(final String cardName, final List<? extends Card> list) {
         for (Card c : list) {
             if (c != null) {
+                System.out.println("find watch: " + c.getName());
                 if (c.getName().equals(cardName)) {
                     return c;
                 }
@@ -68,7 +69,9 @@ public interface CardHolder {
         List<Effect> tmp = new ArrayList<>();
         for (Card c : list) {
             if (Objects.nonNull(c)) {
-                tmp.addAll(c.getEffects(trigger));
+                List<Effect> arr = c.getEffects(trigger);
+                if (Objects.nonNull(arr))
+                    tmp.addAll(arr);
             }
         }
         return tmp;
@@ -97,6 +100,8 @@ public interface CardHolder {
     void nextTurn();
 
     default int effectSize(int cardIndex, Trigger trigger) {
+        Card tmp = getCard(cardIndex);
+        if (Objects.isNull(tmp)) return 0;
         return getCard(cardIndex).effectSize(trigger);
     }
 

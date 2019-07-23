@@ -1,7 +1,9 @@
 package scptcg.game.effect;
 
 import scptcg.game.card.Card;
+import scptcg.game.card.Tale;
 import scptcg.game.exception.NotActivableException;
+import scptcg.server.Events;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class Effect {
     }
 
     public void addCondition(final Condition condition) {
+        if (Objects.isNull(this.condition)) this.condition = new ArrayList<Condition>();
         this.condition.add(condition);
     }
 
@@ -128,33 +131,48 @@ public class Effect {
     }
 
     public boolean active(final List<Result> result) throws NotActivableException {
-
+        System.out.println("効果発動：" + parent.getName());
         if (isHead()) {
-            if (getActivationCount() >= getActivationsCount()) {
-                disableActive();
-            }
             if (!canActive()) {
                 throw new NotActivableException("効果の発動条件を満たしていません");
+            }
+            if (getParent() instanceof Tale) {
+                result.add(new ResultBuilder(
+                        Events.ActiveTale.name(),
+                        getParent().ownerIsFirst(),
+                        getParent().whereZone(),
+                        getParent(),
+                        getParent().getName(),
+                        getParent().getCoordinate()
+                ).createResult());
             }
             activate();
         }
 
-        for (; index < action.size(); ) {
-            Result r = action.get(index).active(this.before.get(this.before.size() - 1));
-            result.add(r);
-            addBefore(r);
-            index++;
-            if (!r.isComplete() || !isTail()) {
-                return false;
+        if (Objects.nonNull(action))
+            for (; index < action.size(); ) {
+                Result r = null;
+                r = action.get(index).active(
+                        this.before.size() > 0
+                                ? this.before.get(this.before.size() - 1)
+                                : null
+                        , this);
+                result.add(r);
+                addBefore(r);
+                this.index++;
+                if (!r.isComplete() || !isTail()) {
+                    return false;
+                }
             }
-        }
         addActivationCount();
         inactivate();
         return true;
     }
 
     private boolean isTail() {
-        return index == action.size();
+        if (Objects.nonNull(action)) {
+            return index >= action.size() || Objects.isNull(action.get(index));
+        } else return true;
     }
 
     private void resetBefore() {
@@ -170,6 +188,7 @@ public class Effect {
     }
 
     private boolean fulfill() {
+        if (Objects.isNull(this.getCondition())) return true;
         for (Condition condition : this.getCondition()) {
             if (!condition.fulfill(this)) {
                 return false;

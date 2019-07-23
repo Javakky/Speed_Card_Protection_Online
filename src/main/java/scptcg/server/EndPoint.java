@@ -8,6 +8,7 @@ import scptcg.game.Zone;
 import scptcg.game.card.*;
 import scptcg.game.effect.ActionMethod;
 import scptcg.game.effect.Result;
+import scptcg.game.effect.ResultBuilder;
 import scptcg.json.Data;
 import scptcg.json.Deck;
 import scptcg.log.Log4j;
@@ -71,14 +72,13 @@ public final class EndPoint {
 
     @OnError
     public void onError(final Session client, final Throwable error) {
-        String log = client.getId() + " was error by " + error.getMessage();
         logger.error(error);
     }
 
     private String getId(final Session s) {
-        for (String key : session.keySet()) {
-            if (session.get(key) == s) {
-                return key;
+        for (Map.Entry<String, Session> entry : session.entrySet()) {
+            if (entry.getValue() == s) {
+                return entry.getKey();
             }
         }
         return null;
@@ -97,15 +97,17 @@ public final class EndPoint {
             send(player, data.toJson());
             return;
         }
-        wait = !wait;
-        if (wait) {
+        EndPoint.wait = !EndPoint.wait;
+        if (EndPoint.wait) {
             data.Status = "Wait";
-            waiting = player;
+            EndPoint.waiting = player;
+            System.out.println("visit : " + player);
             if (Objects.nonNull(deck)) {
-                waitingDeck = deck;
+                EndPoint.waitingDeck = deck;
             }
         } else {
             data.Status = "Start";
+            System.out.println("wait : " + waiting + " visit : " + player);
             game.add(new Game(waiting, getDeck(waiting, waitingDeck), player, getDeck(player, deck)));
             send(waiting, data.toJson());
             waiting = null;
@@ -120,14 +122,13 @@ public final class EndPoint {
             Data data = (new Gson()).fromJson(text, Data.class);
             if (data.PlayerName == null || data.PlayerName.equals("")) {
                 Log4j.getInstance().error(new RuntimeException(data.Event + "のPlayerNameは空です。"));
-                return;
-            }
-            Log4j.getInstance().info(data.toJson());
-
-            if (data.Event.equals(Events.Login.name())) {
-                login(data.PlayerName, data.DeckName, client);
             } else {
-                main(data.Event, data);
+                Log4j.getInstance().info(data.toJson());
+                if (data.Event.equals(Events.Login.name())) {
+                    login(data.PlayerName, data.DeckName, client);
+                } else {
+                    main(data.Event, data);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +137,6 @@ public final class EndPoint {
     }
 
     private void main(final String event, final Data data) throws IOException {
-        List<Pair<String, String>> list = new LinkedList<>();
         Game game = EndPoint.game.get(id.get(data.PlayerName));
         String[] name = new String[]{data.PlayerName, game.getEnemyName(data.PlayerName)};
         switch (Events.valueOf(event)) {
@@ -218,16 +218,34 @@ public final class EndPoint {
                 break;
 
             case Decommission:
-                decommission(data, game, name);
+                Result before = decommission(data, game, name);
+                if (game.isChainSolving()) {
+                    List<Result> r = new ArrayList<>();
+                    game.activeEffect(before, r);
+                    sendEffectResult(game, data, r.toArray(new Result[0]));
+                }
                 break;
 
             case HealSandBox:
-                healSandBox(data, game, name);
+                int point = healSandBox(data, game, name);
+                if (game.isChainSolving()) {
+                    List<Result> r = new ArrayList<>();
+                    ResultBuilder rb = new ResultBuilder(
+                            ActionMethod.HealSandBox.name(),
+                            data.Player,
+                            null,
+                            null,
+                            null,
+                            -1
+                    );
+                    rb.setPoint(point);
+                    game.activeEffect(rb.createResult(), r);
+                    sendEffectResult(game, data, r.toArray(new Result[0]));
+                }
                 break;
 
             case DamageSandBox:
                 damageSandBox(data, game, name);
-
                 break;
 
             case GetCardParameters:
@@ -237,8 +255,16 @@ public final class EndPoint {
             case SelectEffect:
                 selectEffect(data, game);
                 break;
-
         }
+
+        do {
+            List<Result> r = new ArrayList<>();
+            if (!game.isActive() && game.isWait()) {
+                game.activeEffect(null, r);
+                sendEffectResult(game, data, r.toArray(new Result[0]));
+            }
+        } while (!game.isChainSolving() && game.isWait());
+
 
         if (game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
@@ -256,7 +282,7 @@ public final class EndPoint {
 
     private void selectPartner(Data data, Game game, String[] name) throws IOException {
         Scp scp = game.breachPartner(data.Player, data.CardName[0], data.Coordinate[0][0]);
-        send(name, SendFormatter.selectPartner(data.Coordinate[0][0], scp));
+        send(name, SendFormatter.selectPartner(data.Player, data.Coordinate[0][0], scp));
         send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
     }
 
@@ -272,20 +298,25 @@ public final class EndPoint {
 
     private void crossTest(Data data, Game game, String[] name) throws IOException {
         List<Scp> breach = new ArrayList<>();
-        int point = game.crossTest(data.Player, data.Coordinate[0][0], Clazz.valueOf(data.SandBox), breach);
-        Scp wait = breach.get(0);
-        send(name, SendFormatter.damage(!data.Player,
-                data.SandBox,
-                point,
-                data.Coordinate[0][0]));
+        int point = game.crossTest(data.Player, data.Coordinate[0][0], intToSandBox(data.SandBox), breach);
+        if (point >= 0) {
+            Scp wait = breach.get(0);
+            send(name, SendFormatter.damage(!data.Player,
+                    data.SandBox,
+                    point,
+                    data.Coordinate[0][0]));
 
-        if (wait != null) {
-            send(name, SendFormatter.startBreach(wait, false));
+            if (wait != null) {
+                send(name, SendFormatter.startBreach(wait, false, data.SandBox));
+            }
+        } else {
+            send(name, SendFormatter.can_tCross(data.Player));
         }
 
         if (game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
         }
+
     }
 
     private void whetherActive(Data data, Game game) throws IOException {
@@ -299,15 +330,9 @@ public final class EndPoint {
     }
 
     private void damage(Data data, Game game, String[] name) throws IOException {
-        if (data.Coordinate[0].length <= 0) {
-            data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
-        } else {
-            data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-        }
-        data.Point = new int[]{Integer.parseInt(data.CardName[0])};
         List<Scp> scp = new ArrayList<>();
         int damage = data.Point[0];
-        game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
+        game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         Scp wait = scp.get(0);
         send(name, SendFormatter.damage(data.Player,
                 data.SandBox,
@@ -315,7 +340,7 @@ public final class EndPoint {
                 -1));
 
         if (wait != null) {
-            send(name, SendFormatter.startBreach(wait, true));
+            send(name, SendFormatter.startBreach(wait, true, data.SandBox));
         }
 
         if (game.isK()) {
@@ -328,7 +353,7 @@ public final class EndPoint {
     }
 
     private void breach(Data data, Game game, String[] name) throws IOException {
-        Scp scp = game.breach(data.Player, data.CardName[0], Clazz.valueOf(data.SandBox), data.Coordinate[0][0]);
+        Scp scp = game.breach(data.Player, data.CardName[0], intToSandBox(data.SandBox), data.Coordinate[0][0]);
 
         send(name, SendFormatter.breach(data.Player, data.Coordinate[0][0], scp));
 
@@ -345,12 +370,13 @@ public final class EndPoint {
     }
 
     private void turnEnd(Data data, Game game, String[] name) throws IOException {
-        game.nextTurn();
-        send(name, SendFormatter.turnEnd(data.Player));
+        boolean flag = game.nextTurn();
+        if (flag)
+            send(name, SendFormatter.turnEnd(data.Player));
     }
 
     private void getPersonnel(Data data, Game game, String[] name) throws IOException {
-        send(name, SendFormatter.getPersonnel(data.Player, data.BeAbleTo, (Personnel) game.getCards(data.Player, Zone.PersonnelFile)[0]));
+        send(name, SendFormatter.getPersonnel(data.Player, data.BeAbleTo, (Personnel) game.getCards(data.Player == data.BeAbleTo, Zone.PersonnelFile)[0]));
     }
 
     private void getTale(Data data, Game game, String[] name) throws IOException {
@@ -370,7 +396,7 @@ public final class EndPoint {
     }
 
     private void getSandBoxProtection(Data data, Game game, String[] name) throws IOException {
-        send(name, SendFormatter.getSandBoxNumber(data.Player, game.getSandBoxProtection(data.Player)));
+        send(name, SendFormatter.getSandBoxProtection(data.Player, game.getSandBoxProtection(data.Player)));
     }
 
     private void getEffect(Data data, Game game, String[] name) throws IOException {
@@ -379,66 +405,57 @@ public final class EndPoint {
     }
 
     private void activeEffect(Data data, Game game, String[] name) throws IOException {
-        if (Zone.valueOf(data.Zone[0]) == Zone.Tales) {
-            send(name, SendFormatter.activeTale(data.Player, game.getCard(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]).getName(), data.Coordinate[0][0]));
-        }
-
-        List<Result> result = new ArrayList<>();
-        game.selectEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0], data.Coordinate[0][1], result);
-        sendEffectResult(game, data, result.toArray(new Result[0]));
+        game.selectEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0], data.Coordinate[0][1]);
     }
 
-    private void decommission(Data data, Game game, String[] name) throws IOException {
-        data.Zone = new String[]{data.CardName[0]};
-        data.Player = data.CardName[1].equals("True");
+    private Result decommission(Data data, Game game, String[] name) throws IOException {
         Card card;
         int[] coord;
         boolean p;
         if (data.Coordinate[0].length <= 0) {
             coord = data.Coordinate[1];
-            p = data.Player;
+            p = !data.Player;
         } else {
             coord = data.Coordinate[0];
-            p = !data.Player;
+            p = data.Player;
         }
         card = game.decommission(p, Zone.valueOf(data.Zone[0]), coord[0]);
         send(name, SendFormatter.decommission(p, data.Zone[0], coord[0], card, false));
+        ResultBuilder result = new ResultBuilder(ActionMethod.Decommission.name(), data.Player, Zone.valueOf(data.Zone[0]), card, card.getName(), coord[0]);
         int me = game.getSumSiteCost(data.Player);
         getSumSiteCost(name, data.Player, me);
         int enemy = game.getSumSiteCost(!data.Player);
         getSumSiteCost(name, !data.Player, enemy);
+        return result.createResult();
     }
 
-    private void healSandBox(Data data, Game game, String[] name) throws IOException {
-        if (data.Coordinate[0].length <= 0) {
-            data.SandBox = intToSandBox(data.Coordinate[1][0]).name();
-        } else {
-            data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-        }
-        boolean me = data.Player;
-        if (!data.CardName[0].equals("True")) {
-            data.Player = !data.Player;
-        }
-        data.Point = new int[]{Integer.parseInt(data.CardName[1])};
-        int point = data.Point[0];
-        game.healSandBox(data.Player, Clazz.valueOf(data.SandBox), data.Point[0]);
+    private int healSandBox(Data data, Game game, String[] name) throws IOException {
+        int point = game.healSandBox(data.Player, intToSandBox(data.SandBox), data.Point[0]);
         send(name, SendFormatter.heal(data.Player, data.SandBox, point));
+        return point;
+
+    }
+
+    private Zone clazzToZone(Clazz intToSandBox) {
+        switch (intToSandBox) {
+            case Safe:
+                return Zone.SafeSandbox;
+            case Euclid:
+                return Zone.EuclidSandbox;
+            case Keter:
+                return Zone.KeterSandbox;
+            default:
+                return null;
+        }
     }
 
     private void damageSandBox(Data data, Game game, String[] name) throws IOException {
-        data.SandBox = intToSandBox(data.Coordinate[0][0]).name();
-        boolean me = data.Player;
-        if (!data.CardName[0].equals("True")) {
-            data.Player = !data.Player;
-        }
-        data.Point = new int[]{Integer.parseInt(data.CardName[1])};
         List<Scp> scp = new ArrayList<>();
-        int point = data.Point[0];
-        game.damage(data.Player, Clazz.valueOf(data.SandBox), data.Point[0], scp);
+        game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         send(name, SendFormatter.damage(data.Player, data.SandBox, data.Point[0], -1));
 
         if (scp.get(0) != null) {
-            send(name, SendFormatter.startBreach(scp.get(0), data.Player == me));
+            send(name, SendFormatter.startBreach(scp.get(0), data.Player, data.SandBox));
         }
 
         if (game.isK()) {
@@ -458,22 +475,15 @@ public final class EndPoint {
     private void send(String[] name, List<Pair<String, String>> list) throws IOException {
 
         for (Pair<String, String> e : list) {
-            try {
-                if ((new Gson()).fromJson(e.getValue(), Data.class).Event.equals("ReContainment")) {
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
             switch (e.getKey()) {
                 case "me":
                     send(name[0], e.getValue());
-                    logger.info("me\n: " + e.getValue());
+                    logger.info("me[" + name[0] + "]\n: " + e.getValue());
                     ////System.out.println();
                     break;
                 case "enemy":
                     send(name[1], e.getValue());
-                    logger.info("enemy:\n " + e.getValue());
+                    logger.info("enemy[" + name[1] + "]:\n " + e.getValue());
                     break;
             }
         }
@@ -508,14 +518,24 @@ public final class EndPoint {
         String[] name = new String[]{data.PlayerName, game.getEnemyName(data.PlayerName)};
         for (Result r : st) {
             if (r == null) {
-                send(name, SendFormatter.failEffect());
                 continue;
             }
+
+            int sender;
+            if (game.isFirst(data.PlayerName) == (Objects.nonNull(r.getObject()) && r.getObject().length > 0 && r.getObject()[0].length > 0 ? r.getObject()[0][0].ownerIsFirst() : r.getSubject().ownerIsFirst()))
+                sender = SendFormatter.ME;
+            else {
+                sender = SendFormatter.ENEMY;
+            }
+            System.out.println("effectsss: " + sender + ":" + data.PlayerName + ":" + game.isFirst(data.PlayerName) + ":" + r.getSubject().ownerIsFirst());
             switch (ActionMethod.valueOf(r.getAction())) {
+                case ActiveTale:
+                    send(name, SendFormatter.activeTale(data.Player, r.getSubjectName(), r.getSubjectCoordinate()));
+                    break;
                 case Decommission:
                     send(name, SendFormatter.decommission(
                             r.getSubjectPlayer(),
-                            r.getObjectZone()[0][0].name(),
+                            r.getTargetZone(),
                             r.getCoordinate()[0][0],
                             r.getObject()[0][0],
                             false
@@ -524,6 +544,19 @@ public final class EndPoint {
                     getSumSiteCost(name, data.Player, me);
                     int enemy = game.getSumSiteCost(!data.Player);
                     getSumSiteCost(name, !data.Player, enemy);
+                    if (game.isChainSolving()) {
+                        ResultBuilder result = new ResultBuilder(
+                                ActionMethod.Decommission.name(),
+                                r.getSubjectPlayer(),
+                                Zone.valueOf(r.getTargetZone()),
+                                r.getObject()[0][0],
+                                r.getObject()[0][0].getName(),
+                                r.getCoordinate()[0][0]
+                        );
+                        List<Result> tmp = new ArrayList<>();
+                        game.activeEffect(result.createResult(), tmp);
+                        sendEffectResult(game, data, tmp.toArray(new Result[0]));
+                    }
                     break;
 
                 case ReContainment:
@@ -540,7 +573,9 @@ public final class EndPoint {
                     enemy = game.getSumSiteCost(!data.Player);
                     getSumSiteCost(name, !data.Player, enemy);
                     break;
-
+                case Fail:
+                    send(name, SendFormatter.impossible(data.Player, sender));
+                    break;
                 case K_Class:
                     if (game.isK()) {
                         send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
@@ -548,7 +583,7 @@ public final class EndPoint {
                     break;
 
                 case Select:
-                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getObjectZone()[0][0].name(), r.getCoordinate(), r.isComplete()));
+                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getTargetZone(), r.getCoordinate(), r.isComplete(), sender));
                     break;
 
                 case HealSandBox:
@@ -559,7 +594,8 @@ public final class EndPoint {
                                     r.getAction(),
                                     r.getPoint(),
                                     r.getCount(),
-                                    r.canOverlap()));
+                                    r.canOverlap(),
+                                    sender));
                     break;
 
                 case MinusSecure:
@@ -567,7 +603,7 @@ public final class EndPoint {
                     break;
 
                 case Optional:
-                    send(name, SendFormatter.optional(r.getSubjectPlayer(), r.getSubjectName(), r.getMessage()));
+                    send(name, SendFormatter.optional(r.getSubjectPlayer(), r.getSubjectName(), r.getMessage(), sender));
 
                 default:
                     break;
@@ -581,8 +617,13 @@ public final class EndPoint {
         return list;
     }
 
-    private void send(final String name, final String str) throws IOException {
+    private synchronized void send(final String name, final String str) throws IOException {
         session.get(name).getBasicRemote().sendText(str);
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

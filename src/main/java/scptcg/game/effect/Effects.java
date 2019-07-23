@@ -5,6 +5,7 @@ import scptcg.game.card.Card;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Effects {
 
@@ -30,6 +31,7 @@ public class Effects {
 
 
     public int size(final Trigger trigger) {
+        if (Objects.isNull(effects)) return 0;
         return effects.get(trigger.name()).size();
     }
 

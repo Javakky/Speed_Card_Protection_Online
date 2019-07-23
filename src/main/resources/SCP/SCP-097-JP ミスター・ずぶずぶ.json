@@ -26,7 +26,10 @@
           "canActive": true,
           "condition": [
             {
-              "action": "SecureNonZero"
+              "action": "SecureNonZero",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
             }
           ],
           "action": [

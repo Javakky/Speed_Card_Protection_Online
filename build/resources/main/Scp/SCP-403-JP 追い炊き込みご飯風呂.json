@@ -24,10 +24,16 @@
           "canActive": true,
           "condition": [
             {
-              "action": "HasPersonnel"
+              "action": "HasPersonnel",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
             },
             {
-              "action": "FirstTimeInTurn"
+              "action": "FirstTimeInTurn",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
             }
           ],
           "action": [

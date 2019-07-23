@@ -75,6 +75,7 @@ public class Site implements CardHolder {
         int index = getEmpty();
         if (!(c instanceof Scp)) throw new IllegalArgumentException("引数のカードがSCPではありません");
         site[index] = (Scp) c;
+        c.setParent(this);
         return index;
     }
 
@@ -142,6 +143,7 @@ public class Site implements CardHolder {
             } else if (isThere && Objects.nonNull(site[i])) {
                 boolean flag = true;
                 for (ConditionParameter c : condition) {
+                    System.out.println("Condition : " + c.getName());
                     switch (SelectCondition.valueOf(c.getName())) {
                         case Cost:
                             if (site[i].getCost() != c.getPoint()) flag = false;
@@ -210,7 +212,9 @@ public class Site implements CardHolder {
         List<Effect> tmp = new ArrayList<>();
         for (Card c : site) {
             if (Objects.nonNull(c)) {
-                tmp.addAll(c.getEffects(trigger));
+                List<Effect> arr = c.getEffects(trigger);
+                if (Objects.nonNull(arr))
+                    tmp.addAll(arr);
             }
         }
         return tmp;
@@ -236,7 +240,6 @@ public class Site implements CardHolder {
     }
 
     public List<Card> setSize(int size, boolean justified, boolean throwable) {
-        Scp[] scp = new Scp[size];
         List<Card> overflow = new ArrayList<>();
         int scpCount = getScpCount();
         if (size < scpCount) {
@@ -299,19 +302,9 @@ public class Site implements CardHolder {
     }
 
     private K_Class isXK() {
-        int cost = 0;
-        boolean anomalous = false;
-        for (Scp s : site) {
-            if (s != null) {
-                if (!anomalous && (s instanceof Anomalous)) {
-                    anomalous = true;
-                    cost += this.anomalousCost;
-                } else {
-                    cost += s.getCost();
-                }
-            }
-        }
-        if (cost >= getMaxCost()) {
+
+        if (getCost() >=
+                getMaxCost()) {
             return K_Class.XK;
         }
         return null;

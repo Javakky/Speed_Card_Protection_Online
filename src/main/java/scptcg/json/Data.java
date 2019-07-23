@@ -8,7 +8,7 @@ public class Data {
     public String DeckName;
     public String[] CardName;
     public int[][] Coordinate;
-    public String SandBox;
+    public int SandBox;
     public String[] Zone;
     public boolean Player;
     public int Index;

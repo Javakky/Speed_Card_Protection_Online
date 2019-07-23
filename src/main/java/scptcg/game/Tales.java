@@ -21,7 +21,9 @@ public class Tales implements CardHolder {
     public Tales(Player player, Card[] card) {
         for (Card c : card) c.setParent(this);
         parent = player;
-        tales = (Tale[]) card;
+        for (int i = 0; i < card.length; i++) {
+            tales[i] = (Tale) card[i];
+        }
     }
 
     @Override
@@ -61,6 +63,7 @@ public class Tales implements CardHolder {
         for (int i = 0; i < tales.length; i++) {
             if (Objects.nonNull(tales[i]) && card instanceof Tale) {
                 tales[i] = (Tale) card;
+                card.setParent(this);
                 return i;
             }
         }

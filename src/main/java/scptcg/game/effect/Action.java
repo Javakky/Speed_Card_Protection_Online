@@ -32,8 +32,10 @@ public class Action extends AbstractAction {
         return tmpAction;
     }
 
-    public Result active(Result before) {
-        tmpBefore = before;
+    public Result active(Result before, Effect effect) {
+        if (before != null)
+            tmpBefore = before;
+        setParent(effect);
         Card card = getCard();
         tmpResult = new ResultBuilder(
                 getAction().name(),
@@ -42,6 +44,8 @@ public class Action extends AbstractAction {
                 card,
                 card.getName(),
                 card.getCoordinate());
+
+        System.out.println("Activate : " + getAction().name());
 
         switch (getAction()) {
 
@@ -84,9 +88,10 @@ public class Action extends AbstractAction {
 
             case Optional:
                 optionalActive();
+                break;
 
             default:
-                throw new IllegalArgumentException("存在しないアクションです。：" + getActionMessage());
+                throw new IllegalArgumentException("存在しないアクションです。：" + getAction().name());
         }
 
         tmpBefore = null;
@@ -95,14 +100,21 @@ public class Action extends AbstractAction {
 
     private void optionalActive() {
         tmpResult.setIsComplete(false);
+        tmpResult.setTargetPlayer(getCard().ownerIsFirst());
         tmpResult.setMessage(getParent().getMessage());
     }
 
     private void reContainment() {
-        int index = getPlayer().reContainment(getCard(), getParameter().getTargetClazz());
+        int index = getPlayer().reContainment((Scp) getCard(), getParameter().getTargetClazz());
         tmpResult.setCoordinate(index);
-        tmpResult.objectEqualSubject();
-        tmpResult.setIsComplete(false);
+        System.out.println("name : " + getCard().getName());
+        tmpResult.setObjects(
+                getPlayer().isFirst(),
+                getCard().whereZone(),
+                getCard(),
+                getCard().getName(),
+                getCard().getCoordinate());
+        tmpResult.setIsComplete(true);
     }
 
     private void breach() {
@@ -154,14 +166,15 @@ public class Action extends AbstractAction {
 
     private void minusSecure() {
         ((Scp) getCard()).minusSecure(getParameter().getPoint());
+        tmpResult.setIsComplete(true);
     }
 
     private void k_class() {
-        Parameter p = getParameter();
         List<Player> player = new ArrayList<>();
         getTargetPlayer(player);
         getGame().ignitionK(IK, player.get(0));
         tmpResult.setTargetPlayer(player.get(0).isFirst());
+        tmpResult.setIsComplete(true);
     }
 
     private <T> void add(Function<T[], Function<Zone, Function<Player, Function<Integer, Object>>>> func, T[] elements) {
@@ -170,8 +183,7 @@ public class Action extends AbstractAction {
             case Site: {
                 List<Player> player = new ArrayList<>();
                 getTargetPlayer(player);
-                int[][] coordinate = null;
-                Function<Player, Function<Integer, Object>> adder = func.apply(elements).apply(Zone.Site);
+                Function<Player, Function<Integer, Object>> adder = func.apply(elements).apply(p.getTargetZone());
                 if (isTargetPlayerOne()) {
                     for (int index : player.get(0).getSelectables(p.isThere(), p.getCondition())) {
                         adder.apply(player.get(0)).apply(index);
@@ -186,6 +198,17 @@ public class Action extends AbstractAction {
                 }
                 break;
             }
+            case PersonnelFile: {
+                List<Player> player = new ArrayList<>();
+                getTargetPlayer(player);
+                Function<Player, Function<Integer, Object>> adder = func.apply(elements).apply(p.getTargetZone());
+                if (isTargetPlayerOne()) {
+                    adder.apply(player.get(0)).apply(0);
+                } else {
+                    adder.apply(player.get(0)).apply(0);
+                    adder.apply(player.get(1)).apply(0);
+                }
+            }
         }
         tmpResult.setIsComplete(true);
     }
@@ -195,6 +218,7 @@ public class Action extends AbstractAction {
             player.addTag(zone, index, tags);
             return null;
         }, getParameter().getSubTag());
+        tmpResult.setIsComplete(true);
     }
 
     private void addEffect() {
@@ -202,20 +226,24 @@ public class Action extends AbstractAction {
             Effect effect = (Effect) effect_trigger[0];
             Trigger trigger = (Trigger) effect_trigger[1];
             player.addEffect(getParameter().getTargetZone(), index, effect, trigger);
+            System.out.println("カード名：" + player.getCard(getParameter().getTargetZone(), index));
+            System.out.println("効果：" + effect.getMessage());
+            System.out.println("発動条件：" + trigger);
             return null;
         }, new Object[]{getParameter().getSubEffect(), getParameter().getTrigger()});
+        tmpResult.setIsComplete(true);
     }
 
     private void changeProtectionSandBox() {
         Parameter p = getParameter();
-        int point;
+        int point = 0;
         switch (p.getReference()) {
             case "Cost":
-                Scp tmp = (Scp) (tmpBefore.getObject()[tmpBefore.getObjectPlayer() ? 0 : 1][0]);
+                Scp tmp = (Scp) (tmpBefore.getSubject());
                 point = tmp.getCost();
                 break;
             case "Secure":
-                tmp = (Scp) (tmpBefore.getObject()[tmpBefore.getObjectPlayer() ? 0 : 1][0]);
+                tmp = (Scp) (tmpBefore.getSubject());
                 point = tmp.getSecure();
                 break;
             case "Point":
@@ -226,6 +254,7 @@ public class Action extends AbstractAction {
                 break;
         }
         tmpResult.setOverlap(p.canOverlap());
+        tmpResult.setPoint(point);
         List<Player> player = new ArrayList<>();
         getTargetPlayer(player);
         tmpResult.setTargetPlayer(player.get(0).isFirst());
@@ -246,21 +275,41 @@ public class Action extends AbstractAction {
                     player.get(1).getSelectables(p.isThere(), p.getCondition())
             });
         }
-        tmpResult.setObjects(new Zone[][]{{p.getTargetZone()}}, null, null, null);
         tmpResult.setIsComplete(false);
+        tmpResult.setTargetZone(p.getTargetZone());
+        tmpResult.setNextAction(p.getNextAction().name());
     }
 
     private void decommission() {
+        int coord = -1;
         if (getParameter().isThis()) {
+            coord = getCard().getCoordinate();
+            tmpResult.setTargetZone(getCard().whereZone());
             getPlayer().decommission(getCard().whereZone(), getCard());
         } else {
+            tmpResult.setTargetZone(getParameter().getTargetZone());
             switch (getParameter().getTargetZone()) {
                 case PersonnelFile:
-                    getPlayer().decommission(Zone.PersonnelFile, null);
+                    coord = 0;
+                    Card pf = getPlayer().getCard(Zone.PersonnelFile, 0);
+                    tmpResult.setTargetZone(pf.whereZone());
+                    getPlayer().decommission(Zone.PersonnelFile, pf);
+                    tmpResult.setObjects(
+                            pf.ownerIsFirst(),
+                            pf.whereZone(),
+                            pf,
+                            pf.getName(),
+                            pf.getCoordinate()
+                    );
                     break;
+                case Site:
+                    coord = getParent().getParent().getCoordinate();
+                    tmpResult.setTargetZone(getPlayer().getCard(Zone.Site, coord).whereZone());
+                    getPlayer().decommission(Zone.Site, getParent().getParent());
             }
         }
         tmpResult.objectEqualSubject();
+        tmpResult.setCoordinate(coord);
         tmpResult.setIsComplete(true);
     }
 }

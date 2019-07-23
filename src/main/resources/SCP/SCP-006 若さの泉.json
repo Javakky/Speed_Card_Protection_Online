@@ -24,7 +24,10 @@
           "canActive": true,
           "condition": [
             {
-              "action": "FirstTimeInTurn"
+              "action": "FirstTimeInTurn",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
             }
           ],
           "action": [

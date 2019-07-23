@@ -21,7 +21,7 @@
                     "point": 0
                   },
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   },
                   {
                     "name": "FirstTimeInTurn"
@@ -42,10 +42,11 @@
                     "point": 0
                   },
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
                 ],
-                "targetZone": "Site"
+                "targetZone": "Site",
+                "nextAction": "Decommission"
               }
             }
           ]

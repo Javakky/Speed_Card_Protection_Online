@@ -96,7 +96,7 @@ public class Condition extends AbstractAction {
 
     private boolean nonPartner() {
         if (!(getCard() instanceof Scp)) return false;
-        return ((Scp) getCard()).isPartner();
+        return !((Scp) getCard()).isPartner();
     }
 
 }

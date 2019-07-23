@@ -28,15 +28,33 @@ public class SandBox implements CardHolder {
     private Player parent;
     private Zone zone;
 
-    public SandBox(Player parent, Clazz clazz, int maxProtectionForce, int size, Scp... sandBox) {
-        if (size != sandBox.length) throw new IllegalArgumentException("カードの枚数が適切ではありません");
-        this.sandBox = Arrays.asList(sandBox);
+    public SandBox(Player parent, Clazz clazz, int maxProtectionForce, int size, Card... sandBox) {
+        if (size > sandBox.length) throw new IllegalArgumentException("カードの枚数が適切ではありません");
+        this.sandBox = new ArrayList<>();
+        for (Card box : sandBox) {
+            this.sandBox.add((Scp) box);
+        }
         this.clazz = clazz;
         this.maxProtectionForce = maxProtectionForce;
         this.protectionForce = maxProtectionForce;
         this.size = size;
         this.parent = parent;
+        this.zone = classToZone(clazz);
         for (Card c : sandBox) c.setParent(this);
+        shuffle();
+
+    }
+
+    private Zone classToZone(Clazz clazz) {
+        switch (clazz) {
+            case Safe:
+                return Zone.SafeSandbox;
+            case Euclid:
+                return Zone.EuclidSandbox;
+            case Keter:
+                return Zone.KeterSandbox;
+        }
+        return null;
     }
 
     public int getProtection() {
@@ -85,7 +103,6 @@ public class SandBox implements CardHolder {
 
     @Override
     public void nextTurn() {
-
     }
 
     @Override
@@ -102,6 +119,7 @@ public class SandBox implements CardHolder {
     public int addCard(Card card) {
         if (card instanceof Scp) {
             sandBox.add((Scp) card);
+            card.setParent(this);
             return sandBox.size() - 1;
         }
         throw new IllegalArgumentException("cardはSCPではありません");
@@ -133,7 +151,8 @@ public class SandBox implements CardHolder {
         this.protectionForce--;
         if (!remainProtection()) {
             refreshProtection();
-            return getTop();
+            Scp tmp = getTop();
+            return tmp;
         }
         return null;
     }
@@ -144,18 +163,20 @@ public class SandBox implements CardHolder {
 
     public Scp damage(int point) {
         if (point <= 0) {
-            throw new IllegalArgumentException("pointが0以下です");
+            return null;
         } else if (point != 1) {
             protectionForce -= (point - 1);
         }
         return damage();
     }
 
-    public void heal(int point) {
+    public int heal(int point) {
+        int before = protectionForce;
         protectionForce += point;
         if (protectionForce > maxProtectionForce) {
             refreshProtection();
         }
+        return protectionForce - before;
     }
 
     @Override

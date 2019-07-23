@@ -48,6 +48,7 @@ public class Exclusion implements CardHolder {
     @Override
     public int addCard(final Card card) {
         exclusion.add(card);
+        card.setParent(this);
         return exclusion.size() - 1;
     }
 

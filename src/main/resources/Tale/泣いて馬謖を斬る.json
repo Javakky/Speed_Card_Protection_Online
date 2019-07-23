@@ -17,7 +17,7 @@
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
                 ]
               }
@@ -27,14 +27,15 @@
             {
               "action": "Select",
               "parameter": {
-                "targetPlayer": "Both",
+                "targetPlayer": "Me",
                 "isThere": true,
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
-                ]
+                ],
+                "nextAction": "Decommission"
               }
             },
             {

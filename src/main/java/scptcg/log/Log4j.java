@@ -48,7 +48,7 @@ public class Log4j implements Logger {
      * @param obj : ログが出力される Class Object
      * @param msg : 出力メッセージ
      */
-    public void info(final Object obj, final String msg) {
+    public synchronized void info(final Object obj, final String msg) {
         LogManager.getLogger(obj.getClass()).info(msg);
     }
 
@@ -57,7 +57,7 @@ public class Log4j implements Logger {
      *
      * @param msg : 警告メッセージ
      */
-    public void warn(final String msg) {
+    public synchronized void warn(final String msg) {
         LogManager.getLogger(this.getClass()).warn(getMessage(msg));
     }
 
@@ -66,15 +66,15 @@ public class Log4j implements Logger {
      *
      * @param e : 例外情報
      */
-    public void error(final Throwable e) {
+    public synchronized void error(final Throwable e) {
         LogManager.getLogger(e.getClass()).error(getErrorMessage(e));
     }
 
-    public void trace(final String msg) {
+    public synchronized void trace(final String msg) {
         LogManager.getLogger(this.getClass()).trace(getMessage(msg));
     }
 
-    public void fatal(final String msg) {
+    public synchronized void fatal(final String msg) {
         LogManager.getLogger(this.getClass()).fatal(getMessage(msg));
     }
 

@@ -25,14 +25,18 @@
           "canActive": true,
           "condition": [
             {
-              "action": "NonPartner"
+              "action": "NonPartner",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
             }
           ],
           "action": [
             {
               "action": "Decommission",
               "parameter": {
-                "isThis": true
+                "isThis": true,
+                "targetPlayer": "Me"
               }
             },
             {

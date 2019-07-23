@@ -51,6 +51,7 @@ public abstract class AbstractAction {
 
     public boolean getTargetPlayer(List<Player> result) {
         switch (TargetPlayerCategory.valueOf(getParameter().getTargetPlayer())) {
+
             case Me:
                 result.add(getPlayer());
                 return true;

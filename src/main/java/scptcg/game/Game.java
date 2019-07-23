@@ -1,13 +1,11 @@
 package scptcg.game;
 
-import scptcg.game.card.Card;
-import scptcg.game.card.Clazz;
-import scptcg.game.card.Scp;
-import scptcg.game.card.Tale;
+import scptcg.game.card.*;
 import scptcg.game.effect.*;
 import scptcg.game.exception.NotActivableException;
 import scptcg.game.exception.NotFillConditionException;
 import scptcg.json.Deck;
+import scptcg.server.Events;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,6 @@ public class Game {
     protected HeadCanon canon;
     Player[] players;
     List<List<Effect>> waitEffect = new ArrayList<>(4);
-    List<Scp> waitBreach = new ArrayList<>();
     private boolean turnPlayer;
     private int turn;
     private K_Class scenario = null;
@@ -35,10 +32,17 @@ public class Game {
         int r = new Random(System.currentTimeMillis()).nextInt(2);
         players = new Player[2];
         players[r] = new Player(this, waiter, waiterDeck, xk, nk);
-        players[r == 0 ? 1 : 0] = new Player(this, waiter, waiterDeck, xk, nk);
+        players[r == 0 ? 1 : 0] = new Player(this, visitor, visitorDeck, xk, nk);
         firstPlayer = true;
         turnPlayer = this.firstPlayer;
         canon = new HeadCanon(this, null);
+        for (int i = 0; i < 4; i++) {
+            waitEffect.add(new ArrayList<>());
+        }
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public void ignitionK(K_Class k, Player player) {
@@ -82,45 +86,55 @@ public class Game {
         return getPlayer(isFirst).getRemainSandBox(clazz);
     }
 
-    public void selectEffect(boolean isFirst, Zone zone, int index, int effectIndex, List<Result> result) {
+    public void selectEffect(boolean isFirst, Zone zone, int index, int effectIndex) {
         if (isFirst == turnPlayer) {
+            System.out.println("player : " + isFirst + " zone : " + zone + " index : " + index + " efIndex : " + effectIndex);
             Effect effect = getPlayer(isFirst).getEffect(zone, index, Trigger.Sometime, effectIndex);
             if (Objects.nonNull(effect)) {
                 addWaitEffect(effect);
-                if (effect.getParent().whereZone() == Zone.Tales && Objects.nonNull(result)) {
-                    activing = (Tale) effect.getParent();
-                    ResultBuilder rb = new ResultBuilder(
-                            ActionMethod.ActiveTale.name(),
-                            activing.ownerIsFirst(),
-                            Zone.Tales,
-                            activing,
-                            activing.getName(),
-                            activing.getCoordinate()
-                    );
-                    result.add(rb.createResult());
-                }
             }
+            System.out.println("effect" + effect.getMessage());
         }
     }
 
     private void addWaitEffect(Effect effect) {
         int addIndex = (isChainSolving ? 2 : 0) + (effect.ownerIsFirst() ? 0 : 1);
-        if (Objects.isNull(waitEffect.get(addIndex))) waitEffect.set(addIndex, new ArrayList<>());
+        if (Objects.nonNull(waitEffect) && (waitEffect.size() <= addIndex || Objects.isNull(waitEffect.get(addIndex))))
+            waitEffect.set(addIndex, new ArrayList<>());
         waitEffect.get(addIndex).add(effect);
     }
+
+    public boolean isChainSolving() {
+        return isChainSolving;
+    }
+
 
     public boolean activeEffect(Result before, List<Result> result) {
         if (!isActive) isActive = true;
         if (!isChainSolving) isChainSolving = true;
         if (!isWait()) throw new NotFillConditionException("スタックには効果が積まれていません");
+        for (int i = 0; i < 4 && waitEffect.get(0).size() <= 0; i++) {
+            for (int j = 0; j < waitEffect.size() - 1; j++) {
+                waitEffect.set(j, waitEffect.get(j + 1));
+            }
+            waitEffect.set(waitEffect.size() - 1, new ArrayList<>());
+            if (i == 4 - 1) {
+                isChainSolving = false;
+            }
+        }
         boolean finish;
         try {
             waitEffect.get(0).get(0).addBefore(before);
             finish = waitEffect.get(0).get(0).active(result);
+            Card card = waitEffect.get(0).get(0).getParent();
+            if (card.getCategory() == CardCategory.Tale && card instanceof Tale) {
+                activing = (Tale) card;
+            }
         } catch (NotActivableException e) {
             ResultBuilder rb = new ResultBuilder(ActionMethod.Fail.name(), turnPlayer, null, null, null, -1);
             finish = true;
             result.add(rb.createResult());
+            System.out.println("Fail Effect");
         }
         if (finish) {
             return finishEffect(result);
@@ -147,6 +161,7 @@ public class Game {
     private boolean finishEffect(List<Result> result) {
         if (isActive) {
             isActive = false;
+            System.out.println("Effect is Fin");
             waitEffect.get(0).remove(0);
             if (Objects.nonNull(activing) && Objects.nonNull(result)) {
                 ResultBuilder rb = new ResultBuilder(
@@ -179,7 +194,7 @@ public class Game {
 
     public boolean isWait() {
         if (isChainSolving) return true;
-        return waitEffect.get(0).size() > 0;
+        return waitEffect.get(0).size() == 0 ? waitEffect.get(1).size() > 0 : waitEffect.get(0).size() > 0;
     }
 
     public int effectSize(boolean isFirst, Zone zone, int index) {
@@ -187,18 +202,28 @@ public class Game {
     }
 
 
-    public void nextTurn() {
+    public boolean nextTurn() {
+        if (isActive() || isChainSolving()) {
+            return false;
+        }
         this.turn++;
         this.turnPlayer = !turnPlayer;
         for (Player p : this.players) {
             p.nextTurn();
         }
-        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart));
-        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd));
+        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart, Zone.Decommissioned, Zone.Site));
+        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
+        return true;
     }
 
     private void addWaitEffects(List<Effect> effects) {
+        if (Objects.isNull(effects)) {
+            System.out.println("Effect is null");
+            return;
+        }
+        System.out.println("effectSize : " + effects.size());
         for (Effect effect : effects) {
+            System.out.println(effect.getMessage());
             addWaitEffect(effect);
         }
     }
@@ -231,6 +256,7 @@ public class Game {
         int point = p.crossTest(testerIndex);
         addWaitEffects(p.getEffects(Zone.Site, testerIndex, Trigger.CrossTest));
         damage(!isFirst, sandBox, point, breached);
+        System.out.println("cross: " + sandBox.name());
 
         return point;
     }
@@ -246,12 +272,32 @@ public class Game {
 
     public Card decommission(boolean isFirst, Zone zone, int index) {
         Card c = getPlayer(isFirst).decommission(zone, index);
-        addWaitEffects(c.getEffects(Trigger.Decommissioned));
+        List<Effect> arr = c.getEffects(Trigger.Decommissioned);
+        if (Objects.nonNull(arr))
+            addWaitEffects(arr);
+        ResultBuilder result = new ResultBuilder(
+                Events.Decommission.name(),
+                c.getPlayer().isFirst(),
+                Zone.Decommissioned,
+                c,
+                c.getName(),
+                c.getCoordinate()
+        );
+        setBefore(result.createResult());
         return c;
     }
 
-    public void healSandBox(boolean isFirst, Clazz clazz, int point) {
-        getPlayer(isFirst).heal(clazz, point);
+    private void setBefore(Result result) {
+        if (isActive()) {
+            waitEffect.get(0).get(0).addBefore(result);
+        }
+    }
+
+    public int healSandBox(boolean isFirst, Clazz clazz, int point) {
+        ResultBuilder result = new ResultBuilder(ActionMethod.HealSandBox.name(), isFirst, clazzToZone(clazz), null, null, -1);
+        result.setPoint(point);
+        setBefore(result.createResult());
+        return getPlayer(isFirst).heal(clazz, point);
     }
 
     public Card[] getCards(boolean isFirst, Zone zone) {
@@ -259,6 +305,7 @@ public class Game {
     }
 
     public Player getEnemy(String name) {
+        System.out.println("player[0]: \"" + players[0].getName() + "\" player[1]: \"" + players[1].getName() + "\" player: \"" + name + "\"");
         return players[0].getName().equals(name) ? players[1] : players[0];
     }
 
@@ -275,7 +322,7 @@ public class Game {
     }
 
     public boolean isK() {
-        return Objects.isNull(scenario);
+        return Objects.nonNull(scenario);
     }
 
     public K_Class getScenario() {
@@ -295,7 +342,10 @@ public class Game {
     }
 
     public Scp breach(boolean player, String name, Clazz clazz, int index) {
-        addWaitEffects(getPlayer(player).getCard(clazzToZone(clazz), index).getEffects(Trigger.Breached));
+        addWaitEffects(
+                Objects.requireNonNull(
+                        getPlayer(player).getCard(Objects.requireNonNull(clazzToZone(clazz)), name)
+                ).getEffects(Trigger.Breached));
         return getPlayer(player).breach(name, clazz, index);
     }
 
@@ -322,5 +372,13 @@ public class Game {
 
     public Card getDecommisionedTop(boolean isFirst) {
         return getPlayer(isFirst).getTop(Zone.Decommissioned);
+    }
+
+    public void reContainment(boolean isFirst, Scp card, Clazz clazz) {
+        getPlayer(isFirst).reContainment(card, clazz);
+    }
+
+    public Card find(boolean isFirst, Zone zone, String name) {
+        return getPlayer(isFirst).find(zone, name);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "category": "SCP",
+  "name": "SCP-169 リヴァイアサン",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 11,
+  "clazz": "Keter",
+  "tag": [
+    "scp",
+    "未収容",
+    "水棲",
+    "無脊椎動物",
+    "生命",
+    "節足動物"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

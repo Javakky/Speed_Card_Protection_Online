@@ -25,14 +25,20 @@
             {
               "action": "HasSCP",
               "parameter": {
-                "targetPlayer": "Me",
+                "targetPlayer": "Any",
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "CrossTested"
+                    "name": "CrossTested",
+                    "parameter": {
+                      "targetPlayer": "Me"
+                    }
                   },
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner",
+                    "parameter": {
+                      "targetPlayer": "Me"
+                    }
                   }
                 ]
               }
@@ -42,14 +48,15 @@
             {
               "action": "Select",
               "parameter": {
-                "targetPlayer": "Both",
+                "nextAction": "Decommission",
+                "targetPlayer": "Any",
                 "isThere": true,
                 "condition": [
                   {
                     "name": "CrossTested"
                   },
                   {
-                    "name": "NonPartner"
+                    "name": "NotPartner"
                   }
                 ],
                 "targetZone": "Site"

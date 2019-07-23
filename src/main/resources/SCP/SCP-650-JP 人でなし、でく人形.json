@@ -1,0 +1,19 @@
+{
+  "category": "SCP",
+  "name": "SCP-650-JP 人でなし、でく人形",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "人間型",
+    "死体",
+    "物理法則",
+    "瞬間移動",
+    "知性"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

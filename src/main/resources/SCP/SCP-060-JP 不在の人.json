@@ -1,0 +1,16 @@
+{
+  "category": "SCP",
+  "name": "SCP-060-JP 不在の人",
+  "canDecommission": true,
+  "cost": 0,
+  "secure": 0,
+  "clazz": "Safe",
+  "tag": [
+    "コンピュータ",
+    "scp-jp",
+    "情報災害"
+  ],
+  "canPartner": false,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

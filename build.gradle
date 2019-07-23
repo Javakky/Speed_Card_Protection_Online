@@ -3,6 +3,7 @@ plugins {
     id 'nu.studer.jooq' version '3.0.3'
     id 'com.github.hierynomus.license' version '0.15.0'
     id 'war'
+    id 'jacoco'
     //id "org.gretty" version "2.3.0"
 }
 
@@ -23,8 +24,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: 'latest.integration'
     testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: 'latest.integration'
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: 'latest.integration'
-    testCompile group: 'javax', name: 'javaee-api', version: '8.0'
-    compileOnly group: 'javax', name: 'javaee-api', version: '8.0'
+    testCompile group: 'javax', name: 'javaee-api', version: 'latest.integration'
+    compileOnly group: 'javax', name: 'javaee-api', version: 'latest.integration'
     //compileOnly group: 'org.projectlombok', name: 'lombok', version: 'latest.integration'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
     jooqRuntime group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
@@ -74,7 +75,7 @@ javadoc {
 }
 
 gretty {
-    servletContainer = 'tomcat9'
+    servletContainer = 'tomcat7'
     jvmArgs = ['-Dfile.encoding=UTF-8']
 }
 

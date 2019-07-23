@@ -3,7 +3,6 @@ package scptcg.game;
 import scptcg.game.card.Anomalous;
 import scptcg.game.card.Card;
 import scptcg.game.card.CardCategory;
-import scptcg.game.card.Scp;
 import scptcg.game.effect.ConditionParameter;
 import scptcg.game.effect.Effect;
 import scptcg.game.effect.Trigger;
@@ -17,7 +16,9 @@ public class AnomalousRocker implements CardHolder {
     public AnomalousRocker(Player player, Card[] card) {
         for (Card c : card) c.setParent(this);
         parent = player;
-        rocker.addAll(Arrays.asList((Anomalous[]) card));
+        for (Card c : card) {
+            rocker.add((Anomalous) c);
+        }
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AnomalousRocker implements CardHolder {
 
     @Override
     public int addCard(Card card) {
-        if (card instanceof Scp) {
+        if (card instanceof Anomalous) {
             rocker.add((Anomalous) card);
             return rocker.size() - 1;
         }

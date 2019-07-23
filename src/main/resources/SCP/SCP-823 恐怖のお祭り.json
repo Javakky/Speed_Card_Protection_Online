@@ -1,0 +1,17 @@
+{
+  "category": "SCP",
+  "name": "SCP-823 恐怖のお祭り",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Euclid",
+  "tag": [
+    "場所",
+    "聴覚",
+    "認識災害",
+    "scp"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

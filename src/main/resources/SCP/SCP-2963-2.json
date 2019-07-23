@@ -1,0 +1,18 @@
+{
+  "category": "SCP",
+  "name": "SCP-2963-2",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 1,
+  "clazz": "Euclid",
+  "tag": [
+    "サーキック",
+    "d-con2016",
+    "scp",
+    "体肢",
+    "自我"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}
