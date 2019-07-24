@@ -143,7 +143,7 @@ public class Site implements CardHolder {
             } else if (isThere && Objects.nonNull(site[i])) {
                 boolean flag = true;
                 for (ConditionParameter c : condition) {
-                    System.out.println("Condition : " + c.getName());
+                    //System.out.println("Condition : " + c.getName());
                     switch (SelectCondition.valueOf(c.getName())) {
                         case Cost:
                             if (site[i].getCost() != c.getPoint()) flag = false;

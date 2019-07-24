@@ -22,7 +22,7 @@ public interface CardHolder {
     static Card find(final String cardName, final List<? extends Card> list) {
         for (Card c : list) {
             if (c != null) {
-                System.out.println("find watch: " + c.getName());
+                //System.out.println("find watch: " + c.getName());
                 if (c.getName().equals(cardName)) {
                     return c;
                 }

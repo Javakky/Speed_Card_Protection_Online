@@ -27,6 +27,7 @@ public class Game {
     private int xk = 7;
     private int nk = 7;
     private Tale activing = null;
+    private List<History> history;
 
     public Game(String waiter, Deck waiterDeck, String visitor, Deck visitorDeck) {
         int r = new Random(System.currentTimeMillis()).nextInt(2);
@@ -39,6 +40,8 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             waitEffect.add(new ArrayList<>());
         }
+        result = new ArrayList<>();
+        result.add(new ArrayList<>());
     }
 
     public boolean isActive() {
@@ -88,12 +91,12 @@ public class Game {
 
     public void selectEffect(boolean isFirst, Zone zone, int index, int effectIndex) {
         if (isFirst == turnPlayer) {
-            System.out.println("player : " + isFirst + " zone : " + zone + " index : " + index + " efIndex : " + effectIndex);
+            //System.out.println("player : " + isFirst + " zone : " + zone + " index : " + index + " efIndex : " + effectIndex);
             Effect effect = getPlayer(isFirst).getEffect(zone, index, Trigger.Sometime, effectIndex);
             if (Objects.nonNull(effect)) {
                 addWaitEffect(effect);
             }
-            System.out.println("effect" + effect.getMessage());
+            //System.out.println("effect" + effect.getMessage());
         }
     }
 
@@ -126,6 +129,7 @@ public class Game {
         try {
             waitEffect.get(0).get(0).addBefore(before);
             finish = waitEffect.get(0).get(0).active(result);
+
             Card card = waitEffect.get(0).get(0).getParent();
             if (card.getCategory() == CardCategory.Tale && card instanceof Tale) {
                 activing = (Tale) card;
@@ -161,7 +165,7 @@ public class Game {
     private boolean finishEffect(List<Result> result) {
         if (isActive) {
             isActive = false;
-            System.out.println("Effect is Fin");
+            System.out.println("Effect is Finish");
             waitEffect.get(0).remove(0);
             if (Objects.nonNull(activing) && Objects.nonNull(result)) {
                 ResultBuilder rb = new ResultBuilder(
@@ -213,6 +217,7 @@ public class Game {
         }
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart, Zone.Decommissioned, Zone.Site));
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
+        result.add(new ArrayList<>());
         return true;
     }
 
@@ -221,9 +226,9 @@ public class Game {
             System.out.println("Effect is null");
             return;
         }
-        System.out.println("effectSize : " + effects.size());
+        //System.out.println("effectSize : " + effects.size());
         for (Effect effect : effects) {
-            System.out.println(effect.getMessage());
+            //System.out.println(effect.getMessage());
             addWaitEffect(effect);
         }
     }
@@ -256,7 +261,7 @@ public class Game {
         int point = p.crossTest(testerIndex);
         addWaitEffects(p.getEffects(Zone.Site, testerIndex, Trigger.CrossTest));
         damage(!isFirst, sandBox, point, breached);
-        System.out.println("cross: " + sandBox.name());
+        //System.out.println("cross: " + sandBox.name());
 
         return point;
     }
@@ -305,7 +310,7 @@ public class Game {
     }
 
     public Player getEnemy(String name) {
-        System.out.println("player[0]: \"" + players[0].getName() + "\" player[1]: \"" + players[1].getName() + "\" player: \"" + name + "\"");
+        //System.out.println("player[0]: \"" + players[0].getName() + "\" player[1]: \"" + players[1].getName() + "\" player: \"" + name + "\"");
         return players[0].getName().equals(name) ? players[1] : players[0];
     }
 

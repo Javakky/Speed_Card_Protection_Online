@@ -1,8 +1,9 @@
 package scptcg.json;
 
 import com.google.gson.Gson;
+import scptcg.game.IResult;
 
-public class Data {
+public class Data implements IResult {
     public String PlayerName;
     public String Event;
     public String DeckName;

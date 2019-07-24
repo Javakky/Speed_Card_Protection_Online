@@ -527,7 +527,7 @@ public final class EndPoint {
             else {
                 sender = SendFormatter.ENEMY;
             }
-            System.out.println("effectsss: " + sender + ":" + data.PlayerName + ":" + game.isFirst(data.PlayerName) + ":" + r.getSubject().ownerIsFirst());
+            //System.out.println("effectsss: " + sender + ":" + data.PlayerName + ":" + game.isFirst(data.PlayerName) + ":" + r.getSubject().ownerIsFirst());
             switch (ActionMethod.valueOf(r.getAction())) {
                 case ActiveTale:
                     send(name, SendFormatter.activeTale(data.Player, r.getSubjectName(), r.getSubjectCoordinate()));

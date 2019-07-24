@@ -1,9 +1,10 @@
 package scptcg.game.effect;
 
+import scptcg.game.IResult;
 import scptcg.game.Zone;
 import scptcg.game.card.Card;
 
-public class Result {
+public final class Result implements IResult {
     private final String action;
     private final boolean subjectPlayer;
     private final Zone subjectZone;

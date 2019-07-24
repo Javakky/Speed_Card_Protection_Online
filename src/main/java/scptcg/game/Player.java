@@ -213,7 +213,7 @@ public class Player {
     }
 
     public Card getCard(Zone zone, String name) {
-        System.out.println(zone.name());
+        //System.out.println(zone.name());
         return getArea(zone).find(name);
     }
 
@@ -318,7 +318,7 @@ public class Player {
 
 
     public Card decommission(Zone zone, int index) {
-        System.out.println("Zone : " + zone.name());
+        //System.out.println("Zone : " + zone.name());
         Card c = getArea(zone).pick(index);
         if (Objects.isNull(c)) throw new NullPointerException();
         this.decommissioned.addCard(c);

@@ -45,7 +45,7 @@ public class Action extends AbstractAction {
                 card.getName(),
                 card.getCoordinate());
 
-        System.out.println("Activate : " + getAction().name());
+        //System.out.println("Activate : " + getAction().name());
 
         switch (getAction()) {
 
@@ -107,7 +107,7 @@ public class Action extends AbstractAction {
     private void reContainment() {
         int index = getPlayer().reContainment((Scp) getCard(), getParameter().getTargetClazz());
         tmpResult.setCoordinate(index);
-        System.out.println("name : " + getCard().getName());
+        //System.out.println("name : " + getCard().getName());
         tmpResult.setObjects(
                 getPlayer().isFirst(),
                 getCard().whereZone(),
@@ -226,9 +226,9 @@ public class Action extends AbstractAction {
             Effect effect = (Effect) effect_trigger[0];
             Trigger trigger = (Trigger) effect_trigger[1];
             player.addEffect(getParameter().getTargetZone(), index, effect, trigger);
-            System.out.println("カード名：" + player.getCard(getParameter().getTargetZone(), index));
-            System.out.println("効果：" + effect.getMessage());
-            System.out.println("発動条件：" + trigger);
+            //System.out.println("カード名：" + player.getCard(getParameter().getTargetZone(), index));
+            //System.out.println("効果：" + effect.getMessage());
+            //System.out.println("発動条件：" + trigger);
             return null;
         }, new Object[]{getParameter().getSubEffect(), getParameter().getTrigger()});
         tmpResult.setIsComplete(true);
