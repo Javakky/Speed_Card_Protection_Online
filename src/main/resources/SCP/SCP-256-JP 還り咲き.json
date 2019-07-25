@@ -1,0 +1,45 @@
+{
+  "category": "SCP",
+  "name": "SCP-256-JP 還り咲き",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 1,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "感情",
+    "樹木",
+    "生命",
+    "精神影響"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Breached": [
+        {
+          "message": "このオブジェクトが収容違反した時に発現する。自分のDecommissinoedにあるオブジェクト1つにつき、このオブジェクトの確保力を＋○○する。(この効果は永続する。)",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+          ],
+          "action": [
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "DecommissionedNumber"
+              }
+            },
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "DecommissionedNumber"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

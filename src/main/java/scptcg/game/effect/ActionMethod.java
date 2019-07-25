@@ -13,5 +13,11 @@ public enum ActionMethod implements IActionMethod {
     MinusSecure,
     Fail,
     Optional,
-    ActiveTale
+    ActiveTale,
+    LostEffect,
+    PlusSecure,
+    SetSecure,
+    UpXKCost,
+    CancelK,
+    SecureToZero
 }

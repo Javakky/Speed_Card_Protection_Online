@@ -6,6 +6,7 @@ import scptcg.game.IResult;
 public class Data implements IResult {
     public String PlayerName;
     public String Event;
+    public String[] Type;
     public String DeckName;
     public String[] CardName;
     public int[][] Coordinate;

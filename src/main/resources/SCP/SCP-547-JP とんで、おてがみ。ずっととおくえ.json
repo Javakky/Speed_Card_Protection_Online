@@ -1,0 +1,41 @@
+{
+  "category": "SCP",
+  "name": "SCP-547-JP とんで、おてがみ。ずっととおくえ",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Neutralized",
+  "containmentClass": "Euclid",
+  "tag": [
+    "euclid",
+    "scp-jp",
+    "強制力",
+    "文書",
+    "精神的影響",
+    "錯視",
+    "観測",
+    "認識災害"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "CrossTest": [
+        {
+          "message": "このオブジェクトがクロステストした時、そのクロステストの後で発現する。このオブジェクトを終了する。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "action": [
+            {
+              "action": "Decommission",
+              "parameter": {
+                "isThis": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

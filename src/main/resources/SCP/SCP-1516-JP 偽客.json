@@ -1,12 +1,28 @@
 {
-  "category": "Personnel",
-  "name": "河上　涼",
+  "category": "SCP",
+  "name": "SCP-1516-JP 偽客",
   "canDecommission": true,
+  "cost": 2,
+  "secure": 3,
+  "clazz": "Euclid",
+  "tag": [
+    "バクテリア",
+    "scp-jp",
+    "如来観光",
+    "日本生類総研",
+    "無脊椎動物",
+    "生命",
+    "肉食",
+    "生物災害"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
   "effects": {
     "effects": {
-      "Sometime": [
+      "Breached": [
         {
-          "message": "1ターンに1度、自分のサイト上に存在する確保力が0のオブジェクトをdecommissionedに送ることができる。",
+          "message": "自分のサイト上のオブジェクトを1つ終了してもよい。そうしたなら、このオブジェクトの確保力を終了したオブジェクトのコスト分だけ増やす。",
           "activationsCount": 2147483647,
           "canActive": true,
           "condition": [
@@ -17,39 +33,34 @@
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "Secure",
-                    "point": 0
-                  },
-                  {
                     "name": "NotPartner"
                   }
                 ]
-              }
-            },
-            {
-              "action": "FirstTimeInTurn",
-              "parameter": {
-                "targetPlayer": "Me"
               }
             }
           ],
           "action": [
             {
+              "action": "Optional"
+            },
+            {
               "action": "Select",
               "parameter": {
                 "targetPlayer": "Me",
                 "isThere": true,
+                "targetZone": "Site",
                 "condition": [
-                  {
-                    "name": "Secure",
-                    "point": 0
-                  },
                   {
                     "name": "NotPartner"
                   }
                 ],
-                "targetZone": "Site",
                 "nextAction": "Decommission"
+              }
+            },
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "Cost"
               }
             }
           ]

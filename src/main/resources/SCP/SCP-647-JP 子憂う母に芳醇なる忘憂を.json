@@ -1,0 +1,59 @@
+{
+  "category": "SCP",
+  "name": "SCP-647-JP 子憂う母に芳醇なる忘憂を",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 2,
+  "clazz": "Safe",
+  "tag": [
+    "性的",
+    "木製",
+    "液体",
+    "生物学",
+    "石榴倶楽部",
+    "聴覚",
+    "自己修復",
+    "食物"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "TurnStart": [
+        {
+          "message": "自分のターンのはじめに発現する。このオブジェクトの確保力が○○でないなら、このオブジェクトの確保力を○○にして自分のサンドボックス1つの保護力を1回復する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureNon",
+              "parameter": {
+                "point": 2,
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "SetSecure",
+              "parameter": {
+                "point": 2,
+                "targetPlayer": "Me"
+              }
+            },
+            {
+              "action": "HealSandBox",
+              "parameter": {
+                "reference": "Point",
+                "canOverlap": false,
+                "point": 1,
+                "targetPlayer": "Me"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

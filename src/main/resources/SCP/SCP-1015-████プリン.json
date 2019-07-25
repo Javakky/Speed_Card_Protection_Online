@@ -1,0 +1,68 @@
+{
+  "category": "Euclid",
+  "name": "SCP-1015-████プリン",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 5,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "容器",
+    "食物",
+    "容器"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "1ターンに1度起動できる。このオブジェクトの確保力を0にし、減った確保力と同じだけ自分のサンドボックスの保護力を回復する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureIsZero",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "SecureToZero"
+            },
+            {
+              "action": "HealSandBox",
+              "parameter": {
+                "targetPlayer": "Me",
+                "overlap": true,
+                "count": 1,
+                "reference": "Before"
+              }
+            }
+          ]
+        }
+      ],
+      "TurnStart": [
+        {
+          "message": "このオブジェクトの確保力を＋○する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+          ],
+          "action": [
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "Point",
+                "point": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

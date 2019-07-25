@@ -1,0 +1,52 @@
+{
+  "category": "SCP",
+  "name": "SCP-193-JP 赤兵衛",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 5,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "儀式",
+    "牛",
+    "知性",
+    "自動装置",
+    "自我",
+    "道具"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "CrossTest": [
+        {
+          "message": "このオブジェクトの確保力が3以下であれば、自分のサンドボックスを1つ選んで2ダメージを与える。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureUnder",
+              "parameter": {
+                "targetPlayer": "Me",
+                "point": 3
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "DamageSandBox",
+              "parameter": {
+                "targetPlayer": "Me",
+                "overlap": true,
+                "count": 1,
+                "point": 2,
+                "reference": "Point"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

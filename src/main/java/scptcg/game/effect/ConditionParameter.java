@@ -1,9 +1,12 @@
 package scptcg.game.effect;
 
+import scptcg.game.card.Clazz;
+
 public class ConditionParameter {
     private String name;
     private int point;
     private String tag;
+    private String clazz;
 
     public String getName() {
         return name;
@@ -27,5 +30,13 @@ public class ConditionParameter {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public Clazz getClazz() {
+        return Clazz.valueOf(clazz);
+    }
+
+    public void setClazz(Clazz clazz) {
+        this.clazz = clazz.name();
     }
 }

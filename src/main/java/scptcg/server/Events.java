@@ -10,6 +10,7 @@ public enum Events {
     CanCrossTest,
     Breach,
     GetEffect,
+    LostEffect,
     GetDecommissioned,
     GetPartnerables,
     GetEmptySite,

@@ -461,4 +461,18 @@ public class SendFormatter {
         return toListMe(data.toJson());
     }
 
+    public static List<Pair<String, String>> getDecommissioned(boolean player, Card[] cards) {
+        Data data = new Data();
+        data.Event = GetSandBoxProtection.name();
+        data.Player = player;
+        List<String> cardList = new ArrayList<>();
+        List<String> category = new ArrayList<>();
+        for (Card c : cards) {
+            cardList.add(c.getName());
+            category.add(c.getCategory().name());
+        }
+        data.CardName = cardList.toArray(new String[0]);
+        data.Type = category.toArray(new String[0]);
+        return toListMe(data.toJson());
+    }
 }

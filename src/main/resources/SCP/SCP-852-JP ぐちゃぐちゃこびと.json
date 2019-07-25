@@ -1,0 +1,44 @@
+{
+  "category": "SCP",
+  "name": "SCP-852-JP ぐちゃぐちゃこびと",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 3,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "人間型",
+    "木製"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "TurnEnd": [
+        {
+          "message": "自分のターンの終わりに発現する。このオブジェクトがこのターンクロステストをしていなければ、その確保力を＋○する。(この効果は永続する。)",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "DidntCrossTest",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "Point",
+                "point": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

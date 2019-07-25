@@ -1,0 +1,53 @@
+{
+  "category": "SCP",
+  "name": "SCP-001 認可",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 0,
+  "clazz": "Thaumiel",
+  "containmentClass": "Safe",
+  "tag": [
+    "メタ",
+    "パラドックス",
+    "001提言",
+    "scp-jp",
+    "情報災害",
+    "文書",
+    "財団製"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "K_Class": [
+        {
+          "message": "自分にZK-クラスシナリオが発生するなら、かわりに相手にYK-クラスシナリオが発生する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "ScenarioIs",
+              "parameter": {
+                "targetPlayer": "Me",
+                "scenario": "ZK"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "CancelK"
+            },
+            {
+              "action": "K_Class",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "scenario": "YK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

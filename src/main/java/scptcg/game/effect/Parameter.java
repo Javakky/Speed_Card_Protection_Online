@@ -1,5 +1,6 @@
 package scptcg.game.effect;
 
+import scptcg.game.K_Class;
 import scptcg.game.Zone;
 import scptcg.game.card.Clazz;
 
@@ -18,10 +19,13 @@ public class Parameter {
     private String targetClazz;
     private String trigger;
     private boolean isThis;
+    private String scenario;
+    private boolean isAll;
 
     public String getTargetPlayer() {
         return targetPlayer;
     }
+
 
     public Zone getTargetZone() {
         return Zone.valueOf(targetZone);
@@ -81,5 +85,18 @@ public class Parameter {
 
     public boolean isThis() {
         return isThis;
+    }
+
+    public K_Class getScenario() {
+        if (scenario == null) scenario = K_Class.IK.name();
+        return K_Class.valueOf(scenario);
+    }
+
+    public void setScenario(K_Class scenario) {
+        this.scenario = scenario.name();
+    }
+
+    public boolean isAll() {
+        return isAll;
     }
 }

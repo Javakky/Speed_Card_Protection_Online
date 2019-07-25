@@ -1,0 +1,46 @@
+{
+  "category": "SCP",
+  "name": "SCP-542-JP 地球未誕生",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 4,
+  "clazz": "Neutralized",
+  "containmentClass": "Euclid",
+  "tag": [
+    "scp-jp",
+    "外宇宙",
+    "遺伝子"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "TurnStart": [
+        {
+          "message": "自分のターンのはじめに、このオブジェクトの確保力が12以上であれば発現する。相手にSK-クラスシナリオが発生する。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureOver",
+              "parameter": {
+                "targetPlayer": "Me",
+                "point": 12
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "K_Class",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "scenario": "SK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

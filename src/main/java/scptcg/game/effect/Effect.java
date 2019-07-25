@@ -22,7 +22,6 @@ public class Effect {
     private List<Result> before = new ArrayList<>();
     private boolean isActive = false;
 
-
     public Card getParent() {
         return parent;
     }
@@ -160,7 +159,7 @@ public class Effect {
                 result.add(r);
                 addBefore(r);
                 this.index++;
-                if (!r.isComplete() || !isTail()) {
+                if (!r.isComplete() && !isTail()) {
                     return false;
                 }
             }

@@ -5,7 +5,14 @@ public enum ConditionPattern implements IActionMethod {
     HasPersonnel,
     HasSCP,
     FirstTimeInTurn,
+    DidntCrossTest,
     MyTurn,
     SecureIsZero,
     SecureNonZero,
+    SecureIs,
+    SecureNon,
+    SecureUnder,
+    SumSiteCostOver,
+    ScenarioIs,
+    SecureOver
 }

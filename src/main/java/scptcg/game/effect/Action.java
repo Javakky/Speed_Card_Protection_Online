@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static scptcg.game.K_Class.*;
-
 public class Action extends AbstractAction {
 
     private ActionMethod tmpAction = null;
@@ -57,6 +55,10 @@ public class Action extends AbstractAction {
                 select();
                 break;
 
+            case UpXKCost:
+                upXKCost();
+                break;
+
             case HealSandBox:
             case DamageSandBox:
                 changeProtectionSandBox();
@@ -78,6 +80,10 @@ public class Action extends AbstractAction {
                 minusSecure();
                 break;
 
+            case PlusSecure:
+                plusSecure();
+                break;
+
             case Breach:
                 breach();
                 break;
@@ -89,6 +95,17 @@ public class Action extends AbstractAction {
             case Optional:
                 optionalActive();
                 break;
+            case SetSecure:
+                setSecure();
+                break;
+
+            case CancelK:
+                cancelK();
+                break;
+
+            case SecureToZero:
+                secureToZero();
+                break;
 
             default:
                 throw new IllegalArgumentException("存在しないアクションです。：" + getAction().name());
@@ -96,6 +113,29 @@ public class Action extends AbstractAction {
 
         tmpBefore = null;
         return tmpResult.createResult();
+    }
+
+    private void secureToZero() {
+        Scp self = (Scp) getCard();
+        int point = self.getSecure();
+        self.minusSecure(point);
+        tmpResult.setPoint(point);
+        tmpResult.setIsComplete(true);
+    }
+
+    private void cancelK() {
+        getGame().cancelK();
+        tmpResult.setIsComplete(true);
+    }
+
+    private void upXKCost() {
+        getGame().upXKCost(getParameter().getPoint());
+        tmpResult.setIsComplete(true);
+    }
+
+    private void setSecure() {
+        ((Scp) getCard()).setSecure(getParameter().getPoint());
+        tmpResult.setIsComplete(true);
     }
 
     private void optionalActive() {
@@ -169,16 +209,34 @@ public class Action extends AbstractAction {
         tmpResult.setIsComplete(true);
     }
 
+    private void plusSecure() {
+        int number = 0;
+        switch (getParameter().getReference()) {
+            case "DecommissionedNumber":
+                number = getPlayer().getSize(Zone.Decommissioned);
+                break;
+            case "Point":
+                number = getParameter().getPoint();
+                break;
+            case "Cost":
+                number = ((Scp) tmpBefore.getSubject()).getCost();
+                break;
+        }
+        ((Scp) getCard()).plusSecure(number);
+        tmpResult.setIsComplete(true);
+    }
+
     private void k_class() {
         List<Player> player = new ArrayList<>();
         getTargetPlayer(player);
-        getGame().ignitionK(IK, player.get(0));
+        getGame().ignitionK(getParameter().getScenario(), player.get(0));
         tmpResult.setTargetPlayer(player.get(0).isFirst());
         tmpResult.setIsComplete(true);
     }
 
     private <T> void add(Function<T[], Function<Zone, Function<Player, Function<Integer, Object>>>> func, T[] elements) {
         Parameter p = getParameter();
+        tmpResult.setIsComplete(true);
         switch (p.getTargetZone()) {
             case Site: {
                 List<Player> player = new ArrayList<>();
@@ -251,6 +309,9 @@ public class Action extends AbstractAction {
                 break;
             case "Number":
                 point = tmpBefore.getObject()[0].length + tmpBefore.getObject().length > 0 ? tmpBefore.getObject()[1].length : 0;
+                break;
+            case "Before":
+                point = tmpBefore.getPoint();
                 break;
         }
         tmpResult.setOverlap(p.canOverlap());

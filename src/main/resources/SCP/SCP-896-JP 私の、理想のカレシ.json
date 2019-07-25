@@ -1,0 +1,57 @@
+{
+  "category": "SCP",
+  "name": "SCP-896-JP 私の、理想のカレシ",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 1,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "販売員ミヨコ",
+    "道具"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "1ターンに1度起動できる。自分サイト上のオブジェクトを1つ選ぶ、それの確保力が3以下であれば、確保力を＋○○する。(この効果は永続する。)",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "FirstTimeInTurn",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            },
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": [
+                  {
+                    "name": "SecureUnder",
+                    "point": 3
+                  }
+                ]
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "PlusSecure",
+              "parameter": {
+                "reference": "Point",
+                "point": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

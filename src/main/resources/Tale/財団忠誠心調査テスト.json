@@ -1,0 +1,30 @@
+{
+  "category": "Tale",
+  "name": "財団忠誠心調査テスト",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "自分の自分のサンドボックス1つの保護力を4回復する。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+          ],
+          "action": [
+            {
+              "action": "HealSandBox",
+              "parameter": {
+                "targetPlayer": "Me",
+                "overlap": true,
+                "count": 1,
+                "reference": "Point",
+                "point": 4
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

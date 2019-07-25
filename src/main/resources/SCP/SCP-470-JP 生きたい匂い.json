@@ -1,0 +1,66 @@
+{
+  "category": "SCP",
+  "name": "SCP-470-JP 生きたい匂い",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "嗅覚",
+    "知覚",
+    "自我"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "TurnEnd": [
+        {
+          "message": "このオブジェクトの確保力を-1する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureNonZero",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "MinusSecure",
+              "parameter": {
+                "reference": "Point",
+                "point": 1
+              }
+            }
+          ]
+        },
+        {
+          "message": "このオブジェクトの確保力が0以下ならこのオブジェクトを終了する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SecureIsZero",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Decommission",
+              "parameter": {
+                "isThis": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

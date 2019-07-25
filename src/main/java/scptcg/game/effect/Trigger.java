@@ -6,5 +6,6 @@ public enum Trigger {
     Decommissioned,
     Breached,
     TurnStart,
-    TurnEnd
+    TurnEnd,
+    K_Class
 }

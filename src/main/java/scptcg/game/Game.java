@@ -49,6 +49,9 @@ public class Game {
     public void ignitionK(K_Class k, Player player) {
         this.scenario = k;
         this.kClassPlayer = isFirst(player);
+        List<Effect> arr = player.getEffects(Trigger.K_Class, Zone.Site);
+        if (Objects.nonNull(arr))
+            addWaitEffects(arr);
     }
 
     public boolean isFirst(Player player) {
@@ -220,7 +223,7 @@ public class Game {
             p.nextTurn();
         }
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart, Zone.Decommissioned, Zone.Site));
-        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
+        this.addWaitEffects(getTurnPlayer().getEnemy().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
 
         return true;
     }
@@ -263,9 +266,10 @@ public class Game {
     public int crossTest(boolean isFirst, int testerIndex, Clazz sandBox, List<Scp> breached) {
         Player p = getPlayer(isFirst);
         int point = p.crossTest(testerIndex);
-        addWaitEffects(p.getEffects(Zone.Site, testerIndex, Trigger.CrossTest));
+        List<Effect> arr = p.getCard(Zone.Site, testerIndex).getEffects(Trigger.CrossTest);
+        if (Objects.nonNull(arr))
+            addWaitEffects(arr);
         damage(!isFirst, sandBox, point, breached);
-        //System.out.println("cross: " + sandBox.name());
 
         return point;
     }
@@ -389,5 +393,17 @@ public class Game {
 
     public Card find(boolean isFirst, Zone zone, String name) {
         return getPlayer(isFirst).find(zone, name);
+    }
+
+    public void lostEffect(boolean isFirst, Zone zone, int index) {
+        getPlayer(isFirst).lostEffect(zone, index);
+    }
+
+    public void upXKCost(int point) {
+        this.xk += point;
+    }
+
+    public void cancelK() {
+        this.scenario = null;
     }
 }

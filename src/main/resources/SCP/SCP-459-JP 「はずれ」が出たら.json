@@ -1,35 +1,40 @@
 {
-  "category": "Personnel",
-  "name": "河上　涼",
+  "category": "SCP",
+  "name": "SCP-459-JP 「はずれ」が出たら",
   "canDecommission": true,
+  "cost": 1,
+  "secure": 1,
+  "clazz": "Safe",
+  "tag": [
+    "scp-jp",
+    "木製",
+    "文字入り"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
   "effects": {
     "effects": {
-      "Sometime": [
+      "Breached": [
         {
-          "message": "1ターンに1度、自分のサイト上に存在する確保力が0のオブジェクトをdecommissionedに送ることができる。",
+          "message": "このオブジェクトが収容違反した時に発動する。財団にある[温度]を持つオブジェクトを1つ選び、それを終了する。",
           "activationsCount": 2147483647,
           "canActive": true,
           "condition": [
             {
               "action": "HasSCP",
               "parameter": {
-                "targetPlayer": "Me",
+                "targetPlayer": "Any",
                 "targetZone": "Site",
                 "condition": [
                   {
-                    "name": "Secure",
-                    "point": 0
+                    "name": "HasTag",
+                    "tag": "温度"
                   },
                   {
                     "name": "NotPartner"
                   }
                 ]
-              }
-            },
-            {
-              "action": "FirstTimeInTurn",
-              "parameter": {
-                "targetPlayer": "Me"
               }
             }
           ],
@@ -37,19 +42,19 @@
             {
               "action": "Select",
               "parameter": {
-                "targetPlayer": "Me",
+                "nextAction": "Decommission",
+                "targetPlayer": "Any",
                 "isThere": true,
                 "condition": [
                   {
-                    "name": "Secure",
-                    "point": 0
+                    "name": "HasTag",
+                    "tag": "温度"
                   },
                   {
                     "name": "NotPartner"
                   }
                 ],
-                "targetZone": "Site",
-                "nextAction": "Decommission"
+                "targetZone": "Site"
               }
             }
           ]

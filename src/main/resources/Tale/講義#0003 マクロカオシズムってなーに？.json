@@ -1,0 +1,33 @@
+{
+  "category": "Tale",
+  "name": "講義#0003 マクロカオシズムってなーに？",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "SumSiteCostOver",
+              "parameter": {
+                "targetPlayer": "Me",
+                "point": 5
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "UpXKCost",
+              "parameter": {
+                "point": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

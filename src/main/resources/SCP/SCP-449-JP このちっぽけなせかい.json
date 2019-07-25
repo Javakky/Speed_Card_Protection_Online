@@ -1,0 +1,17 @@
+{
+  "category": "SCP",
+  "name": "SCP-449-JP このちっぽけなせかい",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 2,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "場所",
+    "異次元",
+    "移動不可"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 2
+}

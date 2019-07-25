@@ -1,0 +1,19 @@
+{
+  "category": "SCP",
+  "name": "SCP-1981-JP べっちょり岩",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 6,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "瞬間移動",
+    "知性",
+    "石",
+    "移動",
+    "自我"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}

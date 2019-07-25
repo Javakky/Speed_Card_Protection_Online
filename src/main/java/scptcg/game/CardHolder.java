@@ -171,4 +171,8 @@ public interface CardHolder {
         return getCard(0);
     }
 
+    default void lostEffect(int index) {
+        getCard(index).lostEffect();
+    }
+
 }

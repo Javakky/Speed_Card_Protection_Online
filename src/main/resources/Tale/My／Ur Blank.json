@@ -1,0 +1,57 @@
+{
+  "category": "Tale",
+  "name": "My／Ur Blank",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "自分と相手のサイト上からオブジェクトを1つずつ選ぶ。それらは効果を失う。(この効果は永続する。)",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": []
+              }
+            },
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "targetZone": "Site",
+                "condition": []
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Select",
+              "parameter": {
+                "targetPlayer": "Me",
+                "isThere": true,
+                "targetZone": "Site",
+                "condition": [],
+                "nextAction": "LostEffect"
+              }
+            },
+            {
+              "action": "Select",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "isThere": true,
+                "targetZone": "Site",
+                "condition": [
+                ],
+                "nextAction": "LostEffect"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

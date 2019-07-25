@@ -1,0 +1,57 @@
+{
+  "category": "SCP",
+  "name": "SCP-1200-JP 明日の神話",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 6,
+  "clazz": "Neutralized",
+  "containmentClass": "Keter",
+  "tag": [
+    "1000jp",
+    "k-クラスシナリオ",
+    "scp-jp",
+    "人間型",
+    "儀式",
+    "液体",
+    "現実改変",
+    "異次元",
+    "知性",
+    "自我",
+    "蒐集院"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "K_Class": [
+        {
+          "message": "自分にZK-クラスシナリオが発生するなら、それはかわりに相手に発生する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "ScenarioIs",
+              "parameter": {
+                "targetPlayer": "Me",
+                "scenario": "ZK"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "CancelK"
+            },
+            {
+              "action": "K_Class",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "scenario": "ZK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -61,9 +61,53 @@ public class Condition extends AbstractAction {
                 return secureNonZero();
             case FirstTimeInTurn:
                 return firstTime(player);
+            case SecureIs:
+                return secureIs();
+            case SecureNon:
+                return secureNon();
+            case DidntCrossTest:
+                return didntCrossTest();
+            case SumSiteCostOver:
+                return sumSiteCostOver();
+            case ScenarioIs:
+                return scenarioIs();
+            case SecureUnder:
+                return secureUnder();
+            case SecureOver:
+                return secureOver();
             default:
                 throw new IllegalArgumentException("存在しない条件です。：" + getActionMessage());
         }
+    }
+
+    private boolean secureOver() {
+        return ((Scp) getCard()).getSecure() >= getParameter().getPoint();
+    }
+
+    private boolean secureUnder() {
+        return ((Scp) getCard()).getSecure() <= getParameter().getPoint();
+    }
+
+    private boolean scenarioIs() {
+        List<Player> p = new ArrayList<>();
+        getTargetPlayer(p);
+        return p.get(0).isFirst() == this.getGame().getKClassPlayerIsFirst() && getGame().getScenario() == getParameter().getScenario();
+    }
+
+    private boolean sumSiteCostOver() {
+        return getPlayer().getSumSiteCost() >= getParameter().getPoint();
+    }
+
+    private boolean didntCrossTest() {
+        return ((Scp) getCard()).getCrossTestCount() == 0;
+    }
+
+    private boolean secureNon() {
+        return !secureIs();
+    }
+
+    private boolean secureIs() {
+        return ((Scp) getCard()).getSecure() == getParameter().getPoint();
     }
 
     private boolean firstTime(final Player player) {

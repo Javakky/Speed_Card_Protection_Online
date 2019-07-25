@@ -136,4 +136,7 @@ public abstract class Card implements Cloneable {
         return getPlayer().isFirst();
     }
 
+    public void lostEffect() {
+        setEffects(new Effects());
+    }
 }

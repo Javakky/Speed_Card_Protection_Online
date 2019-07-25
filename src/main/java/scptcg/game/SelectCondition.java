@@ -5,5 +5,7 @@ public enum SelectCondition {
     Cost,
     Secure,
     CrossTested,
-    HasTag
+    HasTag,
+    IsClass,
+    SecureUnder
 }

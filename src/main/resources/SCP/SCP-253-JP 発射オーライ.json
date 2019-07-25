@@ -1,0 +1,69 @@
+{
+  "category": "SCP",
+  "name": "SCP-253-JP 発射オーライ",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 3,
+  "clazz": "Safe",
+  "tag": [
+    "scp-jp",
+    "物理法則",
+    "破壊不能",
+    "道具"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Breached": [
+        {
+          "message": "",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": [
+                  {
+                    "name": "HasTag",
+                    "tag": "乗り物"
+                  },
+                  {
+                    "name": "IsClass",
+                    "clazz": "Euclid"
+                  }
+                ]
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Optional"
+            },
+            {
+              "action": "Decommission",
+              "parameter": {
+                "isThis": false,
+                "targetZone": "PersonnelFile"
+              }
+            },
+            {
+              "action": "DamageSandBox",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "overlap": true,
+                "count": 1,
+                "point": 3,
+                "reference": "Point"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

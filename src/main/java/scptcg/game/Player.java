@@ -152,6 +152,17 @@ public class Player {
         CardHolder after = getSandBox(clazz);
         before.deleteCard(card);
         int index = after.addCard(card);
+        switch (after.getZone()) {
+            case SafeSandbox:
+                shuffle(Clazz.Safe);
+                break;
+            case EuclidSandbox:
+                shuffle(Clazz.Euclid);
+                break;
+            case KeterSandbox:
+                shuffle(Clazz.Keter);
+                break;
+        }
         return index;
     }
 
@@ -370,4 +381,11 @@ public class Player {
         return getArea(zone).getTop();
     }
 
+    public void lostEffect(Zone zone, int index) {
+        getArea(zone).lostEffect(index);
+    }
+
+    public int getSize(Zone zone) {
+        return getArea(zone).getCardCount();
+    }
 }

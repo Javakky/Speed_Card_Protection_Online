@@ -1,0 +1,40 @@
+{
+  "category": "Personnel",
+  "name": "ジャック・ブライト",
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": []
+              }
+            },
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "targetZone": "Site",
+                "condition": []
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "",
+              "parameter": {
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

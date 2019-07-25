@@ -160,6 +160,13 @@ public class Site implements CardHolder {
                         case HasTag:
                             if (!site[i].containsTag(c.getTag())) flag = false;
                             break;
+                        case IsClass:
+                            if (!site[i].containsClazz(c.getClazz())) flag = false;
+                            break;
+                        case SecureUnder:
+                            if (site[i].getSecure() > c.getPoint()) flag = false;
+                            break;
+
                     }
                 }
                 if (flag) indexes.add(i);
@@ -320,8 +327,12 @@ public class Site implements CardHolder {
 
     public Scp decommission(int index) {
         Scp tmp = site[index];
-        deleteCard(index);
-        return tmp;
+        if (tmp.canDecommission()) {
+            deleteCard(index);
+            return tmp;
+        } else {
+            return null;
+        }
     }
 
     public void breach(int[] place, int cost, Anomalous... card) {

@@ -4,5 +4,7 @@ public enum K_Class {
     XK,
     NK,
     ZK,
-    IK
+    IK,
+    YK,
+    SK
 }

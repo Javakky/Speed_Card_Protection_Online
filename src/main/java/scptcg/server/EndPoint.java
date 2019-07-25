@@ -226,6 +226,10 @@ public final class EndPoint {
                 }
                 break;
 
+            case LostEffect:
+                lostEffect(data, game, name);
+                break;
+
             case HealSandBox:
                 int point = healSandBox(data, game, name);
                 if (game.isChainSolving()) {
@@ -255,6 +259,10 @@ public final class EndPoint {
             case SelectEffect:
                 selectEffect(data, game);
                 break;
+
+            case GetDecommissioned:
+                getDecommissioned(data, game, name);
+                break;
         }
 
         do {
@@ -265,12 +273,16 @@ public final class EndPoint {
             }
         } while (!game.isChainSolving() && game.isWait());
 
-
-        if (game.isK()) {
+        if (!game.isWait() && game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
         }
 
     }
+
+    private void getDecommissioned(Data data, Game game, String[] name) throws IOException {
+        send(name, SendFormatter.getDecommissioned(data.Player, game.getCards(data.Player, Zone.Decommissioned)));
+    }
+
 
     private void isFirst(Data data, Game game, String[] name) throws IOException {
         send(name, SendFormatter.isFirst(data.PlayerName, game.isFirst(data.PlayerName)));
@@ -313,10 +325,6 @@ public final class EndPoint {
             send(name, SendFormatter.can_tCross(data.Player));
         }
 
-        if (game.isK()) {
-            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-        }
-
     }
 
     private void whetherActive(Data data, Game game) throws IOException {
@@ -332,9 +340,9 @@ public final class EndPoint {
     private void damage(Data data, Game game, String[] name) throws IOException {
         List<Scp> scp = new ArrayList<>();
         int damage = data.Point[0];
-        game.damage(!data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
+        game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         Scp wait = scp.get(0);
-        send(name, SendFormatter.damage(!data.Player,
+        send(name, SendFormatter.damage(data.Player,
                 data.SandBox,
                 damage,
                 -1));
@@ -343,9 +351,6 @@ public final class EndPoint {
             send(name, SendFormatter.startBreach(wait, true, data.SandBox));
         }
 
-        if (game.isK()) {
-            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-        }
     }
 
     private void canCrossTest(Data data, Game game, String[] name) throws IOException {
@@ -356,10 +361,6 @@ public final class EndPoint {
         Scp scp = game.breach(data.Player, data.CardName[0], intToSandBox(data.SandBox), data.Coordinate[0][0]);
 
         send(name, SendFormatter.breach(data.Player, data.Coordinate[0][0], scp));
-
-        if (game.isK()) {
-            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-        }
 
         send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
 
@@ -406,6 +407,10 @@ public final class EndPoint {
 
     private void activeEffect(Data data, Game game, String[] name) throws IOException {
         game.selectEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0], data.Coordinate[0][1]);
+    }
+
+    private void lostEffect(Data data, Game game, String[] name) {
+        game.lostEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
     }
 
     private Result decommission(Data data, Game game, String[] name) throws IOException {
@@ -458,9 +463,6 @@ public final class EndPoint {
             send(name, SendFormatter.startBreach(scp.get(0), data.Player, data.SandBox));
         }
 
-        if (game.isK()) {
-            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-        }
     }
 
     private void getCardParameters(Data data, Game game, String[] name) throws IOException {
@@ -577,9 +579,6 @@ public final class EndPoint {
                     send(name, SendFormatter.impossible(data.Player, sender));
                     break;
                 case K_Class:
-                    if (game.isK()) {
-                        send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
-                    }
                     break;
 
                 case Select:
@@ -599,6 +598,8 @@ public final class EndPoint {
                     break;
 
                 case MinusSecure:
+                case PlusSecure:
+                case SetSecure:
                     send(name, SendFormatter.getCardParameter(r.getSubjectPlayer(), r.getSubjectCoordinate(), (Scp) r.getSubject()));
                     break;
 
@@ -608,10 +609,6 @@ public final class EndPoint {
                 default:
                     break;
             }
-        }
-
-        if (game.isK()) {
-            send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
         }
 
         return list;

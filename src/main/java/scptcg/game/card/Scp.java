@@ -20,6 +20,14 @@ public class Scp extends Card {
     private int crossTestsCount;
     private int crossTestCount = 0;
 
+    public void plusSecure() {
+        this.setSecure(getSecure() + 1);
+    }
+
+    public void plusSecure(int point) {
+        this.setSecure(getSecure() + point);
+    }
+
     protected Scp(final CardHolder parent, final String category, final String name, final boolean canDecommission, final Effects effects, final boolean isPartner, final int cost, final int secure, final String clazz, final Set<String> subClazz, final String containmentClass, final Set<String> tag, final boolean canPartner, final boolean crossTestable, final int crossTestsCount, final int crossTestCount) {
         super(parent, category, name, canDecommission, effects);
         this.isPartner = isPartner;

@@ -1,0 +1,37 @@
+{
+  "name": "最高に字が汚いことで有名なとある研究員の部屋で発見された手記の52ページ目に書かれていた短い文章",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "自分サイト上のオブジェクトを1つ選ぶ。それは効果を失う。(この効果は永続する。)",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": []
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Select",
+              "parameter": {
+                "targetPlayer": "Me",
+                "isThere": true,
+                "targetZone": "Site",
+                "condition": [],
+                "nextAction": "LostEffect"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

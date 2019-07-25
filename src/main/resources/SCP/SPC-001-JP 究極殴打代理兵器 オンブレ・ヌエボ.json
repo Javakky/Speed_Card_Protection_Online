@@ -1,0 +1,16 @@
+{
+  "category": "SCP",
+  "name": "SPC-001-JP 究極殴打代理兵器 オンブレ・ヌエボ",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 12,
+  "clazz": "Unclassed",
+  "containmentClass": "Keter",
+  "tag": [
+    "アンダーソン",
+    "goi-format-jp"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1
+}
