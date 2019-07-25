@@ -6,13 +6,10 @@ import scptcg.game.card.Scp;
 import scptcg.json.Deck;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
-import static scptcg.game.card.Clazz.*;
 
 public class OrganizeResource {
 
@@ -55,21 +52,6 @@ public class OrganizeResource {
                                     }
                                     try {
                                         Scp tmp = (new Gson()).fromJson(sb.toString(), Scp.class);
-                                        Field field = null;
-                                        try {
-                                            field = Scp.class.getDeclaredField("containmentClass");
-                                        } catch (NoSuchFieldException | SecurityException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        field.setAccessible(true);
-
-                                        try {
-                                            field.set(tmp, Unclassed.name());
-                                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        }
-
 
                                         switch (tmp.getContainmentClass()) {
                                             case Safe:
@@ -81,18 +63,6 @@ public class OrganizeResource {
                                             case Keter:
                                                 keter.add(tmp.getName());
                                                 break;
-                                            default:
-                                                switch (tmp.getClazz()) {
-                                                    case Safe:
-                                                        safe.add(tmp.getName());
-                                                        break;
-                                                    case Euclid:
-                                                        euclid.add(tmp.getName());
-                                                        break;
-                                                    case Keter:
-                                                        keter.add(tmp.getName());
-                                                        break;
-                                                }
                                         }
                                     } catch (JsonSyntaxException | NullPointerException e) {
                                         e.printStackTrace();

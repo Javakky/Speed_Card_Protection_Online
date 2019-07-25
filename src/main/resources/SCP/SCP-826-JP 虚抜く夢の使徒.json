@@ -1,0 +1,72 @@
+{
+  "category": "SCP",
+  "name": "SCP-826-JP 虚抜く夢の使徒",
+  "canDecommission": true,
+  "cost": 2,
+  "secure": 3,
+  "clazz": "Euclid",
+  "tag": [
+    "scp-jp",
+    "人間型",
+    "睡眠",
+    "知性",
+    "自我",
+    "記憶影響",
+    "非実体"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Breached": [
+        {
+          "message": "このオブジェクトが収容違反した時に発動する。財団にある[睡眠]を持つオブジェクトを1つ選ぶ。それを終了してもよい。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Any",
+                "targetZone": "Site",
+                "condition": [
+                  {
+                    "name": "HasTag",
+                    "tag": "睡眠"
+                  },
+                  {
+                    "name": "NotPartner"
+                  }
+                ]
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Optional"
+            },
+            {
+              "action": "Select",
+              "parameter": {
+                "nextAction": "Decommission",
+                "targetPlayer": "Any",
+                "isThere": true,
+                "condition": [
+                  {
+                    "name": "HasTag",
+                    "tag": "睡眠"
+                  },
+                  {
+                    "name": "NotPartner"
+                  }
+                ],
+                "targetZone": "Site"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

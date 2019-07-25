@@ -157,6 +157,9 @@ public class Site implements CardHolder {
                         case CrossTested:
                             if (site[i].getCrossTestCount() <= 0) flag = false;
                             break;
+                        case HasTag:
+                            if (!site[i].containsTag(c.getTag())) flag = false;
+                            break;
                     }
                 }
                 if (flag) indexes.add(i);

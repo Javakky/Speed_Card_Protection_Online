@@ -166,6 +166,7 @@ public class Effect {
             }
         addActivationCount();
         inactivate();
+        System.out.println("効果完了:" + getParent().getName());
         return true;
     }
 

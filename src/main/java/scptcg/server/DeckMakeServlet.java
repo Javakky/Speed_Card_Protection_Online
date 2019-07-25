@@ -21,10 +21,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static jooq.tables.Deck.*;
 import static jooq.tables.Id.*;
 import static org.jooq.impl.DSL.*;
+import static scptcg.server.CharsetCode.*;
 
 @WebServlet(
         name = "DeckMakeServlet",
@@ -68,6 +70,53 @@ public class DeckMakeServlet extends HttpServlet {
         return using(conn, SQLDialect.MYSQL, settings);
     }
 
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/plain");
+        res.addHeader("Access-Control-Allow-Origin", "*");
+        String body = req.getReader().lines().collect(Collectors.joining("\r\n"));
+        System.out.println(body);
+
+        PrintWriter out = res.getWriter();
+        String path = req.getPathInfo();
+        switch (path) {
+            case "/saveDeck": {
+                try {
+                    DSLContext con = connectionDB();
+                    System.out.println(req.getParameter("Id"));
+                    System.out.println(req.getParameter("Name"));
+                    System.out.println(URLDecoder.decode(to(req.getParameter("Main"), "ISO8859_1", "UTF-8")));
+                    System.out.println(req.getParameter("MainType"));
+                    con.insertInto(
+                            DECK,
+                            DECK.ID,
+                            DECK.NAME,
+                            DECK.MAIN,
+                            DECK.MAINTYPE,
+                            DECK.DECK_
+                    ).values(
+                            to(req.getParameter("Id"), "ISO8859_1", "UTF-8"),
+                            to(req.getParameter("Name"), "ISO8859_1", "UTF-8"),
+                            URLDecoder.decode(to(req.getParameter("Main"), "ISO8859_1", "UTF-8")),
+                            to(req.getParameter("MainType"), "ISO8859_1", "UTF-8"),
+                            URLDecoder.decode(body, "UTF-8")
+                    ).onDuplicateKeyUpdate()
+                            .set(DECK.MAIN, URLDecoder.decode(to(req.getParameter("Main"), "ISO8859_1", "UTF-8")))
+                            .set(DECK.MAINTYPE, to(req.getParameter("MainType"), "ISO8859_1", "UTF-8"))
+                            .set(DECK.DECK_, URLDecoder.decode(body, "UTF-8"))
+                            .execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+        }
+        System.out.println(path);
+    }
+
+    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         PrintWriter out;
 
@@ -88,37 +137,9 @@ public class DeckMakeServlet extends HttpServlet {
                 s.close();
                 String deck = sb.toString();
                 out.print(deck);
+                System.out.println(deck);
                 break;
             }
-            case "/saveDeck": {
-                try {
-                    DSLContext con = connectionDB();
-                    con.insertInto(
-                            DECK,
-                            DECK.ID,
-                            DECK.NAME,
-                            DECK.MAIN,
-                            DECK.MAINTYPE,
-                            DECK.DECK_
-                    ).values(
-                            req.getParameter("Id"),
-                            req.getParameter("Name"),
-                            req.getParameter("Main"),
-                            req.getParameter("MainType"),
-                            URLDecoder.decode(req.getParameter("DeckList"), "UTF-8")
-                    ).onDuplicateKeyUpdate()
-                            .set(DECK.MAIN, req.getParameter("Main"))
-                            .set(DECK.MAINTYPE, req.getParameter("MainType"))
-                            .set(DECK.DECK_, URLDecoder.decode(req.getParameter("DeckList"), "UTF-8"))
-                            .execute();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-
-                break;
-            }
-
             case "/getDeckList": {
                 StringBuilder sb = new StringBuilder();
                 try {
@@ -244,6 +265,8 @@ public class DeckMakeServlet extends HttpServlet {
 
             case "/getDeck": {
                 try {
+                    System.out.println(req.getParameter("Id"));
+                    System.out.println(req.getParameter("Name"));
                     DSLContext con = connectionDB();
                     String json = con.select().from(DECK)
                             .where(DECK.ID.eq(req.getParameter("Id")))
@@ -257,8 +280,7 @@ public class DeckMakeServlet extends HttpServlet {
                 break;
             }
         }
-        ////System.out.println("end");
-        return;
     }
 
 }
+

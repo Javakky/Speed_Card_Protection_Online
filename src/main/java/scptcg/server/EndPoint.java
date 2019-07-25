@@ -332,9 +332,9 @@ public final class EndPoint {
     private void damage(Data data, Game game, String[] name) throws IOException {
         List<Scp> scp = new ArrayList<>();
         int damage = data.Point[0];
-        game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
+        game.damage(!data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         Scp wait = scp.get(0);
-        send(name, SendFormatter.damage(data.Player,
+        send(name, SendFormatter.damage(!data.Player,
                 data.SandBox,
                 damage,
                 -1));
@@ -639,7 +639,9 @@ public final class EndPoint {
                 txt = r.getValue(DECK.DECK_);
                 break;
             }
-            return (new Gson()).fromJson(txt, Deck.class);
+            Deck d = (new Gson()).fromJson(txt, Deck.class);
+            System.out.println(txt);
+            return d;
         } catch (SQLException e) {
             e.printStackTrace();
         }

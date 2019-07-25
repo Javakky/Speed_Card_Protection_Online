@@ -24,7 +24,7 @@ public class Game {
     private boolean isActive = false;
     private boolean isChainSolving = false;
     private boolean firstPlayer;
-    private int xk = 7;
+    private int xk = 100;
     private int nk = 7;
     private Tale activing = null;
     private List<History> history;
@@ -40,8 +40,6 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             waitEffect.add(new ArrayList<>());
         }
-        result = new ArrayList<>();
-        result.add(new ArrayList<>());
     }
 
     public boolean isActive() {
@@ -176,6 +174,12 @@ public class Game {
                         activing.getName(),
                         activing.getCoordinate()
                 );
+                rb.setObjects(activing.ownerIsFirst(), Zone.Tales,
+                        activing,
+                        activing.getName(),
+                        activing.getCoordinate());
+                rb.setTargetZone(Zone.Tales);
+                rb.setCoordinate(activing.getCoordinate());
                 Result r = rb.createResult();
                 result.add(r);
                 decommission(r.getSubjectPlayer(), Zone.Tales, r.getSubjectCoordinate());
@@ -217,7 +221,7 @@ public class Game {
         }
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart, Zone.Decommissioned, Zone.Site));
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
-        result.add(new ArrayList<>());
+
         return true;
     }
 
