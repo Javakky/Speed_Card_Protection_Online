@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static scptcg.game.effect.ActionMethod.*;
+
 public class Game {
 
     protected HeadCanon canon;
@@ -28,6 +30,7 @@ public class Game {
     private int nk = 7;
     private Tale activing = null;
     private List<History> history;
+    private boolean waitEnd;
 
     public Game(String waiter, Deck waiterDeck, String visitor, Deck visitorDeck) {
         int r = new Random(System.currentTimeMillis()).nextInt(2);
@@ -49,6 +52,7 @@ public class Game {
     public void ignitionK(K_Class k, Player player) {
         this.scenario = k;
         this.kClassPlayer = isFirst(player);
+        System.out.println("ignition: " + k.name());
         List<Effect> arr = player.getEffects(Trigger.K_Class, Zone.Site);
         if (Objects.nonNull(arr))
             addWaitEffects(arr);
@@ -102,7 +106,7 @@ public class Game {
     }
 
     private void addWaitEffect(Effect effect) {
-        int addIndex = (isChainSolving ? 2 : 0) + (effect.ownerIsFirst() ? 0 : 1);
+        int addIndex = (isChainSolving ? 2 : 0) + (isTurnPlayer(effect.ownerIsFirst()) ? 0 : 1);
         if (Objects.nonNull(waitEffect) && (waitEffect.size() <= addIndex || Objects.isNull(waitEffect.get(addIndex))))
             waitEffect.set(addIndex, new ArrayList<>());
         waitEffect.get(addIndex).add(effect);
@@ -127,16 +131,16 @@ public class Game {
             }
         }
         boolean finish;
+        Card card = null;
         try {
+            card = waitEffect.get(0).get(0).getParent();
             waitEffect.get(0).get(0).addBefore(before);
             finish = waitEffect.get(0).get(0).active(result);
-
-            Card card = waitEffect.get(0).get(0).getParent();
             if (card.getCategory() == CardCategory.Tale && card instanceof Tale) {
                 activing = (Tale) card;
             }
         } catch (NotActivableException e) {
-            ResultBuilder rb = new ResultBuilder(ActionMethod.Fail.name(), turnPlayer, null, null, null, -1);
+            ResultBuilder rb = new ResultBuilder(ActionMethod.Fail.name(), turnPlayer, null, card, null, -1);
             finish = true;
             result.add(rb.createResult());
             System.out.println("Fail Effect");
@@ -195,7 +199,19 @@ public class Game {
                 }
                 waitEffect.set(waitEffect.size() - 1, new ArrayList<>());
                 if (i == 4 - 1) {
+                    System.out.println("Don't have Effect");
                     isChainSolving = false;
+                    if (waitEnd) {
+                        result.add(new ResultBuilder(
+                                TurnEnd.name(),
+                                turnPlayer,
+                                null,
+                                null,
+                                null,
+                                -1
+                        ).createResult());
+                        turnEnd();
+                    }
                 }
             }
             return !flag || !isChainSolving || waitEffect.get(0).size() <= 1;
@@ -217,15 +233,26 @@ public class Game {
         if (isActive() || isChainSolving()) {
             return false;
         }
+        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Site));
+        this.addWaitEffects(getTurnPlayer().getEnemy().getEffects(Trigger.TurnStart, Zone.Site));
+        if (isChainSolving()) {
+            waitEnd = true;
+            return false;
+        }
+        turnEnd();
+        return true;
+    }
+
+    public boolean isWaitEnd() {
+        return waitEnd;
+    }
+
+    private void turnEnd() {
         this.turn++;
         this.turnPlayer = !turnPlayer;
         for (Player p : this.players) {
             p.nextTurn();
         }
-        this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnStart, Zone.Decommissioned, Zone.Site));
-        this.addWaitEffects(getTurnPlayer().getEnemy().getEffects(Trigger.TurnEnd, Zone.Decommissioned, Zone.Site));
-
-        return true;
     }
 
     private void addWaitEffects(List<Effect> effects) {
@@ -233,9 +260,7 @@ public class Game {
             System.out.println("Effect is null");
             return;
         }
-        //System.out.println("effectSize : " + effects.size());
         for (Effect effect : effects) {
-            //System.out.println(effect.getMessage());
             addWaitEffect(effect);
         }
     }

@@ -32,6 +32,7 @@ public class Effects {
 
     public int size(final Trigger trigger) {
         if (Objects.isNull(effects)) return 0;
+        if (Objects.isNull(effects.get(trigger.name()))) return 0;
         return effects.get(trigger.name()).size();
     }
 

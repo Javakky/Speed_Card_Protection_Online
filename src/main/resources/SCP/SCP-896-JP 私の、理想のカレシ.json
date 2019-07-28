@@ -36,6 +36,9 @@
                   {
                     "name": "SecureUnder",
                     "point": 3
+                  },
+                  {
+                    "name": "NotThis"
                   }
                 ]
               }

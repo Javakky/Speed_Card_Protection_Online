@@ -215,10 +215,6 @@ public class SendFormatter {
         return toList(recieve, data.toJson());
     }
 
-    public static List<Pair<String, String>> getSandBoxNumber(final boolean player, final int... sandbox) {
-        return getSandBoxNumber(player, sandbox[0], sandbox[1], sandbox[2], ME);
-    }
-
 
     public static List<Pair<String, String>> getRemainSandBox(final boolean player, final int safe, int euclid, int keter, int recieve) {
         Data data = new Data();
@@ -229,7 +225,7 @@ public class SendFormatter {
     }
 
     public static List<Pair<String, String>> getRemainSandBox(final boolean player, final int... sandbox) {
-        return getSandBoxNumber(player, sandbox[0], sandbox[1], sandbox[2], ME);
+        return getRemainSandBox(player, sandbox[0], sandbox[1], sandbox[2], ME);
     }
 
     public static List<Pair<String, String>> getEffect(final String zone, final int index, final int length) {
@@ -463,7 +459,7 @@ public class SendFormatter {
 
     public static List<Pair<String, String>> getDecommissioned(boolean player, Card[] cards) {
         Data data = new Data();
-        data.Event = GetSandBoxProtection.name();
+        data.Event = GetDecommissioned.name();
         data.Player = player;
         List<String> cardList = new ArrayList<>();
         List<String> category = new ArrayList<>();
@@ -473,6 +469,13 @@ public class SendFormatter {
         }
         data.CardName = cardList.toArray(new String[0]);
         data.Type = category.toArray(new String[0]);
+        return toListMe(data.toJson());
+    }
+
+    public static List<Pair<String, String>> failTurnEnd(boolean player) {
+        Data data = new Data();
+        data.Event = FailTurnEnd.name();
+        data.Player = player;
         return toListMe(data.toJson());
     }
 }

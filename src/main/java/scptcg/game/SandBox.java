@@ -65,15 +65,6 @@ public class SandBox implements CardHolder {
         return this.maxProtectionForce;
     }
 
-    public Scp draw() {
-        if (sandBox.size() <= 0) {
-            getGame().ignitionK(ZK, this.parent);
-            return null;
-        }
-        Scp tmp = pop();
-        return tmp;
-    }
-
     public Scp[] getPartnerables() {
         if (clazz != Clazz.Safe) throw new NotImplementedException("Safe以外のサンドボックスからカードを選ぶことはできません");
         List<Scp> partners = new ArrayList<>();
@@ -152,6 +143,10 @@ public class SandBox implements CardHolder {
         if (!remainProtection()) {
             refreshProtection();
             Scp tmp = getTop();
+            if (Objects.isNull(tmp)) {
+                getGame().ignitionK(ZK, this.parent);
+                return null;
+            }
             return tmp;
         }
         return null;
@@ -221,8 +216,34 @@ public class SandBox implements CardHolder {
         return sandBox.size() <= 0 ? null : sandBox.get(sandBox.size() - 1);
     }
 
-    private Scp pop() {
-        return sandBox.size() <= 0 ? null : sandBox.remove(sandBox.size() - 1);
+    @Override
+    public Scp pick(int index) {
+        if (sandBox.size() <= 0) {
+            getGame().ignitionK(ZK, this.parent);
+            return null;
+        }
+        Scp c = (Scp) getCard(index);
+        deleteCard(c);
+        return c;
+    }
+
+    @Override
+    public Scp pick(String name) {
+        if (sandBox.size() <= 0) {
+            getGame().ignitionK(ZK, this.parent);
+            return null;
+        }
+        Scp c = (Scp) find(name);
+        deleteCard(c);
+        return c;
+    }
+
+    public Scp pop() {
+        if (sandBox.size() <= 0) {
+            getGame().ignitionK(ZK, this.parent);
+            return null;
+        }
+        return sandBox.remove(sandBox.size() - 1);
     }
 
     private List<Scp> getSandBox() {

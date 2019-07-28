@@ -52,19 +52,16 @@ public final class EndPoint {
     }
 
     private void cutConnection(final String name) throws IOException {
+        int id = EndPoint.id.get(name);
         try {
-            int id = EndPoint.id.get(name);
             Game game = EndPoint.game.get(id);
             String enemy = game.getEnemyName(name);
-            try {
-                EndPoint.game.remove(id);
-                Session session1 = session.get(enemy);
-                session1.close();
-                session.remove(enemy);
-            } catch (IllegalStateException | NullPointerException ignored) {
-            }
+            EndPoint.game.remove(id);
+            Session session1 = session.get(enemy);
+            session1.close();
+            session.remove(enemy);
             EndPoint.id.remove(enemy);
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException | IllegalStateException | NullPointerException ignored) {
         }
         session.remove(name);
         EndPoint.id.remove(name);
@@ -265,16 +262,22 @@ public final class EndPoint {
                 break;
         }
 
-        do {
+        System.out.println("One Connection");
+        System.out.println("isWait: " + game.isWait());
+        System.out.println("isChainSolving: " + game.isChainSolving());
+        System.out.println("isActive: " + game.isActive());
+
+        while (!game.isActive() && game.isWait()) {
             List<Result> r = new ArrayList<>();
-            if (!game.isActive() && game.isWait()) {
-                game.activeEffect(null, r);
-                sendEffectResult(game, data, r.toArray(new Result[0]));
-            }
-        } while (!game.isChainSolving() && game.isWait());
+            System.out.print("Has Effects: ");
+            game.activeEffect(null, r);
+            System.out.println(r.get(0).getSubjectName());
+            sendEffectResult(game, data, r.toArray(new Result[0]));
+        }
 
         if (!game.isWait() && game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
+            cutConnection(data.PlayerName);
         }
 
     }
@@ -303,7 +306,7 @@ public final class EndPoint {
     }
 
     private void getRemainSandBox(Data data, Game game, String[] name) throws IOException {
-        send(name, SendFormatter.getSandBoxNumber(data.Player, game.getRemainSandBox(data.Player, Clazz.Safe),
+        send(name, SendFormatter.getRemainSandBox(data.Player, game.getRemainSandBox(data.Player, Clazz.Safe),
                 game.getRemainSandBox(data.Player, Clazz.Euclid),
                 game.getRemainSandBox(data.Player, Clazz.Keter)));
     }
@@ -372,8 +375,11 @@ public final class EndPoint {
 
     private void turnEnd(Data data, Game game, String[] name) throws IOException {
         boolean flag = game.nextTurn();
-        if (flag)
+        if (flag) {
             send(name, SendFormatter.turnEnd(data.Player));
+        } else {
+            send(name, SendFormatter.failTurnEnd(data.Player));
+        }
     }
 
     private void getPersonnel(Data data, Game game, String[] name) throws IOException {
@@ -524,7 +530,13 @@ public final class EndPoint {
             }
 
             int sender;
-            if (game.isFirst(data.PlayerName) == (Objects.nonNull(r.getObject()) && r.getObject().length > 0 && r.getObject()[0].length > 0 ? r.getObject()[0][0].ownerIsFirst() : r.getSubject().ownerIsFirst()))
+            if (game.isFirst(data.PlayerName) ==
+                    (Objects.nonNull(r.getObject()) && r.getObject().length > 0
+                            && r.getObject()[0].length > 0
+                            ? r.getObject()[0][0].ownerIsFirst()
+                            : Objects.nonNull(r.getSubject())
+                            ? r.getSubject().ownerIsFirst()
+                            : game.isFirst(data.PlayerName)))
                 sender = SendFormatter.ME;
             else {
                 sender = SendFormatter.ENEMY;
@@ -585,6 +597,9 @@ public final class EndPoint {
                     send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getTargetZone(), r.getCoordinate(), r.isComplete(), sender));
                     break;
 
+                case TurnEnd:
+                    send(name, SendFormatter.turnEnd(r.getSubjectPlayer()));
+
                 case HealSandBox:
                 case DamageSandBox:
                     send(name,
@@ -600,7 +615,10 @@ public final class EndPoint {
                 case MinusSecure:
                 case PlusSecure:
                 case SetSecure:
-                    send(name, SendFormatter.getCardParameter(r.getSubjectPlayer(), r.getSubjectCoordinate(), (Scp) r.getSubject()));
+                case SecureToZero:
+                    if (r.getSubject().whereZone() == Zone.Site) {
+                        send(name, SendFormatter.getCardParameter(r.getSubjectPlayer(), r.getSubjectCoordinate(), (Scp) r.getSubject()));
+                    }
                     break;
 
                 case Optional:
@@ -622,7 +640,6 @@ public final class EndPoint {
             e.printStackTrace();
         }
     }
-
 
     public Deck getDeck(String id, String deckName) {
         try {

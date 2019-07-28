@@ -1,9 +1,9 @@
 {
-  "category": "Euclid",
+  "category": "SCP",
   "name": "SCP-1015-████プリン",
   "canDecommission": true,
   "cost": 2,
-  "secure": 5,
+  "secure": 3,
   "clazz": "Euclid",
   "tag": [
     "scp-jp",
@@ -23,7 +23,7 @@
           "canActive": true,
           "condition": [
             {
-              "action": "SecureIsZero",
+              "action": "SecureNonZero",
               "parameter": {
                 "targetPlayer": "Me"
               }

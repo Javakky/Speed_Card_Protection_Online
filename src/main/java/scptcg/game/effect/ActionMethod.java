@@ -19,5 +19,6 @@ public enum ActionMethod implements IActionMethod {
     SetSecure,
     UpXKCost,
     CancelK,
+    TurnEnd,
     SecureToZero
 }
