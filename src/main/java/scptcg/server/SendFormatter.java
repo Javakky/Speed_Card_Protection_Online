@@ -225,7 +225,7 @@ public class SendFormatter {
     }
 
     public static List<Pair<String, String>> getRemainSandBox(final boolean player, final int... sandbox) {
-        return getRemainSandBox(player, sandbox[0], sandbox[1], sandbox[2], ME);
+        return getRemainSandBox(player, sandbox[0], sandbox[1], sandbox[2], BOTH);
     }
 
     public static List<Pair<String, String>> getEffect(final String zone, final int index, final int length) {
@@ -443,7 +443,6 @@ public class SendFormatter {
         data.Player = player;
         return toList(target, data.toJson());
     }
-
 
     public static List<Pair<String, String>> impossible(boolean player) {
         return impossible(player, ME);

@@ -2,14 +2,15 @@ package scptcg.game.effect;
 
 import scptcg.game.card.Card;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Effects {
 
     private Map<String, List<Effect>> effects;
+
+    public Effects() {
+        effects = new HashMap<>();
+    }
 
     public List<Effect> getEffects() {
         List<Effect> e = new ArrayList<>();
@@ -56,18 +57,24 @@ public class Effects {
     }
 
     public List<Effect> getEffects(final Trigger trigger) {
+        if (Objects.isNull(effects)) return new ArrayList<>();
         return effects.get(trigger.name());
     }
 
     public void refresh() {
-        for (List<Effect> list : effects.values()) {
-            for (Effect effect : list) {
-                effect.refresh();
+        if (Objects.nonNull(effects)) {
+            for (List<Effect> list : effects.values()) {
+                if (Objects.nonNull(list)) {
+                    for (Effect effect : list) {
+                        effect.refresh();
+                    }
+                }
             }
         }
     }
 
     public void setParent(Card parent) {
+
         for (List<Effect> list : effects.values()) {
             for (Effect effect : list) {
                 effect.setParent(parent);

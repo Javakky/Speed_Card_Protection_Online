@@ -15,7 +15,7 @@
     "文書",
     "財団製"
   ],
-  "canPartner": true,
+  "canPartner": false,
   "crossTestable": true,
   "crossTestsCount": 1,
   "effects": {

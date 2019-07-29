@@ -35,7 +35,7 @@ public class Player {
         tales = new Tales(this, createCard(CardCategory.Tale, deck.Tale));
         personnelFile = new PersonnelFile(this, createCard(CardCategory.Personnel, deck.Personnel));
         rocker = new AnomalousRocker(this, createCard(CardCategory.Anomalous, deck.Anomalous));
-        site = new Site(this, xk, nk - 1);
+        site = new Site(this, nk - 1);
         decommissioned = new Decommissioned(this);
         exclusion = new Exclusion(this);
         safe = createSafe(createCard(CardCategory.SCP, deck.Safe));
@@ -297,7 +297,7 @@ public class Player {
     }
 
     public Scp breach(String name, Clazz clazz, int index) {
-        Scp card = (Scp) getSandBox(clazz).pick(name);
+        Scp card = getSandBox(clazz).pick(name);
         card.toPartner(false);
         site.breach(index, card);
         shuffle(clazz);
@@ -305,7 +305,7 @@ public class Player {
     }
 
     public Scp breachPartner(String name, int index) {
-        Scp card = (Scp) safe.pick(name);
+        Scp card = safe.pick(name);
         card.toPartner(true);
         site.breach(index, card);
         shuffle(Clazz.Safe);
@@ -387,5 +387,15 @@ public class Player {
 
     public int getSize(Zone zone) {
         return getArea(zone).getCardCount();
+    }
+
+    public Card[] getDecommissioned(CardCategory category) {
+        List<Card> cards = new ArrayList<>();
+        for (Card card : decommissioned.getCards()) {
+            if (Objects.nonNull(card) && card.getCategory() == category) {
+                cards.add(card);
+            }
+        }
+        return cards.toArray(new Card[0]);
     }
 }

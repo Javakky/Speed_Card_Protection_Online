@@ -8,4 +8,7 @@ public class Deck {
     public String[] Safe;
     public String[] Keter;
     public String[] Euclid;
+    public String name;
+    public String key;
+    public int type;
 }

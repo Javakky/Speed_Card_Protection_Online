@@ -97,7 +97,7 @@ public class DeckMakeServlet extends HttpServlet {
                             DECK.DECK_
                     ).values(
                             to(req.getParameter("Id"), "ISO8859_1", "UTF-8"),
-                            to(req.getParameter("Name"), "ISO8859_1", "UTF-8"),
+                            URLDecoder.decode(to(req.getParameter("Name"), "ISO8859_1", "UTF-8")),
                             URLDecoder.decode(to(req.getParameter("Main"), "ISO8859_1", "UTF-8")),
                             to(req.getParameter("MainType"), "ISO8859_1", "UTF-8"),
                             URLDecoder.decode(body, "UTF-8")
@@ -151,8 +151,7 @@ public class DeckMakeServlet extends HttpServlet {
                         sb.append(record.getValue(DECK.NAME))
                                 .append(",")
                                 .append(record.getValue(DECK.MAIN))
-                                .append(",")
-                                .append(record.getValue(DECK.MAINTYPE) + "\n");
+                                .append(",").append(record.getValue(DECK.MAINTYPE)).append("\n");
                     }
                     if (sb.length() >= 1)
                         sb.setLength(sb.length() - 1);
@@ -270,7 +269,7 @@ public class DeckMakeServlet extends HttpServlet {
                     DSLContext con = connectionDB();
                     String json = con.select().from(DECK)
                             .where(DECK.ID.eq(req.getParameter("Id")))
-                            .and(DECK.NAME.eq(req.getParameter("Name")))
+                            .and(DECK.NAME.eq(URLDecoder.decode(to(req.getParameter("Name"), "ISO8859_1", "UTF-8"))))
                             .fetch().get(0).getValue(DECK.DECK_);
                     System.out.println(json);
                     out.println(json);

@@ -207,7 +207,7 @@ public class Effect {
     }
 
     public void refresh() {
-        activationsCount = 0;
+        activationCount = 0;
     }
 
     public boolean ownerIsFirst() {

@@ -28,13 +28,13 @@
             {
               "action": "PlusSecure",
               "parameter": {
-                "reference": "DecommissionedNumber"
+                "reference": "DecommissionedSCP"
               }
             },
             {
               "action": "PlusSecure",
               "parameter": {
-                "reference": "DecommissionedNumber"
+                "reference": "DecommissionedSCP"
               }
             }
           ]

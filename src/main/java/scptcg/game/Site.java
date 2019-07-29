@@ -19,11 +19,9 @@ public class Site implements CardHolder {
     private Scp[] site;
     private int anomalousCost = 0;
     private Player parent;
-    private int maxCost;
 
-    public Site(Player player, int maxCost, int size) {
+    public Site(Player player, int size) {
         parent = player;
-        this.maxCost = maxCost;
         this.size = size;
         this.site = new Scp[size];
     }
@@ -203,6 +201,12 @@ public class Site implements CardHolder {
                             break;
                         case CrossTested:
                             if (scp.getCrossTestCount() <= 0) flag = false;
+                            break;
+                        case HasTag:
+                            if (!scp.containsTag(c.getTag())) flag = false;
+                            break;
+                        case IsClass:
+                            if (!scp.containsClazz(c.getClazz())) flag = false;
                             break;
                     }
                 }
@@ -400,11 +404,11 @@ public class Site implements CardHolder {
     }
 
     public int getMaxCost() {
-        return maxCost;
+        return getGame().getXKCost();
     }
 
     public void setMaxCost(int maxCost) {
-        this.maxCost = maxCost;
+        getGame().setXKCost(maxCost);
     }
 
     public int getCost() {

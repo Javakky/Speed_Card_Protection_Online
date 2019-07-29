@@ -26,7 +26,7 @@ public class Game {
     private boolean isActive = false;
     private boolean isChainSolving = false;
     private boolean firstPlayer;
-    private int xk = 100;
+    private int xk = 7;
     private int nk = 7;
     private Tale activing = null;
     private List<History> history;
@@ -140,7 +140,7 @@ public class Game {
                 activing = (Tale) card;
             }
         } catch (NotActivableException e) {
-            ResultBuilder rb = new ResultBuilder(ActionMethod.Fail.name(), turnPlayer, null, card, null, -1);
+            ResultBuilder rb = new ResultBuilder(Fail.name(), turnPlayer, null, card, null, -1);
             finish = true;
             result.add(rb.createResult());
             System.out.println("Fail Effect");
@@ -174,7 +174,7 @@ public class Game {
             waitEffect.get(0).remove(0);
             if (Objects.nonNull(activing) && Objects.nonNull(result)) {
                 ResultBuilder rb = new ResultBuilder(
-                        ActionMethod.Decommission.name(),
+                        Decommission.name(),
                         activing.ownerIsFirst(),
                         Zone.Tales,
                         activing,
@@ -332,7 +332,7 @@ public class Game {
     }
 
     public int healSandBox(boolean isFirst, Clazz clazz, int point) {
-        ResultBuilder result = new ResultBuilder(ActionMethod.HealSandBox.name(), isFirst, clazzToZone(clazz), null, null, -1);
+        ResultBuilder result = new ResultBuilder(HealSandBox.name(), isFirst, clazzToZone(clazz), null, null, -1);
         result.setPoint(point);
         setBefore(result.createResult());
         return getPlayer(isFirst).heal(clazz, point);
@@ -430,5 +430,13 @@ public class Game {
 
     public void cancelK() {
         this.scenario = null;
+    }
+
+    public int getXKCost() {
+        return xk;
+    }
+
+    public void setXKCost(int xkCost) {
+        this.xk = xkCost;
     }
 }

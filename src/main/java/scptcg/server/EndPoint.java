@@ -32,7 +32,7 @@ public final class EndPoint {
     private static boolean wait = false;
     private static String waiting;
     private static String waitingDeck;
-    static private Logger logger = null;
+    private static Logger logger = null;
 
     static {
         logger = Log4j.getInstance();
@@ -48,11 +48,17 @@ public final class EndPoint {
     public void onClose(final Session client, final CloseReason reason) throws IOException {
         String log = client.getId() + " was closed by " + reason.getCloseCode();
         logger.info(log);
+        if (wait && waiting.equals(getId(client))) {
+            wait = false;
+            waiting = null;
+            waitingDeck = null;
+        }
         cutConnection(getId(client));
     }
 
     private void cutConnection(final String name) throws IOException {
         int id = EndPoint.id.get(name);
+
         try {
             Game game = EndPoint.game.get(id);
             String enemy = game.getEnemyName(name);
@@ -69,7 +75,7 @@ public final class EndPoint {
 
     @OnError
     public void onError(final Session client, final Throwable error) {
-        logger.error(error);
+        error.printStackTrace();
     }
 
     private String getId(final Session s) {
@@ -173,10 +179,9 @@ public final class EndPoint {
                 canCrossTest(data, game, name);
                 break;
 
-            case Breach: {
+            case Breach:
                 breach(data, game, name);
                 break;
-            }
 
             case TurnEnd:
                 turnEnd(data, game, name);
@@ -225,6 +230,11 @@ public final class EndPoint {
 
             case LostEffect:
                 lostEffect(data, game, name);
+                if (game.isChainSolving()) {
+                    List<Result> r = new ArrayList<>();
+                    game.activeEffect(null, r);
+                    sendEffectResult(game, data, r.toArray(new Result[0]));
+                }
                 break;
 
             case HealSandBox:
@@ -262,11 +272,6 @@ public final class EndPoint {
                 break;
         }
 
-        System.out.println("One Connection");
-        System.out.println("isWait: " + game.isWait());
-        System.out.println("isChainSolving: " + game.isChainSolving());
-        System.out.println("isActive: " + game.isActive());
-
         while (!game.isActive() && game.isWait()) {
             List<Result> r = new ArrayList<>();
             System.out.print("Has Effects: ");
@@ -279,7 +284,6 @@ public final class EndPoint {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
             cutConnection(data.PlayerName);
         }
-
     }
 
     private void getDecommissioned(Data data, Game game, String[] name) throws IOException {
@@ -299,6 +303,7 @@ public final class EndPoint {
         Scp scp = game.breachPartner(data.Player, data.CardName[0], data.Coordinate[0][0]);
         send(name, SendFormatter.selectPartner(data.Player, data.Coordinate[0][0], scp));
         send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
+        getRemainSandBox(data, game, name);
     }
 
     private void getEmptySite(Data data, Game game, String[] name) throws IOException {
@@ -306,9 +311,12 @@ public final class EndPoint {
     }
 
     private void getRemainSandBox(Data data, Game game, String[] name) throws IOException {
-        send(name, SendFormatter.getRemainSandBox(data.Player, game.getRemainSandBox(data.Player, Clazz.Safe),
-                game.getRemainSandBox(data.Player, Clazz.Euclid),
-                game.getRemainSandBox(data.Player, Clazz.Keter)));
+        send(name, SendFormatter.getRemainSandBox(true, game.getRemainSandBox(true, Clazz.Safe),
+                game.getRemainSandBox(true, Clazz.Euclid),
+                game.getRemainSandBox(true, Clazz.Keter)));
+        send(name, SendFormatter.getRemainSandBox(false, game.getRemainSandBox(true, Clazz.Safe),
+                game.getRemainSandBox(false, Clazz.Euclid),
+                game.getRemainSandBox(false, Clazz.Keter)));
     }
 
     private void crossTest(Data data, Game game, String[] name) throws IOException {
@@ -366,7 +374,7 @@ public final class EndPoint {
         send(name, SendFormatter.breach(data.Player, data.Coordinate[0][0], scp));
 
         send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
-
+        getRemainSandBox(data, game, name);
         int me = game.getSumSiteCost(data.Player);
         getSumSiteCost(name, data.Player, me);
         int enemy = game.getSumSiteCost(!data.Player);
@@ -413,10 +421,15 @@ public final class EndPoint {
 
     private void activeEffect(Data data, Game game, String[] name) throws IOException {
         game.selectEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0], data.Coordinate[0][1]);
+
     }
 
     private void lostEffect(Data data, Game game, String[] name) {
-        game.lostEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
+        if (data.Coordinate[0].length > 0) {
+            game.lostEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
+        } else {
+            game.lostEffect(!data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[1][0]);
+        }
     }
 
     private Result decommission(Data data, Game game, String[] name) throws IOException {
@@ -464,7 +477,6 @@ public final class EndPoint {
         List<Scp> scp = new ArrayList<>();
         game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         send(name, SendFormatter.damage(data.Player, data.SandBox, data.Point[0], -1));
-
         if (scp.get(0) != null) {
             send(name, SendFormatter.startBreach(scp.get(0), data.Player, data.SandBox));
         }
@@ -628,7 +640,7 @@ public final class EndPoint {
                     break;
             }
         }
-
+        getRemainSandBox(data, game, name);
         return list;
     }
 
@@ -644,15 +656,10 @@ public final class EndPoint {
     public Deck getDeck(String id, String deckName) {
         try {
             DSLContext con = connectionDB();
-            String txt = null;
-            for (org.jooq.Record r :
-                    con.select().from(DECK)
-                            .where(DECK.ID.eq(id))
-                            .and(DECK.NAME.eq(deckName))
-                            .fetch()) {
-                txt = r.getValue(DECK.DECK_);
-                break;
-            }
+            String txt = con.select().from(DECK)
+                    .where(DECK.ID.eq(id))
+                    .and(DECK.NAME.eq(deckName))
+                    .fetch().stream().findFirst().map(r -> r.getValue(DECK.DECK_)).orElse(null);
             Deck d = (new Gson()).fromJson(txt, Deck.class);
             System.out.println(txt);
             return d;
@@ -661,5 +668,4 @@ public final class EndPoint {
         }
         return new Deck();
     }
-
 }

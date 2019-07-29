@@ -3,6 +3,7 @@ package scptcg.game.effect;
 import scptcg.game.Player;
 import scptcg.game.Zone;
 import scptcg.game.card.Card;
+import scptcg.game.card.CardCategory;
 import scptcg.game.card.Scp;
 
 import java.util.ArrayList;
@@ -215,6 +216,8 @@ public class Action extends AbstractAction {
             case "DecommissionedNumber":
                 number = getPlayer().getSize(Zone.Decommissioned);
                 break;
+            case "DecommissionedSCP":
+                number = getPlayer().getDecommissioned(CardCategory.SCP).length;
             case "Point":
                 number = getParameter().getPoint();
                 break;

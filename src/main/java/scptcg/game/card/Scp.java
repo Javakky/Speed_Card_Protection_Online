@@ -4,6 +4,7 @@ import scptcg.game.CardHolder;
 import scptcg.game.effect.Effects;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -98,11 +99,20 @@ public class Scp extends Card {
         this.containmentClass = containmentClass.toString();
     }
 
+    @Override
+    public void lostEffect() {
+        super.lostEffect();
+        enableCanCrossTest();
+        enableDecommission();
+    }
+
     public boolean containsClazz(final Clazz clazz) {
         boolean contais = getClazz() == clazz;
         if (contais) return true;
-        contais = subClazz.contains(clazz.name());
-        if (contais) return true;
+        if (Objects.nonNull(subClazz)) {
+            contais = subClazz.contains(clazz.name());
+            if (contais) return true;
+        }
         return getContainmentClass() == clazz;
     }
 
