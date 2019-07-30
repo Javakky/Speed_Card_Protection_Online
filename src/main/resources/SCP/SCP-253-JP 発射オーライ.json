@@ -18,7 +18,7 @@
     "effects": {
       "Breached": [
         {
-          "message": "",
+          "message": "自分のサイト上に[乗り物]を持つEuclidのオブジェクトがあれば、自分の人事を1つ終了してもよい。そうしたなら、相手のサンドボックスを1つ選び、3ダメージを与える。",
           "activationsCount": 2147483647,
           "canActive": true,
           "condition": [

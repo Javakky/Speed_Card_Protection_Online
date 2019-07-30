@@ -44,7 +44,8 @@ public class SetUpServlet extends HttpServlet {
                     .execute();
             out.println("Success!");
         } catch (SQLException e) {
-            out.println(e.getMessage());
+            out.println(e.getSQLState());
+            e.printStackTrace(out);
             e.printStackTrace();
         }
     }
