@@ -164,7 +164,10 @@ public final class EndPoint {
                 break;
 
             case CrossTest:
-                crossTest(data, game, name);
+                if (!game.isChainSolving() && !game.isWaitBreach())
+                    crossTest(data, game, name);
+                else
+                    send(name, SendFormatter.can_tCross(data.Player));
                 break;
 
             case WhetherActive:
@@ -216,7 +219,10 @@ public final class EndPoint {
                 break;
 
             case ActiveEffect:
-                activeEffect(data, game, name);
+                if (!game.isChainSolving() && !game.isWaitBreach())
+                    activeEffect(data, game, name);
+                else
+                    send(name, SendFormatter.failEffect());
                 break;
 
             case Decommission:
@@ -272,7 +278,7 @@ public final class EndPoint {
                 break;
         }
 
-        while (!game.isActive() && game.isWait()) {
+        while (!game.isActive() && game.isWait() && !game.isWaitBreach()) {
             List<Result> r = new ArrayList<>();
             System.out.print("Has Effects: ");
             game.activeEffect(null, r);
@@ -280,7 +286,7 @@ public final class EndPoint {
             sendEffectResult(game, data, r.toArray(new Result[0]));
         }
 
-        if (!game.isWait() && game.isK()) {
+        if (!game.isWait() && !game.isWaitBreach() && game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
             cutConnection(data.PlayerName);
         }
