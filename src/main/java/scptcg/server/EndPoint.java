@@ -275,8 +275,26 @@ public final class EndPoint {
                 }
                 break;
 
+            case PlusSecure:
+                plusSecure(data, game, name);
+                break;
+
             case DamageSandBox:
                 damageSandBox(data, game, name);
+                if (game.isChainSolving()) {
+                    List<Result> r = new ArrayList<>();
+                    ResultBuilder rb = new ResultBuilder(
+                            ActionMethod.DamageSandBox.name(),
+                            data.Player,
+                            null,
+                            null,
+                            null,
+                            -1
+                    );
+                    rb.setPoint(data.Point[0]);
+                    game.activeEffect(rb.createResult(), r);
+                    sendEffectResult(game, data, r.toArray(new Result[0]));
+                }
                 break;
 
             case GetCardParameters:
@@ -303,6 +321,13 @@ public final class EndPoint {
         if (!game.isWait() && !game.isWaitBreach() && game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
             cutConnection(data.PlayerName);
+        }
+    }
+
+    private void plusSecure(Data data, Game game, String[] name) throws IOException {
+        if (Zone.valueOf(data.Zone[0]) == Zone.Site) {
+            game.plusSecure(data.Player, data.Coordinate[0][0], data.Point[0]);
+            send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], (Scp) game.getCard(data.Player, Zone.Site, data.Coordinate[0][0])));
         }
     }
 
@@ -626,7 +651,7 @@ public final class EndPoint {
                     break;
 
                 case Select:
-                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getTargetZone(), r.getCoordinate(), r.isComplete(), sender));
+                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getTargetZone(), r.getCoordinate(), r.isComplete(), r.getPoint(), sender));
                     break;
 
                 case TurnEnd:

@@ -448,4 +448,8 @@ public class Game {
     public boolean isWaitBreach() {
         return waitBreach;
     }
+
+    public void plusSecure(boolean isFirst, int index, int point) {
+        getPlayer(isFirst).plusSecure(index, point);
+    }
 }

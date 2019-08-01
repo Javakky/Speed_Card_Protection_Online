@@ -427,4 +427,7 @@ public class Site implements CardHolder {
         return cost;
     }
 
+    public void plusSecure(int index, int point) {
+        ((Scp) getCard(index)).plusSecure(point);
+    }
 }
