@@ -233,7 +233,7 @@ public class Action extends AbstractAction {
     private void k_class() {
         List<Player> player = new ArrayList<>();
         getTargetPlayer(player);
-        getGame().ignitionK(getParameter().getScenario(), player.get(0));
+        getGame().ignitionK(getParameter().getScenario()[0], player.get(0));
         tmpResult.setTargetPlayer(player.get(0).isFirst());
         tmpResult.setIsComplete(true);
     }

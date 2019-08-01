@@ -1,5 +1,6 @@
 package scptcg.game.effect;
 
+import scptcg.game.K_Class;
 import scptcg.game.Player;
 import scptcg.game.card.Scp;
 
@@ -77,9 +78,20 @@ public class Condition extends AbstractAction {
                 return secureUnder();
             case SecureOver:
                 return secureOver();
+            case ScenarioNon:
+                return scenarioNon();
             default:
                 throw new IllegalArgumentException("存在しない条件です。：" + getActionMessage());
         }
+    }
+
+    private boolean scenarioNon() {
+        for (K_Class k : getParameter().getScenario()) {
+            if (k == getGame().getScenario()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean secureOver() {
@@ -93,7 +105,7 @@ public class Condition extends AbstractAction {
     private boolean scenarioIs() {
         List<Player> p = new ArrayList<>();
         getTargetPlayer(p);
-        return p.get(0).isFirst() == this.getGame().getKClassPlayerIsFirst() && getGame().getScenario() == getParameter().getScenario();
+        return p.get(0).isFirst() == this.getGame().getKClassPlayerIsFirst() && getGame().getScenario() == getParameter().getScenario()[0];
     }
 
     private boolean sumSiteCostOver() {

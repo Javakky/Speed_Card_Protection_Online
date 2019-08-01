@@ -1,41 +1,45 @@
 {
   "category": "SCP",
-  "name": "SCP-1200-JP 明日の神話",
+  "name": "SCP-1282-JP Above the Switched-On Lotus",
   "canDecommission": true,
-  "cost": 3,
-  "secure": 6,
-  "clazz": "Neutralized",
-  "containmentClass": "Keter",
+  "cost": 1,
+  "secure": 0,
+  "clazz": "Thaumiel",
+  "containmentClass": "Euclid",
   "tag": [
-    "1000jp",
+    "オネイロイ",
     "k-クラスシナリオ",
+    "変身",
     "scp-jp",
-    "人間型",
-    "儀式",
-    "液体",
+    "彫刻",
+    "木製",
+    "未来予知",
     "現実改変",
-    "異次元",
-    "知性",
+    "歴史",
+    "生命",
+    "群れ",
+    "自動装置",
     "自我",
     "蒐集院"
   ],
-  "canPartner": true,
+  "canPartner": false,
   "crossTestable": true,
   "crossTestsCount": 1,
   "effects": {
     "effects": {
       "K_Class": [
         {
-          "message": "自分にZK-クラスシナリオが発生するなら、それはかわりに相手に発生する",
+          "message": "自分にXKでもZKでもないK-Classシナリオが発動するなら、それを無効にする",
           "activationsCount": 2147483647,
           "canActive": true,
           "condition": [
             {
-              "action": "ScenarioIs",
+              "action": "ScenarioNon",
               "parameter": {
                 "targetPlayer": "Me",
                 "scenario": [
-                  "ZK"
+                  "ZK",
+                  "XK"
                 ]
               }
             }
@@ -43,15 +47,6 @@
           "action": [
             {
               "action": "CancelK"
-            },
-            {
-              "action": "K_Class",
-              "parameter": {
-                "targetPlayer": "Enemy",
-                "scenario": [
-                  "ZK"
-                ]
-              }
             }
           ]
         }

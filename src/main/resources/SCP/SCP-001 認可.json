@@ -30,7 +30,9 @@
               "action": "ScenarioIs",
               "parameter": {
                 "targetPlayer": "Me",
-                "scenario": "ZK"
+                "scenario": [
+                  "ZK"
+                ]
               }
             }
           ],
@@ -42,7 +44,9 @@
               "action": "K_Class",
               "parameter": {
                 "targetPlayer": "Enemy",
-                "scenario": "YK"
+                "scenario": [
+                  "YK"
+                ]
               }
             }
           ]

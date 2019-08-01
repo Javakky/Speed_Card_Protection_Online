@@ -36,7 +36,10 @@
                     {
                       "action": "K_Class",
                       "parameter": {
-                        "targetPlayer": "Me"
+                        "targetPlayer": "Me",
+                        "scenario": [
+                          "IK"
+                        ]
                       }
                     }
                   ]

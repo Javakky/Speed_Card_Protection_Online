@@ -4,6 +4,10 @@ import scptcg.game.K_Class;
 import scptcg.game.Zone;
 import scptcg.game.card.Clazz;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Parameter {
     private String targetPlayer;
     private String targetZone;
@@ -19,7 +23,7 @@ public class Parameter {
     private String targetClazz;
     private String trigger;
     private boolean isThis;
-    private String scenario;
+    private String[] scenario;
     private boolean isAll;
 
     public String getTargetPlayer() {
@@ -87,13 +91,25 @@ public class Parameter {
         return isThis;
     }
 
-    public K_Class getScenario() {
-        if (scenario == null) scenario = K_Class.IK.name();
-        return K_Class.valueOf(scenario);
+    public K_Class[] getScenario() {
+        if (scenario == null) scenario = new String[]{K_Class.IK.name()};
+        List<K_Class> list = new ArrayList<>();
+        for (String k : scenario) {
+            if (Objects.nonNull(k)) {
+                list.add(K_Class.valueOf(k));
+            }
+        }
+        return list.toArray(new K_Class[0]);
     }
 
-    public void setScenario(K_Class scenario) {
-        this.scenario = scenario.name();
+    public void setScenario(K_Class[] scenario) {
+        List<String> list = new ArrayList<>();
+        for (K_Class k : scenario) {
+            if (Objects.nonNull(k)) {
+                list.add(k.name());
+            }
+        }
+        this.scenario = list.toArray(new String[0]);
     }
 
     public boolean isAll() {
