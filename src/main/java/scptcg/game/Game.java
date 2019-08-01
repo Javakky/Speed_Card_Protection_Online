@@ -31,7 +31,6 @@ public class Game {
     private Tale activing = null;
     private List<History> history;
     private boolean waitEnd;
-    private boolean waitBreach;
 
     public Game(String waiter, Deck waiterDeck, String visitor, Deck visitorDeck) {
         int r = new Random(System.currentTimeMillis()).nextInt(2);
@@ -236,7 +235,7 @@ public class Game {
         }
         this.addWaitEffects(getTurnPlayer().getEffects(Trigger.TurnEnd, Zone.Site));
         this.addWaitEffects(getTurnPlayer().getEnemy().getEffects(Trigger.TurnStart, Zone.Site));
-        if (isWait()) {
+        if (isChainSolving()) {
             waitEnd = true;
             return false;
         }
@@ -297,14 +296,11 @@ public class Game {
             addWaitEffects(arr);
         damage(!isFirst, sandBox, point, breached);
 
-        if (breached.size() > 0 && Objects.nonNull(breached.get(0))) waitBreach = true;
         return point;
     }
 
     public void damage(boolean isFirst, Clazz sandBox, int point, List<Scp> breached) {
         getPlayer(isFirst).damage(sandBox, point, breached);
-
-        if (breached.size() > 0 && Objects.nonNull(breached.get(0))) waitBreach = true;
     }
 
     private boolean isTurnPlayer(boolean isFirst) {
@@ -388,7 +384,6 @@ public class Game {
                 Objects.requireNonNull(
                         getPlayer(player).getCard(Objects.requireNonNull(clazzToZone(clazz)), name)
                 ).getEffects(Trigger.Breached));
-        waitBreach = false;
         return getPlayer(player).breach(name, clazz, index);
     }
 
@@ -443,9 +438,5 @@ public class Game {
 
     public void setXKCost(int xkCost) {
         this.xk = xkCost;
-    }
-
-    public boolean isWaitBreach() {
-        return waitBreach;
     }
 }

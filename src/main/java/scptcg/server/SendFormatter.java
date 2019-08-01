@@ -280,11 +280,12 @@ public class SendFormatter {
         data.SandBox = sandBox;
         Data data2 = new Data();
         List<Pair<String, String>> m;
-        data2.Event = Wait.name();
         if (!isMe) {
+            data2.Event = Wait.name();
             m = toListMe(data2.toJson());
             m.addAll(toListEnemy(data.toJson()));
         } else {
+            data2.Event = Wait.name();
             m = toListEnemy(data2.toJson());
             m.addAll(toListMe(data.toJson()));
         }

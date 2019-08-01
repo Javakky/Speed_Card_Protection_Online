@@ -104,7 +104,6 @@ public class Scp extends Card {
         super.lostEffect();
         enableCanCrossTest();
         enableDecommission();
-        setCrossTestsCount(1);
     }
 
     public boolean containsClazz(final Clazz clazz) {
