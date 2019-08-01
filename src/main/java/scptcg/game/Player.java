@@ -398,4 +398,8 @@ public class Player {
         }
         return cards.toArray(new Card[0]);
     }
+
+    public void plusSecure(int index, int point) {
+        site.plusSecure(index, point);
+    }
 }

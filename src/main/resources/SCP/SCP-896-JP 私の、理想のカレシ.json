@@ -36,9 +36,6 @@
                   {
                     "name": "SecureUnder",
                     "point": 3
-                  },
-                  {
-                    "name": "NotThis"
                   }
                 ]
               }
@@ -46,10 +43,19 @@
           ],
           "action": [
             {
-              "action": "PlusSecure",
+              "action": "Select",
               "parameter": {
-                "reference": "Point",
-                "point": 2
+                "nextAction": "PlusSecure",
+                "targetPlayer": "Me",
+                "point": 2,
+                "isThere": true,
+                "condition": [
+                  {
+                    "name": "SecureUnder",
+                    "point": 3
+                  }
+                ],
+                "targetZone": "Site"
               }
             }
           ]

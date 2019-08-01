@@ -44,5 +44,6 @@ public enum Events {
     SortEffect,
     GetRemainSandBox,
     Optional,
-    FailTurnEnd
+    FailTurnEnd,
+    PlusSecure
 }

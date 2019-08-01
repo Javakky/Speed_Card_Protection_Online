@@ -339,6 +339,7 @@ public class Action extends AbstractAction {
                     player.get(1).getSelectables(p.isThere(), p.getCondition())
             });
         }
+        tmpResult.setPoint(p.getPoint());
         tmpResult.setIsComplete(false);
         tmpResult.setTargetZone(p.getTargetZone());
         tmpResult.setNextAction(p.getNextAction().name());

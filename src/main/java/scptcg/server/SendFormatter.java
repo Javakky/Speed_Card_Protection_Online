@@ -82,7 +82,7 @@ public class SendFormatter {
     }
 
 
-    public static List<Pair<String, String>> select(final boolean player, final String after, final String place, int[][] coordinate, boolean cont, int receiver) {
+    public static List<Pair<String, String>> select(final boolean player, final String after, final String place, int[][] coordinate, boolean cont, int point, int receiver) {
         Data d = new Data();
         d.Event = Select.name();
         d.Player = player;
@@ -90,11 +90,12 @@ public class SendFormatter {
         d.Coordinate = coordinate;
         d.After = after;
         d.Continue = cont;
+        d.Point = new int[]{point};
         return toList(receiver, d.toJson());
     }
 
-    public static List<Pair<String, String>> select(final boolean player, final String after, final String place, int[][] coordinate, boolean cont) {
-        return select(player, after, place, coordinate, cont, ME);
+    public static List<Pair<String, String>> select(final boolean player, final String after, final String place, int[][] coordinate, boolean cont, int point) {
+        return select(player, after, place, coordinate, cont, point, ME);
     }
 
     public static List<Pair<String, String>> getPartnerables(final boolean player, Card[] cards, int receiver) {
