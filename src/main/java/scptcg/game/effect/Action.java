@@ -218,6 +218,7 @@ public class Action extends AbstractAction {
                 break;
             case "DecommissionedSCP":
                 number = getPlayer().getDecommissioned(CardCategory.SCP).length;
+                break;
             case "Point":
                 number = getParameter().getPoint();
                 break;

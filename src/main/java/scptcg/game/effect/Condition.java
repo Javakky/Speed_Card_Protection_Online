@@ -66,7 +66,9 @@ public class Condition extends AbstractAction {
             case SecureNon:
                 return secureNon();
             case DidntCrossTest:
-                return didntCrossTest();
+                boolean flag = didntCrossTest();
+                System.out.println("Didn't Cross Test: " + flag);
+                return flag;
             case SumSiteCostOver:
                 return sumSiteCostOver();
             case ScenarioIs:

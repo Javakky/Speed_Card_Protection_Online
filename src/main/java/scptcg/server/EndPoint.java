@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.DSLContext;
 import scptcg.game.Game;
+import scptcg.game.K_Class;
 import scptcg.game.Zone;
 import scptcg.game.card.*;
 import scptcg.game.effect.ActionMethod;
@@ -53,6 +54,17 @@ public final class EndPoint {
             waiting = null;
             waitingDeck = null;
         }
+
+        try {
+            String name = getId(client);
+            int id = EndPoint.id.get(name);
+            Game game = EndPoint.game.get(id);
+            if (Objects.nonNull(EndPoint.game.get(id))) {
+                send(new String[]{name, game.getEnemyName(name)}, SendFormatter.K_Class(game.isFirst(name), K_Class.IK));
+            }
+        } catch (IndexOutOfBoundsException | IllegalStateException | NullPointerException ignored) {
+        }
+
         cutConnection(getId(client));
     }
 
@@ -87,7 +99,7 @@ public final class EndPoint {
         return null;
     }
 
-    public void login(final String player, final String deck, final Session client) throws IOException {
+    public synchronized void login(final String player, final String deck, final Session client) throws IOException {
         Data data = new Data();
         data.Event = "Login";
         session.put(player, client);
@@ -164,7 +176,11 @@ public final class EndPoint {
                 break;
 
             case CrossTest:
-                crossTest(data, game, name);
+                if (!game.isWait() && !game.isWaitBreach()) {
+                    crossTest(data, game, name);
+                } else {
+                    send(name, SendFormatter.can_tCross(data.Player));
+                }
                 break;
 
             case WhetherActive:
@@ -204,7 +220,7 @@ public final class EndPoint {
                 break;
 
             case GetSandBoxProtection:
-                getSandBoxProtection(data, game, name);
+                //getSandBoxProtection(data, game, name);
                 break;
 /*
             case GET_COST:
@@ -216,7 +232,11 @@ public final class EndPoint {
                 break;
 
             case ActiveEffect:
-                activeEffect(data, game, name);
+                if (!game.isWait() && !game.isWaitBreach()) {
+                    activeEffect(data, game, name);
+                } else {
+                    send(name, SendFormatter.failEffect());
+                }
                 break;
 
             case Decommission:
@@ -272,7 +292,7 @@ public final class EndPoint {
                 break;
         }
 
-        while (!game.isActive() && game.isWait()) {
+        while (!game.isActive() && !game.isWaitBreach() && game.isWait()) {
             List<Result> r = new ArrayList<>();
             System.out.print("Has Effects: ");
             game.activeEffect(null, r);
@@ -280,7 +300,7 @@ public final class EndPoint {
             sendEffectResult(game, data, r.toArray(new Result[0]));
         }
 
-        if (!game.isWait() && game.isK()) {
+        if (!game.isWait() && !game.isWaitBreach() && game.isK()) {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
             cutConnection(data.PlayerName);
         }
@@ -314,7 +334,7 @@ public final class EndPoint {
         send(name, SendFormatter.getRemainSandBox(true, game.getRemainSandBox(true, Clazz.Safe),
                 game.getRemainSandBox(true, Clazz.Euclid),
                 game.getRemainSandBox(true, Clazz.Keter)));
-        send(name, SendFormatter.getRemainSandBox(false, game.getRemainSandBox(true, Clazz.Safe),
+        send(name, SendFormatter.getRemainSandBox(false, game.getRemainSandBox(false, Clazz.Safe),
                 game.getRemainSandBox(false, Clazz.Euclid),
                 game.getRemainSandBox(false, Clazz.Keter)));
     }
@@ -478,7 +498,7 @@ public final class EndPoint {
         game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         send(name, SendFormatter.damage(data.Player, data.SandBox, data.Point[0], -1));
         if (scp.get(0) != null) {
-            send(name, SendFormatter.startBreach(scp.get(0), data.Player, data.SandBox));
+            send(name, SendFormatter.startBreach(scp.get(0), game.isFirst(data.PlayerName) == data.Player, data.SandBox));
         }
 
     }
