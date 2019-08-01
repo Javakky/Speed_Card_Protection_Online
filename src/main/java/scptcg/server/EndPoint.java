@@ -478,7 +478,7 @@ public final class EndPoint {
         game.damage(data.Player, intToSandBox(data.SandBox), data.Point[0], scp);
         send(name, SendFormatter.damage(data.Player, data.SandBox, data.Point[0], -1));
         if (scp.get(0) != null) {
-            send(name, SendFormatter.startBreach(scp.get(0), data.Player, data.SandBox));
+            send(name, SendFormatter.startBreach(scp.get(0), game.isFirst(data.PlayerName) == data.Player, data.SandBox));
         }
 
     }
@@ -611,7 +611,7 @@ public final class EndPoint {
 
                 case TurnEnd:
                     send(name, SendFormatter.turnEnd(r.getSubjectPlayer()));
-
+                    break;
                 case HealSandBox:
                 case DamageSandBox:
                     send(name,
