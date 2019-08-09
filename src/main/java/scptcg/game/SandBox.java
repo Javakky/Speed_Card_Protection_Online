@@ -275,4 +275,8 @@ public class SandBox implements CardHolder {
     public Card[] getCards() {
         return sandBox.toArray(new Card[0]);
     }
+
+    public boolean isFullProtection() {
+        return getProtection() == getMaxProtectionForce();
+    }
 }

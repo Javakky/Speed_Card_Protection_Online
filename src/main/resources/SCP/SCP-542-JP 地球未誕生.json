@@ -35,7 +35,9 @@
               "action": "K_Class",
               "parameter": {
                 "targetPlayer": "Enemy",
-                "scenario": "SK"
+                "scenario": [
+                  "SK"
+                ]
               }
             }
           ]

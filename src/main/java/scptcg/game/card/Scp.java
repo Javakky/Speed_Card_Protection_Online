@@ -145,7 +145,7 @@ public class Scp extends Card {
     }
 
     public boolean canCrossTest() {
-        return crossTestable;
+        return crossTestable && crossTestCount < crossTestsCount;
     }
 
     public void enableCanCrossTest(final boolean canCrossTest) {

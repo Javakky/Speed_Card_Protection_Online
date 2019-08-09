@@ -430,4 +430,15 @@ public class Site implements CardHolder {
     public void plusSecure(int index, int point) {
         ((Scp) getCard(index)).plusSecure(point);
     }
+
+    public int[] canCrossTests() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < site.length; i++) {
+            Scp s = site[i];
+            if (s != null && s.canCrossTest()) {
+                list.add(i);
+            }
+        }
+        return ArrayUtils.toPrimitive(list.toArray(new Integer[0]));
+    }
 }

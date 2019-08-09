@@ -431,10 +431,11 @@ public class SendFormatter {
         return list;
     }
 
-    public static List<Pair<String, String>> can_tCross(boolean player) {
+    public static List<Pair<String, String>> can_tCross(boolean player, int[][] coordinate) {
         Data data = new Data();
         data.Event = Can_tCrossTest.name();
         data.Player = player;
+        data.Coordinate = coordinate;
         return toListMe(data.toJson());
     }
 
@@ -477,5 +478,55 @@ public class SendFormatter {
         data.Event = FailTurnEnd.name();
         data.Player = player;
         return toListMe(data.toJson());
+    }
+
+    public static List<Pair<String, String>> waiting(int sender) {
+        Data data = new Data();
+        data.Event = Wait.name();
+        return toList(sender, data.toJson());
+    }
+
+    public static List<Pair<String, String>> waitEnd() {
+        Data data = new Data();
+        data.Event = EndWait.name();
+        return toListBoth(data.toJson());
+    }
+
+    public static List<Pair<String, String>> disableCross(boolean player, int coordinate) {
+        Data data = new Data();
+        data.Event = DisableCrossTest.name();
+        data.Player = player;
+        data.Coordinate = new int[][]{{coordinate}};
+        return toListBoth(data.toJson());
+    }
+
+
+    public static List<Pair<String, String>> enableCross(boolean player, int[] coordinate) {
+        Data data = new Data();
+        data.Event = EnableCrossTest.name();
+        data.Player = player;
+        data.Coordinate = new int[][]{coordinate};
+        return toListBoth(data.toJson());
+    }
+
+    public static List<Pair<String, String>> enableCross(boolean player, int coordinate) {
+        return enableCross(player, new int[]{coordinate});
+    }
+
+    public static List<Pair<String, String>> refreshSandBox(boolean b, int sandBox) {
+        Data data = new Data();
+        data.Event = RefreshSandBox.name();
+        data.Player = b;
+        data.SandBox = sandBox;
+        return toListBoth(data.toJson());
+    }
+
+    public static List<Pair<String, String>> lostEffect(boolean player, String zone, int coordinate) {
+        Data data = new Data();
+        data.Event = LostEffect.name();
+        data.Player = player;
+        data.Zone = new String[]{zone};
+        data.Coordinate = new int[][]{{coordinate}};
+        return toListBoth(data.toJson());
     }
 }

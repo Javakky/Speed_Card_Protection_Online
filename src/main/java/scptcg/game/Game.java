@@ -26,7 +26,7 @@ public class Game {
     private boolean isActive = false;
     private boolean isChainSolving = false;
     private boolean firstPlayer;
-    private int xk = 7;
+    private int xk = 700;
     private int nk = 7;
     private Tale activing = null;
     private List<History> history;
@@ -254,6 +254,8 @@ public class Game {
         for (Player p : this.players) {
             p.nextTurn();
         }
+        waitEnd = false;
+
     }
 
     private void addWaitEffects(List<Effect> effects) {
@@ -307,7 +309,7 @@ public class Game {
         if (breached.size() > 0 && Objects.nonNull(breached.get(0))) waitBreach = true;
     }
 
-    private boolean isTurnPlayer(boolean isFirst) {
+    public boolean isTurnPlayer(boolean isFirst) {
         return isFirst == turnPlayer;
     }
 
@@ -447,5 +449,24 @@ public class Game {
 
     public boolean isWaitBreach() {
         return waitBreach;
+    }
+
+    public void plusSecure(boolean player, int index, int point) {
+        getPlayer(player).plusSecure(index, point);
+    }
+
+    public Player getActivePlayer() {
+        if (isActive()) {
+            return waitEffect.get(0).get(0).getParent().getPlayer();
+        }
+        return null;
+    }
+
+    public int[] canCrossTests(boolean subjectPlayer) {
+        return getPlayer(subjectPlayer).canCrossTests();
+    }
+
+    public boolean isFullProtection(boolean b, int sandBox) {
+        return getPlayer(b).isFullProtection(sandBox);
     }
 }

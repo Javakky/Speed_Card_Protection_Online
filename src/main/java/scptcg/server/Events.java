@@ -40,10 +40,14 @@ public enum Events {
     GetCost,
     Heal,
     WhetherActive,
+    RefreshSandBox,
     Active,
     SortEffect,
     GetRemainSandBox,
     Optional,
     FailTurnEnd,
-    PlusSecure
+    PlusSecure,
+    EndWait,
+    EnableCrossTest,
+    DisableCrossTest
 }

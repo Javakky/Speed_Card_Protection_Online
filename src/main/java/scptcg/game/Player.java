@@ -402,4 +402,24 @@ public class Player {
     public void plusSecure(int index, int point) {
         site.plusSecure(index, point);
     }
+
+    public int[] canCrossTests() {
+        return site.canCrossTests();
+    }
+
+    public boolean isFullProtection(int sandBox) {
+        SandBox box = null;
+        switch (sandBox) {
+            case 0:
+                box = safe;
+                break;
+            case 1:
+                box = euclid;
+                break;
+            case 3:
+                box = keter;
+                break;
+        }
+        return box.isFullProtection();
+    }
 }

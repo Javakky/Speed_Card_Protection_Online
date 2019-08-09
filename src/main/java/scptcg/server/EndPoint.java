@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static jooq.tables.Deck.*;
+import static scptcg.game.K_Class.*;
 import static scptcg.server.DeckMakeServlet.*;
+import static scptcg.server.SendFormatter.*;
 
 @ServerEndpoint("/ws")
 public final class EndPoint {
@@ -62,6 +64,8 @@ public final class EndPoint {
         try {
             Game game = EndPoint.game.get(id);
             String enemy = game.getEnemyName(name);
+            String data = SendFormatter.K_Class(!game.isFirst(enemy), IK).get(0).getRight();
+            send(enemy, data);
             EndPoint.game.remove(id);
             Session session1 = session.get(enemy);
             session1.close();
@@ -87,7 +91,7 @@ public final class EndPoint {
         return null;
     }
 
-    public void login(final String player, final String deck, final Session client) throws IOException {
+    public synchronized void login(final String player, final String deck, final Session client) throws IOException {
         Data data = new Data();
         data.Event = "Login";
         session.put(player, client);
@@ -113,8 +117,10 @@ public final class EndPoint {
             System.out.println("wait : " + waiting + " visit : " + player);
             game.add(new Game(waiting, getDeck(waiting, waitingDeck), player, getDeck(player, deck)));
             send(waiting, data.toJson());
-            waiting = null;
+            send(waiting, "hoge");
+            send(player, "hoge");
         }
+
         id.put(player, game.size() > 0 ? game.size() - 1 : 0);
         send(player, data.toJson());
     }
@@ -128,6 +134,7 @@ public final class EndPoint {
             } else {
                 Log4j.getInstance().info(data.toJson());
                 if (data.Event.equals(Events.Login.name())) {
+                    System.out.println(data.PlayerName);
                     login(data.PlayerName, data.DeckName, client);
                 } else {
                     main(data.Event, data);
@@ -167,11 +174,11 @@ public final class EndPoint {
                 if (!game.isChainSolving() && !game.isWaitBreach())
                     crossTest(data, game, name);
                 else
-                    send(name, SendFormatter.can_tCross(data.Player));
+                    send(name, SendFormatter.can_tCross(data.Player, data.Coordinate));
                 break;
 
             case WhetherActive:
-                whetherActive(data, game);
+                whetherActive(data, game, name);
                 break;
 
             case Damage:
@@ -231,16 +238,24 @@ public final class EndPoint {
                     List<Result> r = new ArrayList<>();
                     game.activeEffect(before, r);
                     sendEffectResult(game, data, r.toArray(new Result[0]));
+                    if (r.size() == 0) {
+                        send(name, SendFormatter.waitEnd());
+                        break;
+                    }
+                    for (Result result : r) {
+                        if (Objects.nonNull(result) && result.isComplete()) {
+                            send(name, SendFormatter.waitEnd());
+                            break;
+                        }
+                    }
+                } else {
+                    send(name, SendFormatter.waitEnd());
                 }
                 break;
 
             case LostEffect:
                 lostEffect(data, game, name);
-                if (game.isChainSolving()) {
-                    List<Result> r = new ArrayList<>();
-                    game.activeEffect(null, r);
-                    sendEffectResult(game, data, r.toArray(new Result[0]));
-                }
+
                 break;
 
             case HealSandBox:
@@ -258,6 +273,17 @@ public final class EndPoint {
                     rb.setPoint(point);
                     game.activeEffect(rb.createResult(), r);
                     sendEffectResult(game, data, r.toArray(new Result[0]));
+                    for (Result result : r) {
+                        if (Objects.nonNull(result) && result.isComplete()) {
+                            send(name, SendFormatter.waitEnd());
+                            break;
+                        }
+                    }
+                    if (r.size() == 0) {
+                        send(name, SendFormatter.waitEnd());
+                    }
+                } else {
+                    send(name, SendFormatter.waitEnd());
                 }
                 break;
 
@@ -280,6 +306,17 @@ public final class EndPoint {
                     rb.setPoint(data.Point[0]);
                     game.activeEffect(rb.createResult(), r);
                     sendEffectResult(game, data, r.toArray(new Result[0]));
+                    for (Result result : r) {
+                        if (Objects.nonNull(result) && result.isComplete()) {
+                            send(name, SendFormatter.waitEnd());
+                            break;
+                        }
+                    }
+                    if (r.size() == 0) {
+                        send(name, SendFormatter.waitEnd());
+                    }
+                } else {
+                    send(name, SendFormatter.waitEnd());
                 }
                 break;
 
@@ -314,6 +351,8 @@ public final class EndPoint {
         if (Zone.valueOf(data.Zone[0]) == Zone.Site) {
             game.plusSecure(data.Player, data.Coordinate[0][0], data.Point[0]);
             send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], (Scp) game.getCard(data.Player, Zone.Site, data.Coordinate[0][0])));
+
+            send(name, SendFormatter.waitEnd());
         }
     }
 
@@ -335,6 +374,9 @@ public final class EndPoint {
         send(name, SendFormatter.selectPartner(data.Player, data.Coordinate[0][0], scp));
         send(name, SendFormatter.getCardParameter(data.Player, data.Coordinate[0][0], scp));
         getRemainSandBox(data, game, name);
+        if (((Scp) game.getCard(data.Player, Zone.Site, data.Coordinate[0][0])).canCrossTest() && game.isTurnPlayer(data.Player)) {
+            send(name, SendFormatter.enableCross(data.Player, data.Coordinate[0][0]));
+        }
     }
 
     private void getEmptySite(Data data, Game game, String[] name) throws IOException {
@@ -345,7 +387,7 @@ public final class EndPoint {
         send(name, SendFormatter.getRemainSandBox(true, game.getRemainSandBox(true, Clazz.Safe),
                 game.getRemainSandBox(true, Clazz.Euclid),
                 game.getRemainSandBox(true, Clazz.Keter)));
-        send(name, SendFormatter.getRemainSandBox(false, game.getRemainSandBox(true, Clazz.Safe),
+        send(name, SendFormatter.getRemainSandBox(false, game.getRemainSandBox(false, Clazz.Safe),
                 game.getRemainSandBox(false, Clazz.Euclid),
                 game.getRemainSandBox(false, Clazz.Keter)));
     }
@@ -362,14 +404,32 @@ public final class EndPoint {
 
             if (wait != null) {
                 send(name, SendFormatter.startBreach(wait, false, data.SandBox));
+            } else if (point > 0 && game.isFullProtection(!data.Player, data.SandBox)) {
+                send(name, SendFormatter.refreshSandBox(!data.Player, data.SandBox));
+            }
+            if (!((Scp) game.getCard(data.Player, Zone.Site, data.Coordinate[0][0])).canCrossTest()) {
+                send(name, SendFormatter.disableCross(data.Player, data.Coordinate[0][0]));
             }
         } else {
-            send(name, SendFormatter.can_tCross(data.Player));
+            send(name, SendFormatter.can_tCross(data.Player, data.Coordinate));
         }
 
     }
 
-    private void whetherActive(Data data, Game game) throws IOException {
+    private Zone intToSandBoxArea(int sandBox) {
+        switch (intToSandBox(sandBox)) {
+            case Safe:
+                return Zone.SafeSandbox;
+            case Euclid:
+                return Zone.EuclidSandbox;
+            case Keter:
+                return Zone.KeterSandbox;
+            default:
+                return null;
+        }
+    }
+
+    private void whetherActive(Data data, Game game, String[] name) throws IOException {
         if (data.BeAbleTo) {
             List<Result> result = new ArrayList<>();
             game.activeEffect(null, result);
@@ -377,6 +437,8 @@ public final class EndPoint {
         } else {
             game.cancelEffect();
         }
+
+        send(name, SendFormatter.waitEnd());
     }
 
     private void damage(Data data, Game game, String[] name) throws IOException {
@@ -391,6 +453,8 @@ public final class EndPoint {
 
         if (wait != null) {
             send(name, SendFormatter.startBreach(wait, true, data.SandBox));
+        } else if (data.Point[0] > 0 && game.isFullProtection(data.Player, data.SandBox)) {
+            send(name, SendFormatter.refreshSandBox(data.Player, data.SandBox));
         }
 
     }
@@ -401,6 +465,10 @@ public final class EndPoint {
 
     private void breach(Data data, Game game, String[] name) throws IOException {
         Scp scp = game.breach(data.Player, data.CardName[0], intToSandBox(data.SandBox), data.Coordinate[0][0]);
+
+        if (scp.canCrossTest() && game.isTurnPlayer(data.Player)) {
+            send(name, SendFormatter.enableCross(data.Player, data.Coordinate[0][0]));
+        }
 
         send(name, SendFormatter.breach(data.Player, data.Coordinate[0][0], scp));
 
@@ -416,6 +484,7 @@ public final class EndPoint {
         boolean flag = game.nextTurn();
         if (flag) {
             send(name, SendFormatter.turnEnd(data.Player));
+            send(name, SendFormatter.enableCross(game.getTurnPlayer().isFirst(), game.canCrossTests(game.getTurnPlayer().isFirst())));
         } else {
             send(name, SendFormatter.failTurnEnd(data.Player));
         }
@@ -442,7 +511,7 @@ public final class EndPoint {
     }
 
     private void getSandBoxProtection(Data data, Game game, String[] name) throws IOException {
-        send(name, SendFormatter.getSandBoxProtection(data.Player, game.getSandBoxProtection(data.Player)));
+        //send(name, SendFormatter.getSandBoxProtection(data.Player, game.getSandBoxProtection(data.Player)));
     }
 
     private void getEffect(Data data, Game game, String[] name) throws IOException {
@@ -455,11 +524,32 @@ public final class EndPoint {
 
     }
 
-    private void lostEffect(Data data, Game game, String[] name) {
-        if (data.Coordinate[0].length > 0) {
-            game.lostEffect(data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[0][0]);
+    private void lostEffect(Data data, Game game, String[] name) throws IOException {
+        int coordinate = data.Coordinate[data.Coordinate[0].length > 0 ? 0 : 1][0];
+        if (data.Coordinate[0].length == 0) {
+            data.Player = !data.Player;
+        }
+        game.lostEffect(data.Player, Zone.Site, coordinate);
+        send(name, SendFormatter.lostEffect(data.Player, Zone.Site.name(), coordinate));
+        if (((Scp) game.getCard(data.Player, Zone.Site, coordinate)).canCrossTest() && game.isTurnPlayer(data.Player)) {
+            send(name, SendFormatter.enableCross(data.Player, coordinate));
+        }
+        if (game.isChainSolving()) {
+            List<Result> r = new ArrayList<>();
+            game.activeEffect(null, r);
+            sendEffectResult(game, data, r.toArray(new Result[0]));
+            if (r.size() == 0) {
+                send(name, SendFormatter.waitEnd());
+                return;
+            }
+            for (Result result : r) {
+                if (Objects.nonNull(result) && result.isComplete()) {
+                    send(name, SendFormatter.waitEnd());
+                    return;
+                }
+            }
         } else {
-            game.lostEffect(!data.Player, Zone.valueOf(data.Zone[0]), data.Coordinate[1][0]);
+            send(name, SendFormatter.waitEnd());
         }
     }
 
@@ -567,6 +657,7 @@ public final class EndPoint {
     private List<Pair<String, String>> sendEffectResult(Game game, Data data, Result[] st) throws IOException {
         List<Pair<String, String>> list = new LinkedList<>();
         String[] name = new String[]{data.PlayerName, game.getEnemyName(data.PlayerName)};
+
         for (Result r : st) {
             if (r == null) {
                 continue;
@@ -580,10 +671,20 @@ public final class EndPoint {
                             : Objects.nonNull(r.getSubject())
                             ? r.getSubject().ownerIsFirst()
                             : game.isFirst(data.PlayerName)))
-                sender = SendFormatter.ME;
+                sender = ME;
             else {
                 sender = SendFormatter.ENEMY;
             }
+
+            switch (ActionMethod.valueOf(r.getAction())) {
+                case Select:
+                case DamageSandBox:
+                case HealSandBox:
+                case Optional:
+                    send(name, SendFormatter.waiting(sender == ME ? ENEMY : ME));
+                    break;
+            }
+
             //System.out.println("effectsss: " + sender + ":" + data.PlayerName + ":" + game.isFirst(data.PlayerName) + ":" + r.getSubject().ownerIsFirst());
             switch (ActionMethod.valueOf(r.getAction())) {
                 case ActiveTale:
@@ -642,6 +743,7 @@ public final class EndPoint {
 
                 case TurnEnd:
                     send(name, SendFormatter.turnEnd(r.getSubjectPlayer()));
+                    send(name, SendFormatter.enableCross(!r.getSubjectPlayer(), game.canCrossTests(!r.getSubjectPlayer())));
                     break;
                 case HealSandBox:
                 case DamageSandBox:

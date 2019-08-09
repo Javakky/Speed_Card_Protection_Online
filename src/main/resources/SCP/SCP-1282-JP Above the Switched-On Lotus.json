@@ -3,7 +3,7 @@
   "name": "SCP-1282-JP Above the Switched-On Lotus",
   "canDecommission": true,
   "cost": 1,
-  "secure": 0,
+  "secure": 2,
   "clazz": "Thaumiel",
   "containmentClass": "Euclid",
   "tag": [

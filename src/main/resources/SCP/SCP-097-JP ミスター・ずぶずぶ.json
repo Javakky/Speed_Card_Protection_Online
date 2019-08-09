@@ -14,7 +14,7 @@
     "ワンダーテインメント",
     "博士"
   ],
-  "canPartner": true,
+  "canPartner": false,
   "crossTestable": true,
   "crossTestsCount": 1,
   "effects": {

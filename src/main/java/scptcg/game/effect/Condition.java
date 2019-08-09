@@ -84,6 +84,18 @@ public class Condition extends AbstractAction {
     }
 
     private boolean scenarioNon() {
+        switch (getTargetPlayer()) {
+            case Me:
+                if (getGame().getKClassPlayerIsFirst() != getPlayer().isFirst()) {
+                    return false;
+                }
+                break;
+            case Enemy:
+                if (getGame().getKClassPlayerIsFirst() == getPlayer().isFirst()) {
+                    return false;
+                }
+                break;
+        }
         for (K_Class k : getParameter().getScenario()) {
             if (k == getGame().getScenario()) {
                 return false;
