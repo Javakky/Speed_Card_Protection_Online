@@ -15,5 +15,6 @@ public enum ConditionPattern implements IActionMethod {
     SumSiteCostOver,
     ScenarioIs,
     SecureOver,
-    ScenarioNon
+    ScenarioNon,
+    PersonnelDecommissined
 }

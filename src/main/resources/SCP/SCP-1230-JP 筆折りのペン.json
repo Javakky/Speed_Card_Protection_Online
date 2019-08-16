@@ -1,0 +1,39 @@
+{
+  "category": "SCP",
+  "name": "SCP-1230-JP 筆折りのペン",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 6,
+  "clazz": "Safe",
+  "tag": [
+    "bbc18",
+    "scp-jp",
+    "情報災害",
+    "瞬間移動",
+    "精神影響",
+    "道具"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "CrossTest": [
+        {
+          "message": "このオブジェクトの確保力を1にする。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "action": [
+            {
+              "action": "SetSecure",
+              "parameter": {
+                "isThis": true,
+                "point": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

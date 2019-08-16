@@ -1,0 +1,58 @@
+{
+  "category": "Personnel",
+  "name": "ライチョウくん4号",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "自分のサイトにある効果を持たないオブジェクトを1つ選んでDecommissinoedに送ることができる。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "FirstTimeInTurn",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            },
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Me",
+                "targetZone": "Site",
+                "condition": [
+                  {
+                    "name": "HasntEffect"
+                  },
+                  {
+                    "name": "NotPartner"
+                  }
+                ]
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Select",
+              "parameter": {
+                "nextAction": "Decommission",
+                "targetPlayer": "Me",
+                "isThere": true,
+                "condition": [
+                  {
+                    "name": "HasntEffect"
+                  },
+                  {
+                    "name": "NotPartner"
+                  }
+                ],
+                "targetZone": "Site"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

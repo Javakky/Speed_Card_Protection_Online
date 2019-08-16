@@ -4,6 +4,7 @@ public enum ActionMethod implements IActionMethod {
     Decommission,
     Select,
     AddTag,
+    AddCost,
     AddEffect,
     K_Class,
     Breach,

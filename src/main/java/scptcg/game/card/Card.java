@@ -60,8 +60,9 @@ public abstract class Card implements Cloneable {
         this.canDecommission = canDecommission;
     }
 
-    protected Effects getEffects() {
-        return effects;
+    public Effects getEffects() {
+        if (Objects.nonNull(effects)) return effects;
+        return new Effects();
     }
 
     public int effectSize(final Trigger trigger) {

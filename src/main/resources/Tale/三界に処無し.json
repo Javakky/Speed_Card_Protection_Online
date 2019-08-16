@@ -1,0 +1,38 @@
+{
+  "category": "Tale",
+  "name": "三界に処無し",
+  "canDecommission": true,
+  "effects": {
+    "effects": {
+      "Sometime": [
+        {
+          "message": "自分サイト上のオブジェクトを1つ選び、確保力を＋○○する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "PersonnelDecommissined",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Select",
+              "parameter": {
+                "nextAction": "PlusSecure",
+                "targetPlayer": "Me",
+                "point": 2,
+                "isThere": true,
+                "condition": [
+                ],
+                "targetZone": "Site"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

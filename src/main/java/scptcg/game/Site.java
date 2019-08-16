@@ -158,6 +158,10 @@ public class Site implements CardHolder {
                         case HasTag:
                             if (!site[i].containsTag(c.getTag())) flag = false;
                             break;
+                        case HasntEffect:
+                            if (site[i].getEffects().size() > 0 || !site[i].isCrossTestable() || site[i].getCrossTestsCount() != 1)
+                                flag = false;
+                            break;
                         case IsClass:
                             if (!site[i].containsClazz(c.getClazz())) flag = false;
                             break;
@@ -201,6 +205,12 @@ public class Site implements CardHolder {
                             break;
                         case CrossTested:
                             if (scp.getCrossTestCount() <= 0) flag = false;
+                            break;
+                        case HasntEffect:
+                            if (scp.getEffects().size() > 0 || !scp.isCrossTestable() || scp.getCrossTestsCount() != 1) {
+                                System.out.println(scp.getName() + "の効果は" + scp.getEffects().size() + "個");
+                                flag = false;
+                            }
                             break;
                         case HasTag:
                             if (!scp.containsTag(c.getTag())) flag = false;
@@ -440,5 +450,9 @@ public class Site implements CardHolder {
             }
         }
         return ArrayUtils.toPrimitive(list.toArray(new Integer[0]));
+    }
+
+    public void addCost(int coordinate, int point) {
+        ((Scp) getCard(coordinate)).addCost(point);
     }
 }

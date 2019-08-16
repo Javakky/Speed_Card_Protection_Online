@@ -23,6 +23,12 @@
           "canActive": true,
           "condition": [
             {
+              "action": "HasPersonnel",
+              "parameter": {
+                "targetPlayer": "Me"
+              }
+            },
+            {
               "action": "HasSCP",
               "parameter": {
                 "targetPlayer": "Me",

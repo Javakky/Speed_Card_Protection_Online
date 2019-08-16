@@ -37,6 +37,7 @@ public enum Events {
     GetEffectCount,
     Impossible,
     IsFirst,
+    AddCost,
     GetCost,
     Heal,
     WhetherActive,

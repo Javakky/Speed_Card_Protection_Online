@@ -170,6 +170,10 @@ public final class EndPoint {
                 getRemainSandBox(data, game, name);
                 break;
 
+            case AddCost:
+                addCost(data, game, name);
+                break;
+
             case CrossTest:
                 if (!game.isChainSolving() && !game.isWaitBreach())
                     crossTest(data, game, name);
@@ -345,6 +349,22 @@ public final class EndPoint {
             send(name, SendFormatter.K_Class(game.getKClassPlayerIsFirst(), game.getScenario()));
             cutConnection(data.PlayerName);
         }
+    }
+
+    private void addCost(Data data, Game game, String[] name) throws IOException {
+        int coordinate = data.Coordinate[data.Coordinate[0].length > 0 ? 0 : 1][0];
+        if (data.Coordinate[0].length == 0) {
+            data.Player = !data.Player;
+        }
+        game.addCost(data.Player, Zone.Site, coordinate, data.Point[0]);
+        send(name, getCardParameter(data.Player,
+                coordinate,
+                (Scp) game.getCard(data.Player, Zone.Site, coordinate)));
+        send(name, waitEnd());
+        int me = game.getSumSiteCost(game.isFirst(data.PlayerName));
+        getSumSiteCost(name, game.isFirst(data.PlayerName), me);
+        int enemy = game.getSumSiteCost(!game.isFirst(data.PlayerName));
+        getSumSiteCost(name, !game.isFirst(data.PlayerName), enemy);
     }
 
     private void plusSecure(Data data, Game game, String[] name) throws IOException {
@@ -778,8 +798,13 @@ public final class EndPoint {
     }
 
     private synchronized void send(final String name, final String str) throws IOException {
-        session.get(name).getBasicRemote().sendText(str);
         try {
+            try {
+                session.get(name).getBasicRemote().sendText(str);
+            } catch (IllegalStateException e) {
+                Thread.sleep(100);
+                session.get(name).getBasicRemote().sendText(str);
+            }
             Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();

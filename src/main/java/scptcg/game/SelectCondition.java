@@ -7,5 +7,6 @@ public enum SelectCondition {
     CrossTested,
     HasTag,
     IsClass,
-    SecureUnder
+    SecureUnder,
+    HasntEffect
 }

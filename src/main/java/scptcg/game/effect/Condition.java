@@ -2,6 +2,7 @@ package scptcg.game.effect;
 
 import scptcg.game.K_Class;
 import scptcg.game.Player;
+import scptcg.game.Zone;
 import scptcg.game.card.Scp;
 
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ public class Condition extends AbstractAction {
                 return isMyTurn(player);
             case HasSCP:
                 return hasSCP(player);
+            case PersonnelDecommissined:
+                return personnelDecommissioned(player);
             case NonPartner:
                 return nonPartner();
             case HasPersonnel:
@@ -81,6 +84,10 @@ public class Condition extends AbstractAction {
             default:
                 throw new IllegalArgumentException("存在しない条件です。：" + getActionMessage());
         }
+    }
+
+    private boolean personnelDecommissioned(Player player) {
+        return player.hasPersonnel(Zone.Decommissioned);
     }
 
     private boolean scenarioNon() {
@@ -135,6 +142,7 @@ public class Condition extends AbstractAction {
     }
 
     private boolean firstTime(final Player player) {
+        if (!getParent().firstTime()) System.out.println("2回目です");
         return getParent().firstTime();
     }
 

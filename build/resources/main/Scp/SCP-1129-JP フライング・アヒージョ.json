@@ -13,7 +13,7 @@
     "動物",
     "生命"
   ],
-  "canPartner": true,
+  "canPartner": false,
   "crossTestable": true,
   "crossTestsCount": 1,
   "effects": {

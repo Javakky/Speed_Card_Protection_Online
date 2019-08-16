@@ -26,7 +26,7 @@ public class Game {
     private boolean isActive = false;
     private boolean isChainSolving = false;
     private boolean firstPlayer;
-    private int xk = 700;
+    private int xk = 7;
     private int nk = 7;
     private Tale activing = null;
     private List<History> history;
@@ -468,5 +468,9 @@ public class Game {
 
     public boolean isFullProtection(boolean b, int sandBox) {
         return getPlayer(b).isFullProtection(sandBox);
+    }
+
+    public void addCost(boolean player, Zone zone, int coordinate, int point) {
+        getPlayer(player).addCost(coordinate, point);
     }
 }

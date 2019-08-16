@@ -419,7 +419,22 @@ public class Player {
             case 3:
                 box = keter;
                 break;
+            default:
+                return false;
         }
         return box.isFullProtection();
+    }
+
+    public void addCost(int coordinate, int point) {
+        site.addCost(coordinate, point);
+    }
+
+    public boolean hasPersonnel(Zone zone) {
+        for (Card c : getArea(zone).getCards()) {
+            if (Objects.nonNull(c) && c.getCategory() == CardCategory.Personnel) {
+                return true;
+            }
+        }
+        return false;
     }
 }

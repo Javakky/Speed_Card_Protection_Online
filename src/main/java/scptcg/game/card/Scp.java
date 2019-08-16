@@ -103,6 +103,7 @@ public class Scp extends Card {
     public void lostEffect() {
         super.lostEffect();
         enableCanCrossTest();
+        setCrossTestsCount(1);
         enableDecommission();
     }
 
@@ -146,6 +147,10 @@ public class Scp extends Card {
 
     public boolean canCrossTest() {
         return crossTestable && crossTestCount < crossTestsCount;
+    }
+
+    public boolean isCrossTestable() {
+        return crossTestable;
     }
 
     public void enableCanCrossTest(final boolean canCrossTest) {
@@ -215,5 +220,9 @@ public class Scp extends Card {
         for (String tag : tags) {
             addTag(tag);
         }
+    }
+
+    public void addCost(int point) {
+        this.cost += point;
     }
 }

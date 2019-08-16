@@ -1,0 +1,63 @@
+{
+  "category": "SCP",
+  "name": "SCP-4759 ドーナツ税に抗う者",
+  "canDecommission": true,
+  "cost": 3,
+  "secure": 7,
+  "clazz": "Keter",
+  "tag": [
+    "scp",
+    "人間型",
+    "文書",
+    "未収容",
+    "睡眠",
+    "食物"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Decommissioned": [
+        {
+          "message": "相手サイト上の[食物]を持つオブジェクト1体のコストを+1する",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "condition": [
+            {
+              "action": "HasSCP",
+              "parameter": {
+                "targetPlayer": "Enemy",
+                "targetZone": "Site",
+                "condition": [
+                  {
+                    "name": "HasTag",
+                    "tag": "食物"
+                  }
+                ]
+              }
+            }
+          ],
+          "action": [
+            {
+              "action": "Select",
+              "parameter": {
+                "nextAction": "AddCost",
+                "point": 1,
+                "targetPlayer": "Enemy",
+                "isThere": true,
+                "condition": [
+                  {
+                    "name": "HasTag",
+                    "tag": "食物"
+                  }
+                ],
+                "targetZone": "Site"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
