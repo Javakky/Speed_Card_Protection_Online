@@ -22,7 +22,7 @@ public class Data implements IResult {
     public int Secure;
     public int Cost;
     public int[] Point;
-    public String After;
+    public String[] After;
     public String Text;
     public boolean Continue;
     public String Status;

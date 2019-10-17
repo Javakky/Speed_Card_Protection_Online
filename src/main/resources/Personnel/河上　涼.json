@@ -49,7 +49,9 @@
                   }
                 ],
                 "targetZone": "Site",
-                "nextAction": "Decommission"
+                "nextAction": [
+                  "Decommission"
+                ]
               }
             }
           ]

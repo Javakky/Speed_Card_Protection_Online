@@ -1,0 +1,61 @@
+{
+  "category": "SCP",
+  "name": "SCP-034 黒曜石儀式ナイフ",
+  "canDecommission": true,
+  "cost": 1,
+  "secure": 3,
+  "clazz": "Safe",
+  "tag": [
+    "safe",
+    "scp",
+    "人工",
+    "変形",
+    "武器",
+    "道具"
+  ],
+  "canPartner": true,
+  "crossTestable": true,
+  "crossTestsCount": 1,
+  "effects": {
+    "effects": {
+      "Breached": [
+        {
+          "message": "このオブジェクトを再収容し、その後自分のSafeクラスサンドボックスからオブジェクトを1体選んで収容違反する。この効果によって収容違反したオブジェクトのコストは+1される。",
+          "activationsCount": 2147483647,
+          "canActive": true,
+          "action": [
+            {
+              "action": "ReContainment",
+              "parameter": {
+                "targetZone": "Safe",
+                "targetClazz": "Safe"
+              }
+            },
+            {
+              "action": "Choice",
+              "parameter": {
+                "targetPlayer": "Me",
+                "isThere": true,
+                "beforeZone": "SafeSandBox",
+                "targetZone": "Site",
+                "condition": [
+                ],
+                "nextAction": [
+                  "Select",
+                  "Breach"
+                ]
+              }
+            },
+            {
+              "action": "plusCost",
+              "parameter": {
+                "targetPlayer": "Me",
+                "reference": "before"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

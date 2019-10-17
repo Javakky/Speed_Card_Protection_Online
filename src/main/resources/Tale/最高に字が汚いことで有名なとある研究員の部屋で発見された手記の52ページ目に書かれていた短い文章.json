@@ -26,8 +26,9 @@
                 "targetPlayer": "Me",
                 "isThere": true,
                 "targetZone": "Site",
-                "condition": [],
-                "nextAction": "LostEffect"
+                "nextAction": [
+                  "LostEffect"
+                ]
               }
             }
           ]

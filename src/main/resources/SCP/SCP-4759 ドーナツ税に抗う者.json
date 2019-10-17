@@ -42,7 +42,9 @@
             {
               "action": "Select",
               "parameter": {
-                "nextAction": "AddCost",
+                "nextAction": [
+                  "AddCost"
+                ],
                 "point": 1,
                 "targetPlayer": "Enemy",
                 "isThere": true,

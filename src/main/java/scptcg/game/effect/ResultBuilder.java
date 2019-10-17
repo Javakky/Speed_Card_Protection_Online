@@ -1,7 +1,10 @@
 package scptcg.game.effect;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import scptcg.game.Zone;
 import scptcg.game.card.Card;
+
+import java.util.List;
 
 public class ResultBuilder {
     private boolean subjectPlayer;
@@ -16,7 +19,7 @@ public class ResultBuilder {
     private String[][] objectName;
     private int[][] objectCoordinate;
     private int[][] coordinate;
-    private String nextAction;
+    private List<String> nextAction;
     private int point;
     private int count;
     private boolean overlap;
@@ -25,6 +28,7 @@ public class ResultBuilder {
     private boolean targetPlayer;
     private String action;
     private Zone targetZone;
+    private Zone beforeZone;
 
     public ResultBuilder(final String action, final boolean subjectPlayer, final Zone subjectZone, final Card subject, final String subjectName, final int subjectCoordinate) {
         this.subjectPlayer = subjectPlayer;
@@ -75,7 +79,12 @@ public class ResultBuilder {
     }
 
     public ResultBuilder setNextAction(final String nextAction) {
-        this.nextAction = nextAction;
+        this.nextAction.add(nextAction);
+        return this;
+    }
+
+    public ResultBuilder setNextAction(final String[] nextAction) {
+        this.nextAction.addAll(Arrays.asList(nextAction));
         return this;
     }
 
@@ -105,7 +114,7 @@ public class ResultBuilder {
     }
 
     public Result createResult() {
-        return new Result(subjectZone, subjectPlayer, subject, subjectName, subjectCoordinate, objectPlayer, objectPlayerIsOne, objectZone, object, objectName, objectCoordinate, coordinate, nextAction, point, count, overlap, message, isComplete, targetPlayer, action, targetZone);
+        return new Result(subjectZone, subjectPlayer, subject, subjectName, subjectCoordinate, objectPlayer, objectPlayerIsOne, objectZone, object, objectName, objectCoordinate, coordinate, nextAction.toArray(new String[0]), point, count, overlap, message, isComplete, targetPlayer, action, targetZone, beforeZone);
     }
 
     public void setCoordinate(final int[][] coordinate) {
@@ -134,5 +143,14 @@ public class ResultBuilder {
 
     public void setTargetZone(Zone whereZone) {
         this.targetZone = whereZone;
+    }
+
+
+    public Zone getBeforeZone() {
+        return beforeZone;
+    }
+
+    public void setBeforeZone(Zone beforeZone) {
+        this.beforeZone = beforeZone;
     }
 }

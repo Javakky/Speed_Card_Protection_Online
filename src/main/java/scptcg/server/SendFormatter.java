@@ -6,9 +6,11 @@ import scptcg.game.card.Card;
 import scptcg.game.card.Personnel;
 import scptcg.game.card.Scp;
 import scptcg.game.card.Tale;
+import scptcg.game.effect.ActionMethod;
 import scptcg.json.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,7 +90,7 @@ public class SendFormatter {
         d.Player = player;
         d.Zone = new String[]{place};
         d.Coordinate = coordinate;
-        d.After = after;
+        d.After = new String[]{after};
         d.Continue = cont;
         d.Point = new int[]{point};
         return toList(receiver, d.toJson());
@@ -527,6 +529,15 @@ public class SendFormatter {
         data.Player = player;
         data.Zone = new String[]{zone};
         data.Coordinate = new int[][]{{coordinate}};
+        return toListBoth(data.toJson());
+    }
+
+    public static List<Pair<String, String>> choice(boolean player, String nextAction, String target, String before, Card[] object, boolean complete, int sender) {
+        Data data = new Data();
+        data.Event = ActionMethod.Choice.name();
+        data.Player = player;
+        data.Zone = new String[]{before, target};
+        data.CardName = (String[]) Arrays.stream(object).map(Card::getName).toArray();
         return toListBoth(data.toJson());
     }
 }

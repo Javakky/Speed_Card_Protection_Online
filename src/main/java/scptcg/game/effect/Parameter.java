@@ -5,13 +5,14 @@ import scptcg.game.Zone;
 import scptcg.game.card.Clazz;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Parameter {
     private String targetPlayer;
     private String targetZone;
-    private String nextAction;
+    private String[] nextAction;
     private boolean overlap;
     private int count;
     private int point;
@@ -35,8 +36,8 @@ public class Parameter {
         return Zone.valueOf(targetZone);
     }
 
-    public ActionMethod getNextAction() {
-        return ActionMethod.valueOf(nextAction);
+    public ActionMethod[] getNextAction() {
+        return (ActionMethod[]) Arrays.stream(nextAction).map(ActionMethod::valueOf).toArray();
     }
 
     public boolean canOverlap() {

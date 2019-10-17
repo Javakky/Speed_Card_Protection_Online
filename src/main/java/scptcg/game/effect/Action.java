@@ -7,6 +7,7 @@ import scptcg.game.card.CardCategory;
 import scptcg.game.card.Scp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -85,6 +86,10 @@ public class Action extends AbstractAction {
                 plusSecure();
                 break;
 
+            case PlusCost:
+                plusCost();
+                break;
+
             case Breach:
                 breach();
                 break;
@@ -114,6 +119,23 @@ public class Action extends AbstractAction {
 
         tmpBefore = null;
         return tmpResult.createResult();
+    }
+
+    private void plusCost() {
+        Scp card = null;
+        switch (getParameter().getReference()) {
+            case "before":
+                card = (Scp) tmpBefore.getSubject();
+                break;
+
+            case "this":
+                card = (Scp) getCard();
+                break;
+        }
+        int point = getParameter().getPoint();
+        Objects.requireNonNull(card).addCost(point);
+        tmpResult.setPoint(point);
+        tmpResult.setIsComplete(true);
     }
 
     private void secureToZero() {
@@ -343,7 +365,17 @@ public class Action extends AbstractAction {
         tmpResult.setPoint(p.getPoint());
         tmpResult.setIsComplete(false);
         tmpResult.setTargetZone(p.getTargetZone());
-        tmpResult.setNextAction(p.getNextAction().name());
+        tmpResult.setNextAction((String[]) Arrays.stream(getParameter().getNextAction()).map(ActionMethod::name).toArray());
+    }
+
+    private void choice() {
+        List<Player> list = new ArrayList<>();
+        getTargetPlayer(list);
+
+        tmpResult.setObjects(null, new Card[][]{list.get(0).getCards(getParameter().getTargetZone())}, null, null);
+        tmpResult.setIsComplete(false);
+        tmpResult.setTargetZone(getParameter().getTargetZone());
+        tmpResult.setNextAction((String[]) Arrays.stream(getParameter().getNextAction()).map(ActionMethod::name).toArray());
     }
 
     private void decommission() {

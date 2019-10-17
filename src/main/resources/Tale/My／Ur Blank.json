@@ -35,7 +35,9 @@
                 "isThere": true,
                 "targetZone": "Site",
                 "condition": [],
-                "nextAction": "LostEffect"
+                "nextAction": [
+                  "LostEffect"
+                ]
               }
             },
             {
@@ -46,7 +48,9 @@
                 "targetZone": "Site",
                 "condition": [
                 ],
-                "nextAction": "LostEffect"
+                "nextAction": [
+                  "LostEffect"
+                ]
               }
             }
           ]

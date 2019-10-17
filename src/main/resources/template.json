@@ -24,7 +24,9 @@
               "parameter": {
                 "targetPlayer": "Me",
                 "targetZone": "",
-                "nextAction": "",
+                "nextAction": [
+                  ""
+                ],
                 "overlap": true,
                 "count": 0,
                 "point": 0,

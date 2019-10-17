@@ -45,7 +45,9 @@
             {
               "action": "Select",
               "parameter": {
-                "nextAction": "PlusSecure",
+                "nextAction": [
+                  "PlusSecure"
+                ],
                 "targetPlayer": "Me",
                 "point": 2,
                 "isThere": true,

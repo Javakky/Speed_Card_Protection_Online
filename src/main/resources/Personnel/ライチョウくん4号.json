@@ -36,7 +36,9 @@
             {
               "action": "Select",
               "parameter": {
-                "nextAction": "Decommission",
+                "nextAction": [
+                  "Decommission"
+                ],
                 "targetPlayer": "Me",
                 "isThere": true,
                 "condition": [

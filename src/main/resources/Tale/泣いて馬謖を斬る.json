@@ -35,7 +35,9 @@
                     "name": "NotPartner"
                   }
                 ],
-                "nextAction": "Decommission"
+                "nextAction": [
+                  "Decommission"
+                ]
               }
             },
             {

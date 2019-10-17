@@ -117,8 +117,6 @@ public final class EndPoint {
             System.out.println("wait : " + waiting + " visit : " + player);
             game.add(new Game(waiting, getDeck(waiting, waitingDeck), player, getDeck(player, deck)));
             send(waiting, data.toJson());
-            send(waiting, "hoge");
-            send(player, "hoge");
         }
 
         id.put(player, game.size() > 0 ? game.size() - 1 : 0);
@@ -195,6 +193,7 @@ public final class EndPoint {
 
             case Breach:
                 breach(data, game, name);
+
                 break;
 
             case TurnEnd:
@@ -219,6 +218,9 @@ public final class EndPoint {
 
             case GetSandBoxProtection:
                 getSandBoxProtection(data, game, name);
+                break;
+            case Select:
+                send(name, SendFormatter.select(data.Player, data.After[0], data.Zone[0], new int[][]{game.getEmptySite(data.Player)}, false, 0, ME));
                 break;
 /*
             case GET_COST:
@@ -758,7 +760,7 @@ public final class EndPoint {
                     break;
 
                 case Select:
-                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction(), r.getTargetZone(), r.getCoordinate(), r.isComplete(), r.getPoint(), sender));
+                    send(name, SendFormatter.select(r.getTargetPlayer(), r.getNextAction()[0], r.getTargetZone(), r.getCoordinate(), r.isComplete(), r.getPoint(), sender));
                     break;
 
                 case TurnEnd:
@@ -788,7 +790,18 @@ public final class EndPoint {
 
                 case Optional:
                     send(name, SendFormatter.optional(r.getSubjectPlayer(), r.getSubjectName(), r.getMessage(), sender));
+                    break;
+                case Choice:
+                    send(name, SendFormatter.choice(
+                            r.getTargetPlayer(),
+                            r.getNextAction()[0],
+                            r.getTargetZone(),
+                            r.getBeforeZone().name(),
+                            r.getObject()[0],
+                            r.isComplete(),
+                            sender));
 
+                    break;
                 default:
                     break;
             }

@@ -18,7 +18,7 @@ public final class Result implements IResult {
     private final Card[][] object;
     private final String[][] objectName;
     private final int[][] objectCoordinate;
-    private final String nextAction;
+    private final String[] nextAction;
     private final int point;
     private final int count;
     private final boolean overlap;
@@ -26,8 +26,9 @@ public final class Result implements IResult {
     private final boolean isComplete;
     private final boolean targetPlayer;
     private int[][] coordinate;
+    private Zone beforeZone;
 
-    public Result(final Zone subjectZone, final boolean subjectPlayer, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer, String action, Zone targetZone) {
+    public Result(final Zone subjectZone, final boolean subjectPlayer, final Card subject, final String subjectName, final int subjectCoordinate, final boolean objectPlayer, final boolean objectPlayerIsOne, final Zone[][] objectZone, final Card[][] object, final String[][] objectName, final int[][] objectCoordinate, final int[][] coordinate, final String[] nextAction, final int point, final int count, final boolean overlap, final String message, final boolean isComplete, final boolean targetPlayer, String action, Zone targetZone, Zone beforeZone) {
         this.subjectPlayer = subjectPlayer;
         this.subjectZone = subjectZone;
         this.subject = subject;
@@ -49,6 +50,7 @@ public final class Result implements IResult {
         this.targetPlayer = targetPlayer;
         this.action = action;
         this.targetZone = targetZone;
+        this.beforeZone = beforeZone;
     }
 
     public boolean getSubjectPlayer() {
@@ -95,7 +97,7 @@ public final class Result implements IResult {
         return objectCoordinate;
     }
 
-    public String getNextAction() {
+    public String[] getNextAction() {
         return nextAction;
     }
 
@@ -139,4 +141,7 @@ public final class Result implements IResult {
         return targetZone.name();
     }
 
+    public Zone getBeforeZone() {
+        return beforeZone;
+    }
 }
